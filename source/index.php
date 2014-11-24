@@ -13,7 +13,9 @@
 		</div>
 
 		<?php 
-		require("inde_fonctionsOutil.php"); 
+		//to remove
+		//require("inde_fonctionsOutil.php");
+		require("fonctions_bd_gase.php"); 
 		?>
 		
 		<div style="text-align:center">
