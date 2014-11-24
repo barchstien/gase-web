@@ -15,7 +15,7 @@
     <body>
 		<div id="menu">
 			<ul>
-				<li><a href="inde_menu0.php">Accueil</a></li>
+				<li><a href="index.php">Accueil</a></li>
 				
 				<?php
 				foreach ($listeCategories as $tableau)

@@ -124,7 +124,7 @@ mail($mail,$sujet,$message,$header);
 							
 				echo '
 				<br />
-				<li>Pour aller a la page d\'accueil : <a href="/gase/inde_menu0.php">cliquez ici</a></li>
+				<li>Pour aller a la page d\'accueil : <a href="/gase/index.php">cliquez ici</a></li>
 				';
 			}
 			else
@@ -132,7 +132,7 @@ mail($mail,$sujet,$message,$header);
 				echo '<div style="text-align:center; color: #FF0000">Attention, le total de vos achats et superieur au solde de votre compte MoneyCoop.<br />Veuillez approvisionner votre MoneyCoop avant de re-enregistrer vos achats.</div>';  
 				?>
 				<br />
-				<li>Pour aller a la page d accueil : <a href="/gase/inde_menu0.php">cliquez ici</a>cliquez ici</a></li>
+				<li>Pour aller a la page d accueil : <a href="/gase/index.php">cliquez ici</a>cliquez ici</a></li>
 				<?php
 			}
 		}

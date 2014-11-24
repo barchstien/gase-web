@@ -10,7 +10,7 @@
     <body>
 		<div id="menu">
 			<ul>
-				<li><a href="inde_menu0.php">Accueil</a></li>
+				<li><a href="index.php">Accueil</a></li>
 				<li><a href="inde_1achats.php">ACHATS</a></li>
 				<li><a href="#">MONEYCOOP</a>
 					<ul>
