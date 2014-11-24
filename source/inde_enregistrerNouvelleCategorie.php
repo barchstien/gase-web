@@ -3,7 +3,7 @@ require("inde_fonctionsCAT.php");
 
 include 'inde_menu.php';
  
-	// Si le formulaire a été envoyé
+	// Si le formulaire a Ã©tÃ© envoyÃ©
 	if (isset ($_POST['enregistrer']))
 	{
 		$nom = $_POST['nom'];
@@ -16,12 +16,12 @@ include 'inde_menu.php';
 		else
 		{
 			$sousCategorie = $_POST['sousCategorie'];
-			if($sousCategorie == 0) // creation d'une catégorie mère
+			if($sousCategorie == 0) // creation d'une catÃ©gorie mÃ¨re
 			{
 				EnregistrerNouvelleCategorie($nom);
 				echo 'Nouvelle categorie ' . $nom . ' enregistree.';
 			}
-			else // création d'une sous-catégorie
+			else // crÃ©ation d'une sous-catÃ©gorie
 			{
 				$idCatSup = $_POST['idCatSup'];
 				if(empty($idCatSup))

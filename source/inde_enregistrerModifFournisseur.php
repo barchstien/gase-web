@@ -3,7 +3,7 @@ require("inde_fonctionsFR.php");
 
 include 'inde_menu.php';
  
-// Si le formulaire a été envoyé
+// Si le formulaire a Ã©tÃ© envoyÃ©
 if (isset ($_POST['modifierFournisseur']))
 {
 	$idFournisseur = $_POST['idFournisseur'];
@@ -14,7 +14,7 @@ if (isset ($_POST['modifierFournisseur']))
 	//Le nom est obligatoire
 	if(empty($nom))
 	{
-		print("<center>Le '<b>NOM</b>' du fournisseur n\'est pas renseigné !</center>");
+		print("<center>Le '<b>NOM</b>' du fournisseur n\'est pas renseignÃ© !</center>");
 	}
 	else
 	{
@@ -41,7 +41,7 @@ if (isset ($_POST['modifierFournisseur']))
 		$visible = $_POST['visible'];
 		
 		MajFournisseur($idFournisseur, $nom, $mail, $adresse, $contact, $telephoneFixe, $telephonePortable, $fax, $commentaire, $visible);
-		echo 'Les donnees du fournisseur ' . $nom . ' ont été mises a jour dans la base de donnees.';
+		echo 'Les donnees du fournisseur ' . $nom . ' ont Ã©tÃ© mises a jour dans la base de donnees.';
 	}
 }
 ?>

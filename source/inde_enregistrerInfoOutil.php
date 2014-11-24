@@ -1,7 +1,7 @@
 <?php
 require("inde_fonctionsOutil.php");
  
-// Si le formulaire a été envoyé
+// Si le formulaire a Ã©tÃ© envoyÃ©
 if (isset ($_POST['enregistrerInfoOutil']))
 {
 	$info = $_POST['info'];

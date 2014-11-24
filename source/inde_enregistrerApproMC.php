@@ -1,7 +1,7 @@
 <?php
 require("inde_fonctionsMC.php");
  
-// Si le formulaire a été envoyé
+// Si le formulaire a Ã©tÃ© envoyÃ©
 if (isset ($_POST['enregistrerAppro']))
 {
 	$idAdherent = $_POST['idAdherent'];

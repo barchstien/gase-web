@@ -3,7 +3,7 @@ require("inde_fonctionsCAT.php");
 
 include 'inde_menu.php';
  
-// Si le formulaire a ÈtÈ envoyÈ
+// Si le formulaire a √©t√© envoy√©
 if (isset ($_POST['modifierCategorie']))
 {
 	$idCategorie = $_POST['idCategorie'];
@@ -18,7 +18,7 @@ if (isset ($_POST['modifierCategorie']))
 	}
 	else
 	{
-		//On ne teste pas si une categorie sous ce nom n'est pas dÈj‡ enregistrÈ
+		//On ne teste pas si une categorie sous ce nom n'est pas d√©j√† enregistr√©
 		$visible = $_POST['visible'];
 		$nouvelleCatMere = $_POST['catMere'];
 

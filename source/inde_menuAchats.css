@@ -1,58 +1,80 @@
-﻿#menu
+label.colonne1
 {
-display:table; /* IE8 et les autres */
-margin:auto; /* centrage */
-text-align:center; /* preparation au centrage IE7 et inf */
-height:50px;
+	width: 10%;
+	float: left;
 }
 
-#menu ul 
+label.colonne4
 {
-	margin:0;
-	padding:0;
-	list-style-type:none;
-	text-align:center;
+	width: 10%;
+	float: left;
 }
 
-#menu li 
+label.colonne2
 {
-	float:left;
-	margin:auto;
-	padding:0;
-	background-color:#AF3C7D;
+	width: 60%;
+	float: left;
 }
 
-#menu li a 
+label.colonne3
 {
-	display:block;
-	width:80px;
-	color:white;
-	font-weight:bold;
-	text-decoration:none;
-	padding:5px;
+	width: 10%;
+	float: left;
 }
 
-#menu li a:hover
+label.colonne5
 {
-	color:black;
-	font-weight:bold;
+	width: 10%;
+	float: left;
 }
+
+p.col1
+{
+	width: 10%;
+	float: left;
+	margin: 0;
+}
+
+p.col4
+{
+	width: 10%;
+	margin: 0;
+}
+
+p.col2
+{
+	width: 60%;
+	margin: 0;
+}
+
+p.col5
+{
+	width: 10%;
+	margin: 0;
+}
+
+p.col3
+{
+	float: right;
+	margin: 0;
+}
+
+p {
  
-#menu ul li ul
-{
-	display:none;
+    display: inline;
+ 
 }
 
-#menu ul li:hover ul 
-{
-	display:block;
-}
 
-#menu li:hover ul li 
+#formulaire input[type="submit"]
 {
-	float:none;
+	display: block;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
 }
-#menu li ul 
+#formulaire input[type="submit"]:hover
 {
-	position:absolute;
+	background-color: #66CC33;
+	cursor: pointer;
 }

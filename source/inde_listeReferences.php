@@ -4,7 +4,7 @@ session_start();
 <!DOCTYPE html>
 <html>
     <head>
-		<!-- En-tête de la page -->
+		<!-- En-tÃªte de la page -->
         <meta charset="utf-8" />
 <!--		<link rel="stylesheet" href="inde_1AchatsAdherent.css" /> -->
 		<title>ACHATS</title>

@@ -1,7 +1,7 @@
 <?php
 require("inde_fonctionsSTK.php");
  
-// Si le formulaire a été envoyé
+// Si le formulaire a Ã©tÃ© envoyÃ©
 if (isset ($_POST['enregistrerStocks']))
 {
 	$idFournisseur = $_POST['idFournisseur'];

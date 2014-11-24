@@ -13,7 +13,7 @@ $nomFichier = str_replace("'", '_', $nomFichier);
 $idDocument = SelectionIdDocument() + 1; 
 $nomFichierStock = $dossier . "-" . $idDocument . "-" . $nomFichier;
  
-	// Si le formulaire a été envoyé
+	// Si le formulaire a Ã©tÃ© envoyÃ©
 	if (isset ($_POST['enregistrer']))
 	{
 		$idType = $_POST['idType'];
@@ -60,14 +60,14 @@ $nomFichierStock = $dossier . "-" . $idDocument . "-" . $nomFichier;
 	
 	function upload($index,$destination,$maxsize=FALSE,$extensions=FALSE)
 {
-   //Test1: fichier correctement uploadé
+   //Test1: fichier correctement uploadÃ©
      if (!isset($_FILES[$index]) OR $_FILES[$index]['error'] > 0) return FALSE;
    //Test2: taille limite
      if ($maxsize !== FALSE AND $_FILES[$index]['size'] > $maxsize) return FALSE;
    //Test3: extension
      $ext = substr(strrchr($_FILES[$index]['name'],'.'),1);
      if ($extensions !== FALSE AND !in_array($ext,$extensions)) return FALSE;
-   //Déplacement
+   //DÃ©placement
      return move_uploaded_file($_FILES[$index]['tmp_name'],$destination);
 }
 ?>

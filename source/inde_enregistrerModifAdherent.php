@@ -3,7 +3,7 @@ require("inde_fonctionsAD.php");
 
 include 'inde_menu.php';
  
-// Si le formulaire a été envoyé
+// Si le formulaire a Ã©tÃ© envoyÃ©
 if (isset ($_POST['modifierAdherent']))
 {
 	$idAdherent= $_POST['idAdherent'];
