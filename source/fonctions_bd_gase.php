@@ -80,14 +80,14 @@ function SelectionDetailsAchats($idAchats){
 function EnregistrerInfoOutil($message){
 	$connection = ConnectionBDD();
 	$requete = "INSERT INTO _inde_VIE_OUTIL (DATE, MESSAGE) values(NOW(),'$message')";
-	mysql_query($requete);
+	mysql_query($requete, $connection);
 	FermerConnectionBDD($connection);
 }
 
 function SelectionListeMessages(){
 	$connection = ConnectionBDD();
 	$compteur = 0;
-	$result = mysql_query("SELECT DATE, MESSAGE FROM _inde_VIE_OUTIL ORDER BY DATE DESC");
+	$result = mysql_query("SELECT DATE, MESSAGE FROM _inde_VIE_OUTIL ORDER BY DATE DESC", $connection);
 	while ( $row = mysql_fetch_array($result)){
 		$donnees['DATE'] = $row[0];
 		$donnees['MESSAGE'] = $row[1];

@@ -11,7 +11,7 @@
 		<div id="menu">
 			<ul>
 				<li><a href="index.php">Accueil</a></li>
-				<li><a href="inde_1achats.php">ACHATS</a></li>
+				<li><a href="achats.php">ACHATS</a></li>
 				<li><a href="#">MONEYCOOP</a>
 					<ul>
 						<li><a href="inde_1soldeAdherentMC.php">SOLDE</a></li>
