@@ -1,15 +1,27 @@
 ﻿<?php
-	function ConnexionBDD(){
-		if(!$connexion){	
-			$connexion = mysql_connect("gase.frpc.fr","gase","gase44") or die(mysql_error());
-			mysql_select_db("gase") or die(mysql_error());
+    //this file was originally un-used, while it should be used by all !!!!!!!!
+
+	function ConnectionBDD(){
+		if(!$connection){	
+			$connection = mysql_connect("localhost", "gase", "gasepass") or die(mysql_error());
+			mysql_select_db("gasedl") or die(mysql_error());
 			
-		}	
+		}
+	    return $connection;
+	}
+	
+	function FermerConnectionBDD($connection)
+	{
+		mysql_close($connection);
 	}
 
+//////////TODO compare those functions with what's in inde_fonctionsACH.php, coz it's was the working one
+
+    //this is original function
+    /**
 	function EnregistrerAchatAdherent($idAdherent, $montantTTC, $nbArticles)
 	{
-		$connexion = ConnexionBDD();
+		$connection = ConnexionBDD();
 
 		mysql_query("INSERT INTO achats (date_achat,id_adherent,total_TTC,nb_references) values(timestamp(),'$idAdherent','$montantTTC','$nbArticles')");
 		$idCommande = mysql_insert_id();
@@ -17,11 +29,28 @@
 		mysql_close($connection);
 
 		return $idCommande;
+	}*/
+	//this is imported from inde_fonctionsACH.php
+	function EnregistrerAchatAdherent($idAdherent, $montantTTC, $nbArticles)
+	{
+		$connection = ConnectionBDD();
+
+//		mysql_query("LOCK TABLES _inde_ACHATS WRITE");
+//		mysql_query("SET AUTOCOMMIT = 0");
+		mysql_query("INSERT INTO _inde_ACHATS (DATE_ACHAT,ID_ADHERENT,TOTAL_TTC,NB_REFERENCES) values(NOW(),'$idAdherent','$montantTTC','$nbArticles')", $connection);
+//		mysql_select_db('nouvelle_independante');
+		$idCommande = mysql_insert_id();
+//		mysql_query("COMMIT");
+//		mysql_query("UNLOCK TABLES");
+		
+		FermerConnexionBDD_ACH($connection);
+
+		return $idCommande;
 	}
 	
 	function SelectionInfosAchats($idAchats)
 	{
-		$connexion = ConnexionBDD_ACH();
+		$connection = ConnectionBDD();
 
 		$result = mysql_query("SELECT DATE_ACHAT, TOTAL_TTC, NB_REFERENCES FROM _inde_ACHATS WHERE ID_ACHAT = '$idAchats'");
 		while ( $row = mysql_fetch_array($result))
@@ -29,14 +58,14 @@
 			$infosAchats = 'Detail des achats numero '. $idAchats . ' du ' . $row[DATE_ACHAT] . ', d un montant de  ' . $row[TOTAL_TTC] . ' euros ('.$row[NB_REFERENCES].' references).';
 		}
 		
-		FermerConnexionBDD_ACH($connexion);
+		FermerConnectionBDD($connection);
 		
 		return $infosAchats;
 	}
 	
 	function SelectionDetailsAchats($idAchats)
 	{
-		$connexion = ConnexionBDD_ACH();
+		$connection = ConnectionBDD();
 
 		$compteur = 0;
 		
@@ -53,7 +82,7 @@
 			$compteur++;
 		}
 
-		FermerConnexionBDD_ACH($connexion);
+		FermerConnectionBDD($connection);
 		
 		return $listeRef;
 	}

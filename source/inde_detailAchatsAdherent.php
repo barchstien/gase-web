@@ -8,7 +8,8 @@
     </head>
 
 	<?php 
-	require("inde_fonctionsACH.php"); 
+	//require("inde_fonctionsACH.php"); 
+	require("fonctions_bd_gase.php"); 
 	?>
 	
 	<div class="menu">
