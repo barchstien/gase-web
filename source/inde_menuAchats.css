@@ -1,0 +1,58 @@
+﻿#menu
+{
+display:table; /* IE8 et les autres */
+margin:auto; /* centrage */
+text-align:center; /* preparation au centrage IE7 et inf */
+height:50px;
+}
+
+#menu ul 
+{
+	margin:0;
+	padding:0;
+	list-style-type:none;
+	text-align:center;
+}
+
+#menu li 
+{
+	float:left;
+	margin:auto;
+	padding:0;
+	background-color:#AF3C7D;
+}
+
+#menu li a 
+{
+	display:block;
+	width:80px;
+	color:white;
+	font-weight:bold;
+	text-decoration:none;
+	padding:5px;
+}
+
+#menu li a:hover
+{
+	color:black;
+	font-weight:bold;
+}
+ 
+#menu ul li ul
+{
+	display:none;
+}
+
+#menu ul li:hover ul 
+{
+	display:block;
+}
+
+#menu li:hover ul li 
+{
+	float:none;
+}
+#menu li ul 
+{
+	position:absolute;
+}

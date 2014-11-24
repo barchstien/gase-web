@@ -1,0 +1,82 @@
+/*
+Form_CreationAD.css
+---------
+ 
+Par Pascal
+*/
+
+body {
+/*font-family: Georgia, "Times New Roman", Times, serif;
+font-size: 12px;*/
+/*text-align: center;*//* pour centrer le cadre dans IE */
+/*margin:0px;*/
+padding:0px;
+/*background-color: #ffffff;*/
+}
+#table {
+margin:10px auto; /* centre le cadre dans les autres navigateurs */
+text-align:left;
+/*width:758px;*/
+}
+
+
+/* notre div principal se comportera comme un tableau */
+#table 
+{
+	display: table;
+}
+
+/* nos balises <p> seront les lignes */
+.ligne
+{
+	display: table-row;
+}
+
+
+/* nos <label> et nos <input/> seront 
+respectivement dans la colonne 1 et la colonne 2
+chacune des balises se comportant comme des cellules */
+.col1, .col2
+{
+	display: table-cell;
+}
+
+/* à partir de là, vous faites la mise en forme que vous souhaitez */
+
+.col1, .col2
+{
+	margin: 5px;
+	float:left;
+}
+
+.col1
+{
+	width: 140px;
+}
+
+.col2
+{
+	width: 280px;
+}
+
+#table input:hover, #table select:hover, #table textarea:hover, #table input:focus, #table select:focus, #table textarea:focus
+{
+	background-color: #DDEEFF;
+}
+
+/* button Enregistrer */
+#formulaire input[type="submit"]:hover
+{
+	background-color: #3CB371;
+	cursor: pointer;
+}
+
+#bouton
+{
+	text-align: center;
+}
+
+.radio_bouton
+{
+	width: 70px;
+}

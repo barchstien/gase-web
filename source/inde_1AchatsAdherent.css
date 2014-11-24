@@ -1,0 +1,55 @@
+table
+{
+/*    border-collapse: collapse; /* Les bordures du tableau seront collées (plus joli) */
+width : 98%; 
+margin : auto;
+    border-collapse: collapse;
+	border: medium solid black;
+}
+td
+{
+    border: 1px solid black;
+}
+
+.references
+{
+display: inline-block;
+/*	border: 1px solid black;*/
+	    vertical-align: top;
+		width:50%;
+}
+.panier
+{
+display: inline-block;
+/*	border: 1px solid black;*/
+	    vertical-align: top;
+		width: 49%;
+}		
+
+#bouton
+{
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+/*
+table
+{
+width : 100%; 
+margin : auto;
+    border-collapse: collapse;
+	border: medium solid black;
+}
+*/
+#formulaire input[type="submit"]:hover
+{
+/*	background-color: #66CC33;*/
+background-color: #AF3C7D;
+	cursor: pointer;
+}
+
+#formulaire input[type="submit"]
+{
+	float: right;
+	margin-right: 10%;
+}

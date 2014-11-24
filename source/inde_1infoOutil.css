@@ -1,0 +1,53 @@
+#table {
+margin:10px auto;
+text-align:left;
+}
+
+/* notre div principal se comportera comme un tableau */
+#table 
+{
+	display: table;
+}
+
+.ligne
+{
+	display: table-row;
+}
+
+.col1, .col2
+{
+	display: table-cell;
+}
+
+.col1, .col2
+{
+	margin: 5px;
+	float:left;
+}
+
+.col1
+{
+	width: 140px;
+}
+
+.col2
+{
+	width: 450px;
+}
+
+#table input:hover, #table select:hover, #table textarea:hover, #table input:focus, #table select:focus, #table textarea:focus
+{
+	background-color: #DDEEFF;
+}
+
+/* button Enregistrer */
+#formulaire input[type="submit"]:hover
+{
+	background-color: #66CC33;
+	cursor: pointer;
+}
+
+#bouton
+{
+	text-align: center;
+}

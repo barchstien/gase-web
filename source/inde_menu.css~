@@ -1,0 +1,184 @@
+﻿#menu
+{
+display:table; /* IE8 et les autres */
+margin:auto; /* centrage */
+text-align:center; /* preparation au centrage IE7 et inf */
+height:50px;
+}
+
+#menu ul 
+{
+	margin:0;
+	padding:0;
+	list-style-type:none;
+	text-align:center;
+}
+
+#menu li 
+{
+	float:left;
+	margin:auto;
+	padding:0;
+	background-color:#3CB371;
+}
+
+#menu li a 
+{
+	display:block;
+	width:100px;
+	color:white;
+	font-weight:bold;
+	text-decoration:none;
+	padding:5px;
+}
+
+#menu li a:hover
+{
+	color:black;
+	font-weight:bold;
+}
+ 
+#menu ul li ul
+{
+	display:none;
+}
+
+#menu ul li:hover ul 
+{
+	display:block;
+}
+
+#menu li:hover ul li 
+{
+	float:none;
+}
+#menu li ul 
+{
+	position:absolute;
+}
+
+/*
+div#menu 
+{
+	position: fixed;
+}
+*/
+
+/*
+menu.css
+---------
+ 
+Par Pascal
+*/
+/*
+on definit la taille de la div du menu ainsi que la taille de parties du menu.
+div#menu 
+{
+	margin-top: 40px;
+	margin-left: 20px;
+    width: 150px;
+position: fixed;
+}
+
+div#menu ul 
+{
+    padding: 0;
+    width: 150px;
+    border:1px solid;
+    margin:0px;
+}
+
+On positionne les elements du menu 
+div#menu ul li 
+{
+	position:relative;
+	list-style: none; on enleve les icones de liste 
+	border-bottom:1px solid; ajout d'une bordure de separation d'element:
+}
+
+div#menu ul ul 
+{
+	position: absolute;
+	top: 0;
+	left: 150px; 150px correspond au décalage a droite, on décale de la taille du ul de base
+}  
+
+div#menu li a 
+{
+	text-decoration: none;  plus de soulignement pour les liens 
+} 
+
+fond jaune pr les sous-menu
+div#menu li.sousmenu 
+{
+	background: yellow;
+} 
+
+ fichier pour internet explorer 
+body 
+{
+    behavior: url(menucsshover.htc);
+}
+
+ On cache tous les sous menu avec la propriété display none 
+div#menu ul ul 
+{
+	position: absolute;
+	top: 0;
+	left: 150px;
+	display:none
+}
+
+Lors du survol ,avec la souris, les sousmenu apparaissent grace a display: block 
+div#menu ul.niveau1 li.sousmenu:hover ul.niveau2,
+div#menu ul.niveau2 li.sousmenu:hover ul.niveau3 
+{
+	display:block;
+}
+
+ fond blanc pour le menu 
+div#menu a 
+{
+	color:#000000
+}
+
+ fond different au survol de la souris entre les sous-menu et les "basiques"
+div#menu li:hover 
+{
+	background: #EDD
+}
+
+div#menu li.sousmenu:hover 
+{
+	background: #EBB;
+}
+
+ Rajout d'une petite fleche pour les sous menu (j'ai pioché cette astuce sur le web ;) )
+div#menu li.sousmenu 
+{
+	background: url(fleche.gif) 95% 50% no-repeat;
+}
+
+ on rajoute une bordure a gauche et des padding, on doit donc réajuster la taille 150-(8 de bordure + 8 de padding) =134 
+div#menu li a 
+{
+	text-decoration: none;
+	padding: 4px 0 4px 8px;
+	display:block; border-left:
+	8px solid #BBB; width:134px
+}
+
+ la bordure de chaque hauteur a une couleure de survol
+div#menu li a:hover 
+{
+	border-left-color: red;
+}
+div#menu ul ul li a:hover 
+{
+	border-left-color: #00FF00;
+}
+div#menu ul ul ul li a:hover 
+{
+	border-left-color: #0000FF;
+}
+*/ 
