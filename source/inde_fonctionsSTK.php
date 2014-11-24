@@ -3,7 +3,7 @@
 	{
 		if(!$connexion)
 		{	
-			$connection = mysql_connect("localhost", "root", "Rouss7tte") or die(mysql_error());
+			$connection = mysql_connect("localhost", "gase", "gasepass") or die(mysql_error());
 			mysql_select_db("gasedl") or die(mysql_error());
 		}	
 	}
