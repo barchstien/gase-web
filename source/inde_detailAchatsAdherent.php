@@ -21,7 +21,8 @@
 			<?php
 			$idAchats = $_GET[idAch];
 			$infosAchats = SelectionInfosAchats($idAchats);
-			echo $infosAchats;
+			//this wasn't workin before nayway, should fix it
+			echo "infosAchats " . $infosAchats;
 			?>
 			<br />
 			<br />

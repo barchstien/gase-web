@@ -3,7 +3,8 @@ session_start();
 ?>
 
 <?php
-	require("inde_fonctionsACH.php");
+	//require("inde_fonctionsACH.php");
+	require("fonctions_bd_gase.php");
 	require("inde_fonctionsSTK.php");
 	require("inde_fonctionsMC.php");
 	require("inde_fonctionsAD.php");
