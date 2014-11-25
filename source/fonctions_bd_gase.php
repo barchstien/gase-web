@@ -7,6 +7,7 @@ define("FONCTION_BD_GASE_PHP", 1);
 function ConnectionBDD(){
     //tihs creates an error, should probably make a global variable of $connection
 	//if(!$connection){	
+	//if (!mysqli_ping($connection)){
 		$connection = mysql_connect("localhost", "gase", "gasepass") or die(mysql_error());
 		mysql_select_db("gasedl") or die(mysql_error());
 		

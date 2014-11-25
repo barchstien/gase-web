@@ -80,13 +80,13 @@
 	
 	function AchatSTK($idAchat, $idReference, $quantite)
 	{
-		$connection = ConnectionBDD();
-		
 		$nouveauStock = SelectionStockRefSTK($idReference) - $quantite;
 
 		$nouveauStock = str_replace(",", ".", $nouveauStock);
 		$quantite = str_replace(",", ".", $quantite);
 
+        $connection = ConnectionBDD();
+        
 		$requete = "INSERT INTO _inde_STOCKS (ID_REFERENCE, STOCK, OPERATION, DATE, QUANTITE, ID_ACHAT) values('$idReference','$nouveauStock','ACHAT', NOW(), '$quantite', '$idAchat')";
 		mysql_query($requete, $connection);		
 		

@@ -1,13 +1,12 @@
 <?php
 session_start();
-?>
 
-<?php
 	//require("inde_fonctionsACH.php");
-	require("fonctions_bd_gase.php");
+	//require("fonctions_bd_gase.php");
 	require("inde_fonctionsSTK.php");
 	require("inde_fonctionsMC.php");
 	require("inde_fonctionsAD.php");
+	
 
 	$soldeAdherent = SelectionSoldeAdherentMC($_SESSION['inde_adherent']);
 	if (isset ($_POST['payer']))
@@ -16,6 +15,7 @@ session_start();
 		$totalTTC = $_SESSION['inde_montantPanier'];
 		if($totalTTC > 0)
 		{
+		    //la maison fait crédit de 20Euro max !!
 			if($totalTTC <= $soldeAdherent+20)
 			{
 				$nbRef = $_SESSION['inde_nbRefPanier'];
@@ -24,6 +24,7 @@ session_start();
 				
 				DepenseMC($idAdherent,$totalTTC);
 				$nouveauSolde = SelectionSoldeAdherentMC($idAdherent);
+				
 				
 				$numeroAchat = EnregistrerAchatAdherent($idAdherent, $totalTTC, $nbRef);
 
@@ -34,7 +35,7 @@ session_start();
 				
 //				envoyerMail($idAdherent, $totalTTC);
 $date = date("d-m-Y");
-ini_set("SMTP","smtp.bbox.fr");
+////ini_set("SMTP","smtp.bbox.fr");
 
 $mail = stripslashes(SelectionMailAdherentAD($idAdherent)); // Déclaration de l'adresse de destination.
 if (!preg_match("#^[a-z0-9._-]+@(hotmail|live|msn).[a-z]{2,4}$#", $mail)) // On filtre les serveurs qui rencontrent des bogues.
@@ -114,27 +115,28 @@ $message.= $passage_ligne."--".$boundary."--".$passage_ligne;
 //==========
  
 //=====Envoi de l'e-mail.
-mail($mail,$sujet,$message,$header);
+////mail($mail,$sujet,$message,$header);
+error_log($message);
 //==========
 /*****************************************/
 
 			
-				echo 'Achats ' . $numeroAchat . ' enregistree.<br />';
-				echo '<div style="text-align:center">Le solde de votre compte est maintenant de ' . round($nouveauSolde,2) . ' euros.</div>';
-				echo 'Merci.<br />';
+				echo "Achats " . $numeroAchat . " enregistree.<br />";
+				echo "<div style=\"text-align:center\">Le solde de votre compte est maintenant de " . round($nouveauSolde,2) . " euros.</div>";
+				echo "Merci.<br />";
 							
-				echo '
-				<br />
-				<li>Pour aller a la page d\'accueil : <a href="/gase/index.php">cliquez ici</a></li>
-				';
+				echo "
+				    <br />
+				    <li>Pour aller a la page d'accueil : <a href=\"index.php\">cliquez ici</a></li>
+				";
 			}
 			else
 			{
-				echo '<div style="text-align:center; color: #FF0000">Attention, le total de vos achats et superieur au solde de votre compte MoneyCoop.<br />Veuillez approvisionner votre MoneyCoop avant de re-enregistrer vos achats.</div>';  
-				?>
-				<br />
-				<li>Pour aller a la page d accueil : <a href="/gase/index.php">cliquez ici</a>cliquez ici</a></li>
-				<?php
+				echo "<div style=\"text-align:center; color: #FF0000\">Attention, le total de vos achats et superieur au solde de votre compte MoneyCoop.<br />Veuillez approvisionner votre MoneyCoop avant de re-enregistrer vos achats.</div>";  
+				echo "
+				    <br />
+				    <li>Pour aller a la page d accueil : <a href=\"index.php\">cliquez ici</a>cliquez ici</a></li>
+				";
 			}
 		}
 		else
@@ -144,7 +146,15 @@ mail($mail,$sujet,$message,$header);
 		}
 	}
 
-	function envoyerMail($idAdherent, $totalTTC)
+
+
+
+
+
+
+
+//// do not seam to be used
+function envoyerMail($idAdherent, $totalTTC)
 		{
 		/************* ENVOI MAIL ****************/
 $date = date("d-m-Y");

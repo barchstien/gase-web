@@ -4,7 +4,6 @@
 	function SelectionSoldeAdherentMC($idAdherent)
 	{
 		$connection = ConnectionBDD();
-
 		$result = mysql_query("SELECT SOLDE FROM _inde_COMPTES WHERE ID_ADHERENT='$idAdherent' AND DATE = (SELECT MAX(DATE) FROM _inde_COMPTES WHERE ID_ADHERENT= '$idAdherent')");
 		while ( $row = mysql_fetch_array($result))
 		{
@@ -42,7 +41,7 @@
 		$somme = str_replace(",", ".", $somme);
 
 		$requete = "INSERT INTO _inde_COMPTES (ID_ADHERENT, SOLDE, DATE, OPERATION, MONTANT) values('$idAdherent','$nouveauSolde',NOW(),'APPROVISIONNEMENT','$somme')";
-		mysql_query($requete);		
+		$result = mysql_query($requete);		
 
 		FermerConnectionBDD($connection);
 	}
@@ -50,15 +49,15 @@
 	
 	function DepenseMC($idAdherent, $somme)
 	{
-		$connection = ConnectionBDD();
-		
 		$nouveauSolde = SelectionSoldeAdherentMC($idAdherent) - $somme;
 
 		$nouveauSolde = str_replace(",", ".", $nouveauSolde);
 		$somme = str_replace(",", ".", $somme);
 
+        $connection = ConnectionBDD();
+        
 		$requete = "INSERT INTO _inde_COMPTES (ID_ADHERENT, SOLDE, DATE, OPERATION, MONTANT) values('$idAdherent','$nouveauSolde',NOW(),'DEPENSE','$somme')";
-		mysql_query($requete);	
+		$result = mysql_query($requete);	
 
 		FermerConnectionBDD($connection);
 	}
