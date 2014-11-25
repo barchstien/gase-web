@@ -3,7 +3,7 @@
     <head>
 		<!-- En-tête de la page -->
         <meta charset="utf-8" />
-       <link rel="stylesheet" href="inde_ficheReference.css" /> 
+       <link rel="stylesheet" href="style_form.css" /> 
         <title>NOUVELLE REFERENCE</title>
     </head>
 
