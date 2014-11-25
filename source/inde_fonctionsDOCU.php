@@ -76,22 +76,12 @@
 		
 		FermerConnectionBDD($connection);
 	}
-	
-/*** FOURNISSEURS ***/
-	function SelectionListeFournisseurs()
-	{
-		$connection = ConnectionBDD();
 
-		$result = mysql_query("SELECT ID_FOURNISSEUR, NOM FROM _inde_FOURNISSEURS ORDER BY NOM");
-		while ( $row = mysql_fetch_array($result))
-		{
-			$listeFournisseurs[$row[ID_FOURNISSEUR]] = $row[NOM];
-		}
-		
-		FermerConnectionBDD($connection);
-		
-		return $listeFournisseurs;
-	}
+
+	function SelectionListeDocuments($idType)
+	{
+		$connection = Connection	
+/*** FOURNISSEURS ***/
 	
 	function SelectionDonneesFournisseur($idFournisseur)
 	{
@@ -109,11 +99,7 @@
 		
 		return $donnees;
 	}
-/*************************/
-
-	function SelectionListeDocuments($idType)
-	{
-		$connection = ConnectionBDD();
+/*************************/BDD();
 
 		$compteur = 0;
 		

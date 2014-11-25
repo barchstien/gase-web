@@ -3,7 +3,7 @@
 	
 	function SelectionListeSTK()
 	{
-		$connection = ConnexionBDD_STK();
+		$connection = ConnectionBDD();
 
 		$compteur = 0;
 		
@@ -27,7 +27,7 @@
 	
 	function SelectionStocks($idFournisseur)
 	{
-		$connection = ConnexionBDD_STK();
+		$connection = ConnectionBDD();
 
 		$compteur = 0;
 		
@@ -52,7 +52,7 @@
 		
 	function SelectionStockRefSTK($idReference)
 	{
-		$connection = ConnexionBDD_STK();
+		$connection = ConnectionBDD();
 
 		$result = mysql_query("SELECT STOCK FROM _inde_STOCKS WHERE ID_REFERENCE='$idReference' AND DATE = (SELECT MAX(DATE) FROM _inde_STOCKS WHERE ID_REFERENCE='$idReference')");
 		$row = mysql_fetch_array($result);
@@ -65,7 +65,7 @@
 
 	function ModifierSTK($idReference, $quantite)
 	{
-		$connection = ConnexionBDD_STK();
+		$connection = ConnectionBDD();
 		$nouveauStock = SelectionStockRefSTK($idReference) + $quantite;
 	
 		$nouveauStock = str_replace(",", ".", $nouveauStock);
@@ -79,7 +79,7 @@
 	
 	function AchatSTK($idAchat, $idReference, $quantite)
 	{
-		$connection = ConnexionBDD_STK();
+		$connection = ConnectionBDD();
 		
 		$nouveauStock = SelectionStockRefSTK($idReference) - $quantite;
 
@@ -94,7 +94,7 @@
 	
 	function ModifierInventaireSTK($idReference, $quantite)
 	{
-		$connection = ConnexionBDD_STK();
+		$connection = ConnectionBDD();
 		$nouveauStock = SelectionStockRefSTK($idReference) + $quantite;
 	
 		$nouveauStock = str_replace(",", ".", $nouveauStock);

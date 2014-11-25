@@ -11,7 +11,7 @@
 			<?php include 'inde_menu.php'; ?>
 		</div>
 		
-		<?php require("inde_fonctionsFR.php"); ?>
+		<?php require("fonctions_bd_fournisseurs.php"); ?>
 		<div style="text-align:center">
 			Choisissez un fournisseur.
 			</br>

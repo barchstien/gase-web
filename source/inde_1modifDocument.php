@@ -8,7 +8,8 @@
     </head>
 
 	<?php 
-	require("inde_fonctionsDOCU.php"); 
+	require("inde_fonctionsDOCU.php");
+	require("fonctions_bd_fournisseurs.php");
 	?>
 	
 	<div class="menu">

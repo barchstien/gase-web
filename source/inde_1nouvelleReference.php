@@ -13,7 +13,7 @@
 		</div>
 
 		<?php 
-		require("inde_fonctionsFR.php"); 
+		require("fonctions_bd_fournisseurs.php"); 
 		require("inde_fonctionsCAT.php");
 		?>
 		<div style="text-align:center">

@@ -7,9 +7,7 @@
 		<title>FOURNISSEURS</title>
     </head>
 
-	<?php 
-	require("inde_fonctionsFR.php"); 
-	?>
+	<?php require("fonctions_bd_fournisseurs.php"); ?>
 	
 	<div class="menu">
 		<?php include 'inde_menu.php'; ?>

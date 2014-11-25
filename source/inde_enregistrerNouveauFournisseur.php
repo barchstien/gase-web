@@ -1,5 +1,5 @@
 <?php
-require("inde_fonctionsFR.php");
+require("fonctions_bd_fournisseurs.php");
 
 include 'inde_menu.php';
  

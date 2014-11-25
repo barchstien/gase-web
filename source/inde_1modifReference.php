@@ -9,7 +9,7 @@
 
 	<?php 
 	require("inde_fonctionsREF.php"); 
-	require("inde_fonctionsFR.php"); 
+	require("fonctions_bd_fournisseurs.php"); 
 	require("inde_fonctionsCAT.php"); 
 	?>
 	
