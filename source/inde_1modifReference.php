@@ -3,7 +3,7 @@
     <head>
 		<!-- En-tête de la page -->
         <meta charset="utf-8" />
-		<link rel="stylesheet" href="inde_1modifReference.css" /> 
+        <link rel="stylesheet" href="style_default.css" /> 
 		<title>REFERENCES</title>
     </head>
 

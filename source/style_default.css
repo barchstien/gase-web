@@ -1,11 +1,12 @@
-table
-{
+table{
     border-collapse: collapse; /* Les bordures du tableau seront collées (plus joli) */
 }
-td
-{
+
+td{
     border: 1px solid black;
 }
+
+/* not in every page normally but better to put it in common */
 #formulaire input[type="submit"]:hover
 {
 	background-color: #AF3C7D;
