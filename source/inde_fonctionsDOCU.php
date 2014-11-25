@@ -76,32 +76,14 @@
 		
 		FermerConnectionBDD($connection);
 	}
-
+	
 
 	function SelectionListeDocuments($idType)
 	{
-		$connection = Connection	
-/*** FOURNISSEURS ***/
-	
-	function SelectionDonneesFournisseur($idFournisseur)
-	{
 		$connection = ConnectionBDD();
 
-		$result = mysql_query("SELECT NOM, ADRESSE, TELEPHONE_FIXE FROM _inde_FOURNISSEURS WHERE ID_FOURNISSEUR = '$idFournisseur'");
-		while ( $row = mysql_fetch_array($result))
-		{		
-			$donnees['NOM'] = $row[0];
-			$donnees['ADRESSE_POSTALE'] = $row[1];
-			$donnees['TELEPHONE'] = $row[2];
-		}
-
-		FermerConnectionBDD($connection);
-		
-		return $donnees;
-	}
-/*************************/BDD();
-
 		$compteur = 0;
+		$listeDoc = array();
 		
 		$result = mysql_query("SELECT ID_DOCUMENT, NOM, DATE, ID_FOURNISSEUR, NET_A_PAYER FROM _inde_DOCUMENTS WHERE ID_TYPE = '$idType' ORDER BY ID_DOCUMENT");
 		while ( $row = mysql_fetch_array($result))

@@ -8,7 +8,7 @@ function SelectionListeFournisseurs()
 	$result = mysql_query("SELECT ID_FOURNISSEUR, NOM FROM _inde_FOURNISSEURS ORDER BY NOM");
 	while ( $row = mysql_fetch_array($result))
 	{
-		$listeAdherents[$row["ID_FOURNISSEUR"]] = $row[NOM];
+		$listeAdherents[$row["ID_FOURNISSEUR"]] = $row["NOM"];
 	}
 	
 	FermerConnectionBDD($connection);
@@ -67,7 +67,7 @@ function SelectionListeVisiblesFR()
 	$result = mysql_query("SELECT ID_FOURNISSEUR, NOM FROM _inde_FOURNISSEURS WHERE VISIBLE = 1 ORDER BY NOM");
 	while ( $row = mysql_fetch_array($result))
 	{
-		$listeAdherents[$row[ID_FOURNISSEUR]] = $row[NOM];
+		$listeAdherents[$row["ID_FOURNISSEUR"]] = $row["NOM"];
 	}
 	
 	FermerConnectionBDD($connection);
@@ -82,7 +82,7 @@ function SelectionNomFournisseur($idFournisseur)
 	$result = mysql_query("SELECT NOM FROM _inde_FOURNISSEURS WHERE ID_FOURNISSEUR = '$idFournisseur'");
 	while ( $row = mysql_fetch_array($result))
 	{
-		$nom = $row[NOM];
+		$nom = $row["NOM"];
 	}
 	
 	FermerConnectionBDD($connection);
@@ -92,4 +92,3 @@ function SelectionNomFournisseur($idFournisseur)
 	
 ?>
 
-?>

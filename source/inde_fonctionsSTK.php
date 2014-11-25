@@ -28,10 +28,11 @@
 	function SelectionStocks($idFournisseur)
 	{
 		$connection = ConnectionBDD();
-
-		$compteur = 0;
 		
 		$result = mysql_query("SELECT r.CODE_FOURNISSEUR, r.ID_REFERENCE, r.DESIGNATION, c.NOM FROM _inde_REFERENCES r, _inde_FOURNISSEURS f, _inde_CATEGORIES c WHERE f.ID_FOURNISSEUR = '$idFournisseur' AND f.ID_FOURNISSEUR = r.ID_FOURNISSEUR AND c.ID_CATEGORIE = r.ID_CATEGORIE ORDER BY c.NOM, r.DESIGNATION");
+		
+		$compteur = 0;
+		$listeStocks = array();
 		while ( $row = mysql_fetch_array($result))
 		{		
 			$donnees['CODE_FOURNISSEUR'] = $row[0];
@@ -56,7 +57,7 @@
 
 		$result = mysql_query("SELECT STOCK FROM _inde_STOCKS WHERE ID_REFERENCE='$idReference' AND DATE = (SELECT MAX(DATE) FROM _inde_STOCKS WHERE ID_REFERENCE='$idReference')");
 		$row = mysql_fetch_array($result);
-		$stock = $row[STOCK];
+		$stock = $row["STOCK"];
 		
 		FermerConnectionBDD($connection);
 		

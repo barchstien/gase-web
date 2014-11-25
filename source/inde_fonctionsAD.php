@@ -27,7 +27,7 @@
 		$result = mysql_query("SELECT ID_ADHERENT, NOM FROM _inde_ADHERENTS ORDER BY NOM", $connection);
 		while ( $row = mysql_fetch_array($result))
 		{
-			$listeAdherents[$row[ID_ADHERENT]] = $row[NOM];
+			$listeAdherents[$row["ID_ADHERENT"]] = $row["NOM"];
 		}
 		
 		FermerConnectionBDD($connection);

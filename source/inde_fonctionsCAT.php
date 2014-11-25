@@ -31,7 +31,7 @@
 		$result = mysql_query("SELECT ID_CATEGORIE, NOM FROM _inde_CATEGORIES WHERE ID_CAT_SUP is NULL ORDER BY NOM");
 		while ( $row = mysql_fetch_array($result))
 		{
-			$listeCategories[$row[ID_CATEGORIE]] = $row[NOM];
+			$listeCategories[$row["ID_CATEGORIE"]] = $row["NOM"];
 		}
 		
 		FermerConnectionBDD($connection);
@@ -46,7 +46,7 @@
 		$result = mysql_query("SELECT ID_CATEGORIE, NOM FROM _inde_CATEGORIES ORDER BY NOM");
 		while ( $row = mysql_fetch_array($result))
 		{
-			$listeCategories[$row[ID_CATEGORIE]] = $row[NOM];
+			$listeCategories[$row["ID_CATEGORIE"]] = $row["NOM"];
 		}
 		
 		FermerConnectionBDD($connection);
@@ -77,6 +77,8 @@
 		$connection = ConnectionBDD();
 
 		$result = mysql_query("SELECT c2.NOM FROM _inde_CATEGORIES c1, _inde_CATEGORIES c2 WHERE c1.ID_CATEGORIE = '$idCategorie' AND c2.ID_CATEGORIE = c1.ID_CAT_SUP");
+		
+		$nom = "";
 		while ( $row = mysql_fetch_array($result))
 		{		
 			$nom = $row['NOM'];
@@ -143,7 +145,7 @@
 		$result = mysql_query("SELECT ID_CATEGORIE, NOM FROM _inde_CATEGORIES WHERE SOUS_CATEGORIES = 0 ORDER BY NOM");
 		while ( $row = mysql_fetch_array($result))
 		{
-			$listeCategories[$row[ID_CATEGORIE]] = $row[NOM];
+			$listeCategories[$row["ID_CATEGORIE"]] = $row["NOM"];
 		}
 		
 		FermerConnectionBDD($connection);
@@ -158,7 +160,7 @@
 		$result = mysql_query("SELECT NOM FROM _inde_CATEGORIES WHERE ID_CATEGORIE = '$idCategorie'");
 		while ( $row = mysql_fetch_array($result))
 		{
-			$nom = $row[NOM];
+			$nom = $row["NOM"];
 		}
 		
 		FermerConnectionBDD($connection);

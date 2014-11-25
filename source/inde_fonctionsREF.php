@@ -32,7 +32,7 @@ mysql_query($requete2);
 		$result = mysql_query("SELECT ID_REFERENCE, DESIGNATION FROM _inde_REFERENCES ORDER BY DESIGNATION");
 		while ( $row = mysql_fetch_array($result))
 		{
-			$listeAdherents[$row[ID_REFERENCE]] = $row[DESIGNATION];
+			$listeAdherents[$row["ID_REFERENCE"]] = $row["DESIGNATION"];
 		}
 		
 		FermerConnectionBDD($connection);
