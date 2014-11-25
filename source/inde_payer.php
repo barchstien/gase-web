@@ -231,21 +231,5 @@ mail($mail,$sujet,$message,$header);
 //==========
 /*****************************************/
 	}	
-
-	function ConnexionBaseCoop()
-	{
-		if(!$connexion)
-		{	
-		$connection = mysql_connect("localhost", "gase", "gase44") or die(mysql_error());
-			mysql_select_db("gase") or die(mysql_error());
-		}	
-
-
-	}
-	
-	function FermerConnexion($connexion)
-	{
-		mysql_close($connection);
-	}
 	
 ?>

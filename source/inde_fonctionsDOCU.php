@@ -1,22 +1,10 @@
 <?php
-	function ConnexionBDD_DOCU()
-	{
-		if(!$connexion)
-		{	
-			$connection = mysql_connect("localhost", "gase", "gasepass") or die(mysql_error());
-			mysql_select_db("gasedl") or die(mysql_error());
-		}	
-	}
-	
-	function FermerConnexionBDD_DOCU($connexion)
-	{
-		mysql_close($connection);
-	}
+	require("fonctions_bd_gase.php");
 
 /*** DOCUMENTS ***/	
 	function SelectionListeTypesDoc()
 	{
-		$connexion = ConnexionBDD_DOCU();
+		$connection = ConnectionBDD();
 
 		$result = mysql_query("SELECT ID_TYPE, NOM FROM _inde_TYPE_DOC ORDER BY NOM");
 		while ( $row = mysql_fetch_array($result))
@@ -24,14 +12,14 @@
 			$listeTypesDoc[$row[ID_TYPE]] = $row[NOM];
 		}
 		
-		FermerConnexionBDD_DOCU($connexion);
+		FermerConnectionBDD($connection);
 		
 		return $listeTypesDoc;
 	}
 
 	function SelectionNomTypeDoc($idType)
 	{
-		$connexion = ConnexionBDD_DOCU();
+		$connection = ConnectionBDD();
 		
 		$result = mysql_query("SELECT NOM FROM _inde_TYPE_DOC WHERE ID_TYPE = '$idType'");
 		while ( $row = mysql_fetch_array($result))
@@ -39,14 +27,14 @@
 			$nomType = $row[0];
 		}
 		
-		FermerConnexionBDD_DOCU($connexion);
+		FermerConnectionBDD($connection);
 		
 		return $nomType;
 	}
 
 	function SelectionIdDocument()
 	{
-		$connexion = ConnexionBDD_DOCU();
+		$connection = ConnectionBDD();
 		
 		$result = mysql_query("SELECT MAX(ID_DOCUMENT) FROM _inde_DOCUMENTS");
 		while ( $row = mysql_fetch_array($result))
@@ -54,45 +42,45 @@
 			$idDocument = $row[0];
 		}
 		
-		FermerConnexionBDD_DOCU($connexion);
+		FermerConnectionBDD($connection);
 		
 		return $idDocument;
 	}
 	
 	function EnregistrerNouvelleFacture($idType, $nom, $idFournisseur, $date, $net)
 	{
-		$connexion = ConnexionBDD_DOCU();
+		$connection = ConnectionBDD();
 
 		$requete = "INSERT INTO _inde_DOCUMENTS (NOM, ID_TYPE, ID_FOURNISSEUR, DATE, NET_A_PAYER) values('$nom','$idType','$idFournisseur','$date','$net')";
 		mysql_query($requete);
 		
-		FermerConnexionBDD_DOCU($connexion);
+		FermerConnectionBDD($connection);
 	}
 	
 	function EnregistrerNouveauBonCde($idType, $nom, $idFournisseur, $date, $net)
 	{
-		$connexion = ConnexionBDD_DOCU();
+		$connection = ConnectionBDD();
 
 		$requete = "INSERT INTO _inde_DOCUMENTS (NOM, ID_TYPE, ID_FOURNISSEUR, DATE, NET_A_PAYER) values('$nom','$idType','$idFournisseur','$date','$net')";
 		mysql_query($requete);
 		
-		FermerConnexionBDD_DOCU($connexion);
+		FermerConnectionBDD($connection);
 	}
 	
 	function EnregistrerNouveauDocInterne($idType, $nom, $date)
 	{
-		$connexion = ConnexionBDD_DOCU();
+		$connection = ConnectionBDD();
 
 		$requete = "INSERT INTO _inde_DOCUMENTS (NOM, ID_TYPE, ID_FOURNISSEUR, DATE, NET_A_PAYER) values('$nom','$idType',NULL,'$date', NULL)";
 		mysql_query($requete);
 		
-		FermerConnexionBDD_DOCU($connexion);
+		FermerConnectionBDD($connection);
 	}
 	
 /*** FOURNISSEURS ***/
 	function SelectionListeFournisseurs()
 	{
-		$connexion = ConnexionBDD_DOCU();
+		$connection = ConnectionBDD();
 
 		$result = mysql_query("SELECT ID_FOURNISSEUR, NOM FROM _inde_FOURNISSEURS ORDER BY NOM");
 		while ( $row = mysql_fetch_array($result))
@@ -100,14 +88,14 @@
 			$listeFournisseurs[$row[ID_FOURNISSEUR]] = $row[NOM];
 		}
 		
-		FermerConnexionBDD_DOCU($connexion);
+		FermerConnectionBDD($connection);
 		
 		return $listeFournisseurs;
 	}
 	
 	function SelectionDonneesFournisseur($idFournisseur)
 	{
-		$connexion = ConnexionBDD_DOCU();
+		$connection = ConnectionBDD();
 
 		$result = mysql_query("SELECT NOM, ADRESSE, TELEPHONE_FIXE FROM _inde_FOURNISSEURS WHERE ID_FOURNISSEUR = '$idFournisseur'");
 		while ( $row = mysql_fetch_array($result))
@@ -117,7 +105,7 @@
 			$donnees['TELEPHONE'] = $row[2];
 		}
 
-		FermerConnexionBDD_DOCU($connexion);
+		FermerConnectionBDD($connection);
 		
 		return $donnees;
 	}
@@ -125,7 +113,7 @@
 
 	function SelectionListeDocuments($idType)
 	{
-		$connexion = ConnexionBDD_DOCU();
+		$connection = ConnectionBDD();
 
 		$compteur = 0;
 		
@@ -142,7 +130,7 @@
 			$compteur++;
 		}
 
-		FermerConnexionBDD_DOCU($connexion);
+		FermerConnectionBDD($connection);
 		
 		return $listeDoc;
 	}	

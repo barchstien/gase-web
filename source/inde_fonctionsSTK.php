@@ -1,21 +1,9 @@
 <?php
-	function ConnexionBDD_STK()
-	{
-		if(!$connexion)
-		{	
-			$connection = mysql_connect("localhost", "gase", "gasepass") or die(mysql_error());
-			mysql_select_db("gasedl") or die(mysql_error());
-		}	
-	}
-	
-	function FermerConnexionBDD_STK($connexion)
-	{
-		mysql_close($connection);
-	}
+	require("fonctions_bd_gase.php");
 	
 	function SelectionListeSTK()
 	{
-		$connexion = ConnexionBDD_STK();
+		$connection = ConnexionBDD_STK();
 
 		$compteur = 0;
 		
@@ -32,14 +20,14 @@
 			$compteur++;
 		}
 				
-		FermerConnexionBDD_STK($connexion);
+		FermerConnectionBDD($connection);
 		
 		return $listeStocks;
 	}
 	
 	function SelectionStocks($idFournisseur)
 	{
-		$connexion = ConnexionBDD_STK();
+		$connection = ConnexionBDD_STK();
 
 		$compteur = 0;
 		
@@ -57,27 +45,27 @@
 			$compteur++;
 		}
 				
-		FermerConnexionBDD_STK($connexion);
+		FermerConnectionBDD($connection);
 		
 		return $listeStocks;
 	}
 		
 	function SelectionStockRefSTK($idReference)
 	{
-		$connexion = ConnexionBDD_STK();
+		$connection = ConnexionBDD_STK();
 
 		$result = mysql_query("SELECT STOCK FROM _inde_STOCKS WHERE ID_REFERENCE='$idReference' AND DATE = (SELECT MAX(DATE) FROM _inde_STOCKS WHERE ID_REFERENCE='$idReference')");
 		$row = mysql_fetch_array($result);
 		$stock = $row[STOCK];
 		
-		FermerConnexionBDD_STK($connexion);
+		FermerConnectionBDD($connection);
 		
 		return $stock;
 	}
 
 	function ModifierSTK($idReference, $quantite)
 	{
-		$connexion = ConnexionBDD_STK();
+		$connection = ConnexionBDD_STK();
 		$nouveauStock = SelectionStockRefSTK($idReference) + $quantite;
 	
 		$nouveauStock = str_replace(",", ".", $nouveauStock);
@@ -86,12 +74,12 @@
 		$requete = "INSERT INTO _inde_STOCKS (ID_REFERENCE, STOCK, OPERATION, DATE, QUANTITE, ID_ACHAT) values('$idReference','$nouveauStock','APPROVISIONNEMENT', NOW(), '$quantite', NULL)";
 		mysql_query($requete);		
 		
-		FermerConnexionBDD_STK($connexion);
+		FermerConnectionBDD($connection);
 	}
 	
 	function AchatSTK($idAchat, $idReference, $quantite)
 	{
-		$connexion = ConnexionBDD_STK();
+		$connection = ConnexionBDD_STK();
 		
 		$nouveauStock = SelectionStockRefSTK($idReference) - $quantite;
 
@@ -101,12 +89,12 @@
 		$requete = "INSERT INTO _inde_STOCKS (ID_REFERENCE, STOCK, OPERATION, DATE, QUANTITE, ID_ACHAT) values('$idReference','$nouveauStock','ACHAT', NOW(), '$quantite', '$idAchat')";
 		mysql_query($requete);		
 		
-		FermerConnexionBDD_STK($connexion);
+		FermerConnectionBDD($connection);
 	}
 	
 	function ModifierInventaireSTK($idReference, $quantite)
 	{
-		$connexion = ConnexionBDD_STK();
+		$connection = ConnexionBDD_STK();
 		$nouveauStock = SelectionStockRefSTK($idReference) + $quantite;
 	
 		$nouveauStock = str_replace(",", ".", $nouveauStock);
@@ -115,7 +103,7 @@
 		$requete = "INSERT INTO _inde_STOCKS (ID_REFERENCE, STOCK, OPERATION, DATE, QUANTITE, ID_ACHAT) values('$idReference','$nouveauStock','INVENTAIRE', NOW(), '$quantite', NULL)";
 		mysql_query($requete);		
 		
-		FermerConnexionBDD_STK($connexion);
+		FermerConnectionBDD($connection);
 	}
 	
 ?>
