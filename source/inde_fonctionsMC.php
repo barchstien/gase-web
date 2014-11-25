@@ -23,7 +23,7 @@
 
 		while ( $row = mysql_fetch_array($result))
 		{
-			$tabVersements[$row[DATE]] = $row[MONTANT];
+			$tabVersements[$row["DATE"]] = $row["MONTANT"];
 		}
 		
 		FermerConnectionBDD($connection);
