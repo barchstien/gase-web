@@ -1,6 +1,9 @@
 <?php
 session_start();
 
+//follow http://askubuntu.com/questions/47609/how-to-have-my-php-send-mail
+//and use gasiersdelesclain@gmail.com user and pass 
+
 	//require("inde_fonctionsACH.php");
 	//require("fonctions_bd_gase.php");
 	require("inde_fonctionsSTK.php");
@@ -116,6 +119,7 @@ $message.= $passage_ligne."--".$boundary."--".$passage_ligne;
  
 //=====Envoi de l'e-mail.
 ////mail($mail,$sujet,$message,$header);
+mail("bastienauneau@gmail.com", $sujet, $message, $header);
 error_log($message);
 //==========
 /*****************************************/
