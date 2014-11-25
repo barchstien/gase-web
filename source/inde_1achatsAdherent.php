@@ -6,8 +6,9 @@ session_start();
     <head>
 		<!-- En-tête de la page -->
         <meta charset="utf-8" />
-		<link rel="stylesheet" href="inde_1AchatsAdherent.css" />
+		<!-- <link rel="stylesheet" href="inde_1AchatsAdherent.css" /> -->
 		<link rel="stylesheet" href="style_default.css" />
+		<link rel="stylesheet" href="style_form.css" />
 		<title>ACHATS</title>
     </head>
 
@@ -47,13 +48,13 @@ session_start();
 	{
 	?>
 	
-	<div>
+	<div id= "table_achats_list">
 		<table>
 			<tr>
-				<td><label class="colonne1"><strong>ID</strong></label></td>
-				<td><label class="colonne2"><strong>Montant TTC</strong></label></td>
-				<td><label class="colonne3"><strong>Nb references</strong></label></td>
-				<td><label class="colonne4"><strong>Date achats</strong></label></td>
+				<td><label><strong>ID</strong></label></td>
+				<td><label><strong>Montant TTC</strong></label></td>
+				<td><label><strong>Nb references</strong></label></td>
+				<td><label><strong>Date achats</strong></label></td>
 			</tr>
 		
 			<?php

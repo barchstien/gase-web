@@ -10,14 +10,12 @@
 	
     <!-- <body> -->
 		<form id="formulaire" method="post" action="inde_versPanier.php">
-			<div>
-				<p>
-					<label><font color="red">N oubliez pas de cliquer sur le bouton</font></label>
-					<br />
-					<label><font color="red">"Dans panier" pour chaque categorie</font></label>
-					<input type="submit" value="Dans panier" name="acheterRef">
-				</p>
+
+			<div><font color="red">N oubliez pas de cliquer sur le bouton</font></div>
+			<div><font color="red">"Dans panier" pour chaque categorie</font>
+			    <input type="submit" value="Dans panier" name="acheterRef">
 			</div>
+
 			<div id= "table_reference_list">
 				<table>
 					<tr>

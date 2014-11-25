@@ -1,8 +1,6 @@
 <?php
 session_start();
-?>
 
-<?php
 //	$nbArticles=count($_SESSION['inde_panier']['libelleProduit']);
 //	$compteur = $nbArticles;
 
@@ -48,5 +46,7 @@ session_start();
 		}
 	}
 	
-	include 'inde_1listeRefCategorie.php';
+	//include 'inde_1listeRefCategorie.php';
+	//rediret to list of reference + panier
+	header('location:inde_1listeRefCategorie.php');
 ?>

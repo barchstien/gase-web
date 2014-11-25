@@ -3,7 +3,10 @@
 display:table; /* IE8 et les autres */
 margin:auto; /* centrage */
 text-align:center; /* preparation au centrage IE7 et inf */
-height:50px;
+
+position:relative;
+top:-20px;
+z-index: 99;
 }
 
 #menu_achats ul 
