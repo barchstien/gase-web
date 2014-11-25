@@ -1,22 +1,12 @@
-/*
-Form_CreationAD.css
----------
- 
-Par Pascal
-*/
+
 
 body {
-/*font-family: Georgia, "Times New Roman", Times, serif;
-font-size: 12px;*/
-/*text-align: center;*//* pour centrer le cadre dans IE */
-/*margin:0px;*/
-padding:0px;
-/*background-color: #ffffff;*/
+    padding:0px;
 }
+
 #table {
-margin:10px auto; /* centre le cadre dans les autres navigateurs */
-text-align:left;
-/*width:758px;*/
+    margin:10px auto; /* centre le cadre dans les autres navigateurs */
+    text-align:left;
 }
 
 

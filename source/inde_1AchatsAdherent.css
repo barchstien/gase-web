@@ -1,15 +1,3 @@
-table
-{
-/*    border-collapse: collapse; /* Les bordures du tableau seront collées (plus joli) */
-width : 98%; 
-margin : auto;
-    border-collapse: collapse;
-	border: medium solid black;
-}
-td
-{
-    border: 1px solid black;
-}
 
 .references
 {
