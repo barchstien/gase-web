@@ -158,7 +158,7 @@
 
 		$result = mysql_query("SELECT MAIL FROM _inde_ADHERENTS WHERE ID_ADHERENT= '$idAdherent'", $connection);
 		$row = mysql_fetch_array($result);
-		$mail = $row[MAIL];
+		$mail = $row["MAIL"];
 
 		FermerConnectionBDD($connection);
 		

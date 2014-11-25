@@ -88,7 +88,7 @@
 		$quantite = str_replace(",", ".", $quantite);
 
 		$requete = "INSERT INTO _inde_STOCKS (ID_REFERENCE, STOCK, OPERATION, DATE, QUANTITE, ID_ACHAT) values('$idReference','$nouveauStock','ACHAT', NOW(), '$quantite', '$idAchat')";
-		mysql_query($requete);		
+		mysql_query($requete, $connection);		
 		
 		FermerConnectionBDD($connection);
 	}

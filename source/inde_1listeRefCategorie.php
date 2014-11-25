@@ -7,7 +7,8 @@ session_start();
 		<!-- En-tête de la page -->
         <meta charset="utf-8" />
 		<link rel="stylesheet" href="style_default.css" />
-		<link rel="stylesheet" href="inde_1AchatsAdherent.css" />
+		<link rel="stylesheet" href="style_form.css" />
+		<!-- <link rel="stylesheet" href="inde_1AchatsAdherent.css" /> -->
 		<title>ACHATS</title>
     </head>
 

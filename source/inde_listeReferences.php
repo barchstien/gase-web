@@ -1,14 +1,4 @@
-<?php
-session_start();
-?>
-<!DOCTYPE html>
-<html>
-    <head>
-		<!-- En-tête de la page -->
-        <meta charset="utf-8" />
-<!--		<link rel="stylesheet" href="inde_1AchatsAdherent.css" /> -->
-		<title>ACHATS</title>
-    </head>
+
 
 	<?php	
  	require("inde_fonctionsREF.php");
@@ -18,7 +8,7 @@ session_start();
 	$listeReferences = SelectionListeReferencesMenu($idCategorie);
 	?>
 	
-    <body>
+    <!-- <body> -->
 		<form id="formulaire" method="post" action="inde_versPanier.php">
 			<div>
 				<p>
@@ -28,7 +18,7 @@ session_start();
 					<input type="submit" value="Dans panier" name="acheterRef">
 				</p>
 			</div>
-			<div>
+			<div id= "table_reference_list">
 				<table>
 					<tr>
 					   <td><label width="3%" align="center" class="colonne1"><center><strong>QTE<br />(unite-kg)</strong></center></label></td>
@@ -87,5 +77,5 @@ session_start();
 				</table>	
 			</div>
 		</form>
-	</body>
-</html>
+	<!-- </body> -->
+

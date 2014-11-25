@@ -29,9 +29,10 @@ margin : auto;
 	border: medium solid black;
 }
 */
-#formulaire input[type="submit"]:hover
+
+/*#formulaire input[type="submit"]:hover
 {
-/*	background-color: #66CC33;*/
+
 background-color: #AF3C7D;
 	cursor: pointer;
 }
@@ -40,4 +41,4 @@ background-color: #AF3C7D;
 {
 	float: right;
 	margin-right: 10%;
-}
+}*/

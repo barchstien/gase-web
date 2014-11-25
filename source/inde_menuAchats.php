@@ -1,10 +1,5 @@
-<!--<!DOCTYPE html>
-<html> -->
-    <!-- <head>
-        <meta charset="utf-8" /> -->
-		<link rel="stylesheet" type="text/css" href="inde_menuAchats.css" />
-        <!-- <title>ACHATS</title>
-    </head> -->
+
+	<link rel="stylesheet" type="text/css" href="inde_menuAchats.css" />
 
 	<?php
 	require("inde_fonctionsCAT.php");
@@ -48,5 +43,3 @@
 				?>				
 			</ul>
 		</div>
-	<!-- </body>
-</html> -->
