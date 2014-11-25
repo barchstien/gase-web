@@ -10,7 +10,7 @@
 	<?php 
 	require("inde_fonctionsAD.php"); 
 	
-	$idAdherent= $_GET[idAdherent];
+	$idAdherent= $_GET["idAdherent"];
 	$donnees = SelectionDonneesAdherent($idAdherent);
 	?>
 	
