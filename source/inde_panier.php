@@ -61,7 +61,7 @@ session_start();
 								<td width="9%"><?php echo $_SESSION['inde_panier']['qteReference'][$i];?></td>
 								<td width="9%"><?php echo round($_SESSION['inde_panier']['prixReference'][$i],2);?></td>
 								<td width="4%">
-									<a href="inde_retirer.php?idRef=<?php echo $_SESSION['inde_panier']['idRef'][$i]; ?>"><img src="inde_plein-corbeille-icone-6272-16.png" title="Retirer du panier" alt="S" /></a>
+									<a href="inde_retirer.php?idRef=<?php echo $_SESSION['inde_panier']['idRef'][$i]; ?>"><img src="../static/img_trash.png" title="Retirer du panier" alt="X" /></a>
 								</td>
 							</tr>
 							<?php
