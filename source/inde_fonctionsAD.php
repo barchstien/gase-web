@@ -120,8 +120,8 @@
 		$result = mysql_query("SELECT PRENOM, NOM FROM _inde_ADHERENTS WHERE ID_ADHERENT = '$idAdherent'", $connection);
 		while ( $row = mysql_fetch_array($result))
 		{
-			$prenomAdherent = $row[PRENOM];
-			$nomAdherent = $row[NOM];
+			$prenomAdherent = $row["PRENOM"];
+			$nomAdherent = $row["NOM"];
 		}
 		
 		FermerConnectionBDD($connection);

@@ -27,10 +27,11 @@ session_start();
 	$_SESSION['inde_panier']['qteReference'] = array();
 	$_SESSION['inde_panier']['prixReference'] = array();
 
-	include 'inde_menuAchats.php';
+	//include 'inde_menuAchats.php';
 	?>
 	
     <body>
+        <?php include 'inde_menuAchats.php'; ?>
 		Bonjour <strong><?php echo $identiteAdherent; ?></strong>
 		<br />
 		Choisissez une categorie de produits pour commencer vos achats.
@@ -38,7 +39,6 @@ session_start();
 		<br />
 		Historique de vos achats :
 		<br />
-	</body>
 	
 	<?php
 	$listeAchats = SelectionListeAchatsAdherent($_SESSION['inde_adherent']);
@@ -78,4 +78,5 @@ session_start();
 		echo 'Aucun achat pour le moment.';
 	}
 	?>
+    </body>
 </html>

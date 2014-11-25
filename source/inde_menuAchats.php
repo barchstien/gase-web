@@ -1,19 +1,18 @@
-<!DOCTYPE html>
-<html>
-    <head>
-		<!-- En-tête de la page -->
-        <meta charset="utf-8" />
-		<link rel="stylesheet" href="inde_menuAchats.css" />
-        <title>ACHATS</title>
-    </head>
+<!--<!DOCTYPE html>
+<html> -->
+    <!-- <head>
+        <meta charset="utf-8" /> -->
+		<link rel="stylesheet" type="text/css" href="inde_menuAchats.css" />
+        <!-- <title>ACHATS</title>
+    </head> -->
 
 	<?php
 	require("inde_fonctionsCAT.php");
 	$listeCategories = SelectionListeCategoriesMenu();
 	?>
 	
-    <body>
-		<div id="menu">
+    <!-- <body> -->
+		<div id="menu_achats">
 			<ul>
 				<li><a href="index.php">Accueil</a></li>
 				
@@ -49,5 +48,5 @@
 				?>				
 			</ul>
 		</div>
-	</body>
-</html>
+	<!-- </body>
+</html> -->

@@ -1,37 +1,24 @@
 <?php
-	function ConnexionBDD_MC()
-	{
-		if(!$connexion)
-		{	
-			$connection = mysql_connect("localhost", "gase", "gasepass") or die(mysql_error());
-			mysql_select_db("gasedl") or die(mysql_error());
-		}	
-	}
-	
-	function FermerConnexionBDD_MC($connexion)
-	{
-		mysql_close($connection);
-	}
-
+	require("fonctions_bd_gase.php");
 	
 	function SelectionSoldeAdherentMC($idAdherent)
 	{
-		$connexion = ConnexionBDD_MC();
+		$connection = ConnectionBDD();
 
 		$result = mysql_query("SELECT SOLDE FROM _inde_COMPTES WHERE ID_ADHERENT='$idAdherent' AND DATE = (SELECT MAX(DATE) FROM _inde_COMPTES WHERE ID_ADHERENT= '$idAdherent')");
 		while ( $row = mysql_fetch_array($result))
 		{
-			$solde = $row[SOLDE];
+			$solde = $row["SOLDE"];
 		}		
 		
-		FermerConnexionBDD_MC($connexion);
+		FermerConnectionBDD($connection);
 		
 		return $solde;
 	}
 	
 	function SelectionVersementsMC($idAdherent)
 	{
-		$connexion = ConnexionBDD_MC();
+		$connection = ConnectionBDD();
 
 		$result = mysql_query("SELECT MONTANT,DATE FROM _inde_COMPTES WHERE ID_ADHERENT='$idAdherent' AND OPERATION = 'APPROVISIONNEMENT' UNION SELECT -MONTANT,DATE FROM _inde_COMPTES WHERE ID_ADHERENT='$idAdherent' AND OPERATION = 'DEPENSE' ORDER BY 2 DESC ");
 
@@ -40,14 +27,14 @@
 			$tabVersements[$row[DATE]] = $row[MONTANT];
 		}
 		
-		FermerConnexionBDD_MC($connexion);
+		FermerConnectionBDD($connection);
 		
 		return $tabVersements;
 	}
 	
 	function ApprovisionnementMC($idAdherent, $somme)
 	{
-		$connexion = ConnexionBDD_MC();
+		$connection = ConnectionBDD();
 		
 		$nouveauSolde = SelectionSoldeAdherentMC($idAdherent) + $somme;
 
@@ -57,13 +44,13 @@
 		$requete = "INSERT INTO _inde_COMPTES (ID_ADHERENT, SOLDE, DATE, OPERATION, MONTANT) values('$idAdherent','$nouveauSolde',NOW(),'APPROVISIONNEMENT','$somme')";
 		mysql_query($requete);		
 
-		FermerConnexionBDD_MC($connexion);
+		FermerConnectionBDD($connection);
 	}
 	
 	
 	function DepenseMC($idAdherent, $somme)
 	{
-		$connexion = ConnexionBDD_MC();
+		$connection = ConnectionBDD();
 		
 		$nouveauSolde = SelectionSoldeAdherentMC($idAdherent) - $somme;
 
@@ -73,7 +60,7 @@
 		$requete = "INSERT INTO _inde_COMPTES (ID_ADHERENT, SOLDE, DATE, OPERATION, MONTANT) values('$idAdherent','$nouveauSolde',NOW(),'DEPENSE','$somme')";
 		mysql_query($requete);	
 
-		FermerConnexionBDD_MC($connexion);
+		FermerConnectionBDD($connection);
 	}
 	
 ?>

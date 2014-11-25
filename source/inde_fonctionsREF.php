@@ -1,21 +1,9 @@
 <?php
-	function ConnexionBDD_REF()
-	{
-		if(!$connexion)
-		{	
-			$connection = mysql_connect("localhost", "gase", "gasepass") or die(mysql_error());
-			mysql_select_db("gasedl") or die(mysql_error());
-		}	
-	}
+	require("fonctions_bd_gase.php");
 	
-	function FermerConnexionBDD_REF($connexion)
-	{
-		mysql_close($connection);
-	}
-
 	function EnregistrerNouvelleReference($designation, $fournisseur, $categorie, $prix, $tva, $vrac, $codeFournisseur, $commentaire, $visible)
 	{
-		$connexion = ConnexionBDD_REF();
+		$connection = ConnectionBDD();
 		
 //mysql_query("LOCK TABLES _inde_REFERENCES WRITE");
 //mysql_query("SET AUTOCOMMIT = 0");
@@ -34,12 +22,12 @@ mysql_query($requete2);
 //mysql_query("COMMIT");  
 //mysql_query("UNLOCK TABLES");	
 				
-		FermerConnexionBDD_REF($connexion);
+		FermerConnectionBDD($connection);
 	}
 	
 	function SelectionListeReferences()
 	{
-		$connexion = ConnexionBDD_REF();
+		$connection = ConnectionBDD();
 
 		$result = mysql_query("SELECT ID_REFERENCE, DESIGNATION FROM _inde_REFERENCES ORDER BY DESIGNATION");
 		while ( $row = mysql_fetch_array($result))
@@ -47,14 +35,14 @@ mysql_query($requete2);
 			$listeAdherents[$row[ID_REFERENCE]] = $row[DESIGNATION];
 		}
 		
-		FermerConnexionBDD_REF($connexion);
+		FermerConnectionBDD($connection);
 		
 		return $listeAdherents;
 	}
 	
 	function SelectionDonneesReference($idReference)
 	{
-		$connexion = ConnexionBDD_REF();
+		$connection = ConnectionBDD();
 
 		$result = mysql_query("SELECT DESIGNATION, ID_FOURNISSEUR, VRAC, ID_CATEGORIE, PRIX_TTC, TVA, VISIBLE, CODE_FOURNISSEUR, COMMENTAIRE, DATE_REFERENCEMENT FROM _inde_REFERENCES WHERE ID_REFERENCE= '$idReference'");
 		while ( $row = mysql_fetch_array($result))
@@ -71,24 +59,24 @@ mysql_query($requete2);
 			$donnees['DATE_REFERENCEMENT'] = $row[9];
 		}
 
-		FermerConnexionBDD_REF($connexion);
+		FermerConnectionBDD($connection);
 		
 		return $donnees;
 	}
 	
 	function MajReference($idReference, $designation, $fournisseur, $categorie, $prix, $tva, $vrac, $codeFournisseur, $commentaire, $visible)
 	{
-		$connexion = ConnexionBDD_REF();
+		$connection = ConnectionBDD();
 
 		$requete = "UPDATE _inde_REFERENCES SET DESIGNATION = '$designation', ID_FOURNISSEUR='$fournisseur', VRAC='$vrac', ID_CATEGORIE='$categorie', PRIX_TTC = '$prix', TVA = '$tva', VISIBLE = '$visible', CODE_FOURNISSEUR = '$codeFournisseur', COMMENTAIRE = '$commentaire' WHERE ID_REFERENCE = '$idReference'";
 		mysql_query($requete);
 
-		FermerConnexionBDD_REF($connexion);
+		FermerConnectionBDD($connection);
 	}
 	
 	function SelectionListeReferencesMenu($idCategorie)
 	{
-		$connexion = ConnexionBDD_REF();
+		$connection = ConnectionBDD();
 
 		$compteur = 0;
 		
@@ -105,7 +93,7 @@ mysql_query($requete2);
 			$compteur++;
 		}
 
-		FermerConnexionBDD_REF($connexion);
+		FermerConnectionBDD($connection);
 		
 		return $listeRef;
 	}

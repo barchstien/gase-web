@@ -1,6 +1,9 @@
 ﻿<?php
     //this file was originally un-used, while it should be used by all !!!!!!!!
 
+if (!defined("FONCTION_BD_GASE_PHP")){
+define("FONCTION_BD_GASE_PHP", 1);
+
 function ConnectionBDD(){
     //tihs creates an error, should probably make a global variable of $connection
 	//if(!$connection){	
@@ -11,8 +14,7 @@ function ConnectionBDD(){
     return $connection;
 }
 
-function FermerConnectionBDD($connection)
-{
+function FermerConnectionBDD($connection){
 	mysql_close($connection);
 }
 
@@ -98,5 +100,6 @@ function SelectionListeMessages(){
 	FermerConnectionBDD($connection);
 	return $listeMsg;
 }
-	
+
+}//define "FONCTION_BD_GASE_PHP"
 ?>
