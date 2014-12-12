@@ -1,0 +1,9 @@
+AuthName Autentification
+AuthType Digest
+AuthDigestFile /var/www/gase/admin/.htpasswd
+AuthDigestGroupFile /var/www/gase/.htgroup
+
+Require valid-user
+
+ErrorDocument 401 /www/gase/admin/logouthttp.php
+
