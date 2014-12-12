@@ -1,15 +1,25 @@
 ﻿<?php
     //this file was originally un-used, while it should be used by all !!!!!!!!
 
+//avoid double insertion
 if (!defined("FONCTION_BD_GASE_PHP")){
 define("FONCTION_BD_GASE_PHP", 1);
 
+//extract DB details from config.ini file
+define ("CONFIG_FILE_PATH", "../config.ini");
+$config = parse_ini_file(CONFIG_FILE_PATH, true);
+define ("DB_ADDRESS", $config["DB"]["address"]);
+define ("DB_USER", $config["DB"]["user"]);
+define ("DB_PASS", $config["DB"]["password"]);
+define ("DB_NAME", $config["DB"]["name"]);
+
+
 function ConnectionBDD(){
-    //tihs creates an error, should probably make a global variable of $connection
+    //this creates an error, should probably make a global variable of $connection ???
 	//if(!$connection){	
 	//if (!mysqli_ping($connection)){
-		$connection = mysql_connect("localhost", "gase", "gasepass") or die(mysql_error());
-		mysql_select_db("gasedl") or die(mysql_error());
+		$connection = mysql_connect(DB_ADDRESS, DB_USER, DB_PASS) or die(mysql_error());
+		mysql_select_db(DB_NAME) or die(mysql_error());
 		
 	//}
     return $connection;
