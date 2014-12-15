@@ -1,0 +1,14 @@
+
+1. Install Ubuntu/Debian
+
+2. Install LAMP
+
+3. Copy Apache and PHP config file
+    TODO
+    
+4. Create DB scheme and user with appropriate rights
+    TODO
+    
+5. Copy project folder (/var/www)
+
+6. 

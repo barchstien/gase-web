@@ -6,7 +6,14 @@
 		$connection = ConnectionBDD();
 		$compteur = 0;
 		
-		$result = $connection->query("SELECT s1.STOCK, r.DESIGNATION, f.NOM, c.NOM, r.ID_REFERENCE FROM _inde_STOCKS s1, _inde_REFERENCES r, _inde_FOURNISSEURS f, _inde_CATEGORIES c WHERE s1.DATE = (SELECT MAX(s2.DATE) FROM _inde_STOCKS s2 WHERE s2.ID_REFERENCE=s1.ID_REFERENCE) AND r.ID_REFERENCE = s1.ID_REFERENCE AND f.ID_FOURNISSEUR = r.ID_FOURNISSEUR AND c.ID_CATEGORIE = r.ID_CATEGORIE ORDER BY c.NOM, r.DESIGNATION");
+		$result = $connection->query(
+		    "SELECT s1.STOCK, r.DESIGNATION, f.NOM, c.NOM, r.ID_REFERENCE 
+		    FROM _inde_STOCKS s1, _inde_REFERENCES r, _inde_FOURNISSEURS f, _inde_CATEGORIES c 
+		    WHERE s1.DATE = (SELECT MAX(s2.DATE) FROM _inde_STOCKS s2 WHERE s2.ID_REFERENCE=s1.ID_REFERENCE) 
+		    AND r.ID_REFERENCE = s1.ID_REFERENCE 
+		    AND f.ID_FOURNISSEUR = r.ID_FOURNISSEUR 
+		    AND c.ID_CATEGORIE = r.ID_CATEGORIE 
+		    ORDER BY c.NOM, r.DESIGNATION");
 		while ( $row = $result->fetch_array())
 		{		
 			$donnees['STOCK'] = $row[0];

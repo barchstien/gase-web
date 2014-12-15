@@ -20,7 +20,7 @@
 		<div>
 		<br />
 		<div class="liste" style="text-align:left">
-			<table>
+			<table style="margin-left:auto; margin-right:auto;">
 				<tr>
 					<td><label class="colonne3"><center><strong>CATEGORIE</strong></center></label></td>
 					<td><label class="colonne1"><center><strong>DESIGNATION</strong></center></label></td>
