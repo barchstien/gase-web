@@ -2,5 +2,4 @@
 
 
 TODO :
-_ envois ticket : clean code, _inde_ADHERENTS.TICKET_CAISSE
-        get sujet from config.ini
+_ envois ticket : _inde_ADHERENTS.TICKET_CAISSE
