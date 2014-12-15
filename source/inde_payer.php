@@ -30,6 +30,7 @@ session_start();
 					AchatSTK($numeroAchat, $_SESSION['inde_panier']['idRef'][$compteur], $_SESSION['inde_panier']['qteReference'][$compteur]);
 				}
 				
+				//TODO check if user wants to receive an email
                 envoyerMail($idAdherent, $totalTTC);
 			
 				echo "Achats " . $numeroAchat . " enregistree.<br />";

@@ -10,7 +10,7 @@
 	<?php 
 	require("fonctions_bd_fournisseurs.php"); 
 	
-	$idFournisseur= $_GET[idFournisseur];
+	$idFournisseur= $_GET["idFournisseur"];
 	$donnees = SelectionDonneesFournisseur($idFournisseur);
 	?>
 	
