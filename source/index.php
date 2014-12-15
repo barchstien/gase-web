@@ -4,7 +4,7 @@
 		<!-- En-tête de la page -->
         <meta charset="utf-8" />
 		<link rel="stylesheet" href="style_default.css" /> 
-		<title>Menu adherent</title>
+		<title>Bienvenue au Gase</title>
     </head>
 
     <body>
