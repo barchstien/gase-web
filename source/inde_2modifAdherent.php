@@ -14,9 +14,7 @@
 	$donnees = SelectionDonneesAdherent($idAdherent);
 	?>
 	
-	<div class="menu">
-		<?php include 'inde_menu.php'; ?>
-	</div>
+	<?php include 'inde_menu.php'; ?>
 	
 	<body>
 		<div style="text-align:center">

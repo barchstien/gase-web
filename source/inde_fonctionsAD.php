@@ -140,5 +140,17 @@
 
 		FermerConnectionBDD($connection);
 		return $mail;
-	}	
+	}
+	
+	function SelectionAdherent_TicketCaisse($idAdherent)
+	{
+		$connection = ConnectionBDD();
+
+		$result = $connection->query("SELECT TICKET_CAISSE FROM _inde_ADHERENTS WHERE ID_ADHERENT= '$idAdherent'");
+		$row = $result->fetch_array();
+		$ticket_caisse = $row["TICKET_CAISSE"];
+
+		FermerConnectionBDD($connection);
+		return $ticket_caisse;
+	}
 ?>

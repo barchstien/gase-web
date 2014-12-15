@@ -30,13 +30,14 @@ session_start();
 					AchatSTK($numeroAchat, $_SESSION['inde_panier']['idRef'][$compteur], $_SESSION['inde_panier']['qteReference'][$compteur]);
 				}
 				
-				//TODO check if user wants to receive an email
-                envoyerMail($idAdherent, $totalTTC);
-			
+				//only send if user subscribed for it
+				if (SelectionAdherent_TicketCaisse($idAdherent) == 1){
+                    envoyerMail($idAdherent, $totalTTC);
+                }
+                
 				echo "Achats " . $numeroAchat . " enregistree.<br />";
 				echo "<div style=\"text-align:center\">Le solde de votre compte est maintenant de " . round($nouveauSolde, 2) . " euros.</div>";
 				echo "Merci.<br />";
-							
 				echo "
 				    <br />
 				    <li>Pour aller a la page d'accueil : <a href=\"index.php\">cliquez ici</a></li>

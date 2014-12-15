@@ -44,8 +44,8 @@
 						<p class = "ligne">
 							<label class = "col1" for="ticket">Envoi ticket de caisse : </label>
 							<select class= "col2" name="ticket" id="ticket" >
-								<option value="1">OUI</option>
-								<option value="0" selected="selected">NON</option>
+								<option value="1" selected="selected">OUI</option>
+								<option value="0">NON</option>
 							</select>
 						</p>
 						<p class = "ligne">
