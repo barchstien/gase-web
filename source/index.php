@@ -16,7 +16,7 @@
 		<div class="notification_alert_stock">
 		    <?php $alert_list = getReferencesWithStockAlert();
 		        if (count($alert_list) > 0){
-		            echo "Alerte Stock ! <a href=\"stock_alert_list.php\">voire</a>";
+		            echo "<strong>Alerte Stock ! </strong><a href=\"stock_alert_list.php\">détail</a>";
 		        }
 		    ?>
 		</div>
