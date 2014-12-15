@@ -5,17 +5,18 @@
 if (!defined("FONCTION_BD_GASE_PHP")){
 define("FONCTION_BD_GASE_PHP", 1);
 
-//extract DB details from config.ini file
+//path to config file
 define ("CONFIG_FILE_PATH", "../config.ini");
-$config = parse_ini_file(CONFIG_FILE_PATH, true);
-define ("DB_ADDRESS", $config["DB"]["address"]);
-define ("DB_USER", $config["DB"]["user"]);
-define ("DB_PASS", $config["DB"]["password"]);
-define ("DB_NAME", $config["DB"]["name"]);
 
 
 function ConnectionBDD(){
-	$connection = new mysqli(DB_ADDRESS, DB_USER, DB_PASS, DB_NAME);
+    //extract DB details from config.ini file
+    $config = parse_ini_file(CONFIG_FILE_PATH, true);
+    $address = $config["DB"]["address"];
+    $user = $config["DB"]["user"];
+    $pass = $config["DB"]["password"];
+    $name =  $config["DB"]["name"];
+	$connection = new mysqli($address, $user, $pass, $name);
 	if ($connection->connect_errno) {
         exit("Failed to connect to MySQL: " . $connection->connect_error);
     }
@@ -97,5 +98,29 @@ function SelectionListeMessages(){
 	return $listeMsg;
 }
 
-}//define "FONCTION_BD_GASE_PHP"
+//////////////// EMAIL ////////////////
+function get_email_origin(){
+    //extract email origin from config.ini file
+    $config = parse_ini_file(CONFIG_FILE_PATH, true);
+    return $config["EMAIL"]["origin"];
+}
+
+function get_email_subject(){
+    //extract email origin from config.ini file
+    $config = parse_ini_file(CONFIG_FILE_PATH, true);
+    return $config["EMAIL"]["subject"];
+}
+
+/** return NULL if not debug, else the debug email destination */
+function get_email_debug_destination(){
+    $config = parse_ini_file(CONFIG_FILE_PATH, true);
+    $debug = $config["EMAIL"]["debug"];
+    $ret = null;
+    if ($debug){
+        $ret = $config["EMAIL"]["debug_destination"];
+    }
+    return $ret;
+}
+
+}//end of define "FONCTION_BD_GASE_PHP"
 ?>
