@@ -49,7 +49,7 @@ if (isset ($_POST['modifierReference']))
 						    $visible = $_POST['visible'];
 						
 						    MajReference($idReference, $designation, $fournisseur, $categorie, $prix, $tva, $vrac, $codeFournisseur, $commentaire, $visible, $alert_stock);
-						    echo 'Les donnees de la reference ' . $fournisseur . ' ont ete mises a jour dans la base de donnees.';
+						    echo 'Les donnees de la reference "' . $designation . '" ont ete mises a jour dans la base de donnees.';
 						}
 					}
 				}

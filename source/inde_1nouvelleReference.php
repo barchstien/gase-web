@@ -94,6 +94,7 @@
 						<p class = "ligne">
 							<label class = "col1" for="prix">Alerte stock (quantité, kg, litre) :</label>
 							<input type="text" class= "col2" name="alert_stock" id="alert_stock" />
+							<label class = "col1" for="alert_stock"><small>laisser vide si pas d'alerte</small></label>
 						</p>
 					</div>
 					<div id="bouton">

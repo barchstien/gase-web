@@ -16,6 +16,7 @@
 				<li><a href="inde_1stocksREF.php">ETAT</a></li>
 				<li><a href="inde_1approREF.php">APPROVISIONNER</a></li>
 				<li><a href="inde_inventaireREF.php">INVENTAIRE</a></li>
+				<li><a href="stock_alert_list.php">ALERTE STOCK</a></li>
 			</ul>
 		</li>
 		<li><a href="#">REFERENCES</a>

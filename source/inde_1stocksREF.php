@@ -16,7 +16,7 @@
 		require("inde_fonctionsSTK.php");
 		$listeSTK = SelectionListeSTK();
 		?>
-		<table>
+		<table style="margin-left:auto; margin-right:auto;">
 			<tr>
 				<td width="10%" align="center"><strong>QUANTITE</strong></td>
 				<td width="10%" align="center"><strong>CATEGORIE</strong></td>
@@ -24,14 +24,14 @@
 				<td width="20%" align="center"><strong>FOURNISSEUR</strong></td>
 			</tr>
 			<?php
-			foreach($listeSTK as $tableau)
+			foreach($listeSTK as $ref)
 			{
 				?>
 				<tr>
-					<td width="10%"><?php echo $tableau['STOCK'];?></td>
-					<td width="10%"><?php echo $tableau['CATEGORIE'];?></td>
-					<td width="60%"><?php echo $tableau['DESIGNATION'];?></td>
-					<td width="20%" align="center"><?php echo $tableau['NOM'];?></td>
+					<td width="10%"><?php echo $ref['STOCK'];?></td>
+					<td width="10%"><?php echo $ref['CATEGORIE'];?></td>
+					<td width="60%"><?php echo $ref['DESIGNATION'];?></td>
+					<td width="20%" align="center"><?php echo $ref['NOM'];?></td>
 				</tr>
 				<?php
 			}

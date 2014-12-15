@@ -4,6 +4,14 @@
 	function EnregistrerNouvelleReference($designation, $fournisseur, $categorie, $prix, $tva, $vrac, $codeFournisseur, $commentaire, $visible, $alert_stock)
 	{
 		$connection = ConnectionBDD();
+		
+		//no alert stock (empty) => stored as -1 in db
+	    //... reference wih null as alert will be set to -1 when modified
+	    //... there might be an alert level set to 0
+	    if ($alert_stock == ""){
+	        $alert_stock = -1;
+	    }
+	    
         $requete1 = "INSERT INTO _inde_REFERENCES (DESIGNATION, ID_FOURNISSEUR, VRAC, ID_CATEGORIE, PRIX_TTC, TVA, VISIBLE, CODE_FOURNISSEUR, COMMENTAIRE, ALERT_STOCK, DATE_REFERENCEMENT) values('$designation','$fournisseur','$vrac','$categorie','$prix','$tva','$visible','$codeFournisseur', '$commentaire', '$alert_stock', NOW())";		
         $connection->query($requete1);
 
@@ -47,6 +55,12 @@
 			$donnees['COMMENTAIRE'] = $row[8];
 			$donnees['DATE_REFERENCEMENT'] = $row[9];
 			$donnees['ALERT_STOCK'] = $row[10];
+			//no alert stock (empty) => stored as -1 in db
+	        //... reference wih null as alert will be set to -1 when modified for the first time
+	        //... there might be an alert level set to 0
+	        if ($donnees['ALERT_STOCK'] == "-1"){
+	            $donnees['ALERT_STOCK'] = "";
+	        }
 		}
 		FermerConnectionBDD($connection);
 		return $donnees;
@@ -55,7 +69,15 @@
 	function MajReference($idReference, $designation, $fournisseur, $categorie, $prix, $tva, $vrac, $codeFournisseur, $commentaire, $visible, $alert_stock)
 	{
 		$connection = ConnectionBDD();
+		//no alert stock (empty) => stored as -1 in db
+	    //... reference wih null as alert will be set to -1 when modified
+	    //... there might be an alert level set to 0
+	    if ($alert_stock == ""){
+	        $alert_stock = -1;
+	    }
+	    
 		$requete = "UPDATE _inde_REFERENCES SET DESIGNATION = '$designation', ID_FOURNISSEUR='$fournisseur', VRAC='$vrac', ID_CATEGORIE='$categorie', PRIX_TTC = '$prix', ALERT_STOCK = '$alert_stock', TVA = '$tva', VISIBLE = '$visible', CODE_FOURNISSEUR = '$codeFournisseur', COMMENTAIRE = '$commentaire' WHERE ID_REFERENCE = '$idReference'";
+		error_log($requete);
 		$connection->query($requete);
 		FermerConnectionBDD($connection);
 	}

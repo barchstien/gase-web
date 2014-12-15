@@ -13,9 +13,9 @@ td{
 	cursor: pointer;
 }
 
-/* *{
-    margin-top: 0px;
-    padding: 0;
-    
-    z-index: 1;
-}*/
+.notification_alert_stock{
+    color: red;
+    position: fixed;
+    top: 50px;
+    right: 10px;
+}
