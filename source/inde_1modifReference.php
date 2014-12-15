@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-		<!-- En-tête de la page -->
         <meta charset="utf-8" />
         <link rel="stylesheet" href="style_default.css" /> 
 		<title>REFERENCES</title>
@@ -12,12 +11,10 @@
 	require("fonctions_bd_fournisseurs.php"); 
 	require("inde_fonctionsCAT.php"); 
 	?>
-	
-	<div class="menu">
-		<?php include 'inde_menu.php'; ?>
-	</div>
-	
-    <body>
+	<body>
+	    <div class="menu">
+		    <?php include 'inde_menu.php'; ?>
+	    </div>
 		<div style="text-align:center">
 			Cliquez sur le nom de la reference a modifier.
 		<div>

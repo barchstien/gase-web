@@ -91,6 +91,10 @@
 								<option value="0">NON</option>
 							</select>
 						</p>
+						<p class = "ligne">
+							<label class = "col1" for="prix">Alerte stock (quantité, kg, litre) :</label>
+							<input type="text" class= "col2" name="alert_stock" id="alert_stock" />
+						</p>
 					</div>
 					<div id="bouton">
 						<p>

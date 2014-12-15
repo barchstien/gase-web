@@ -5,8 +5,6 @@
 	require("inde_fonctionsCAT.php");
 	$listeCategories = SelectionListeCategoriesMenu();
 	?>
-	
-    <!-- <body> -->
 		<div id="menu_achats">
 			<ul>
 				<li><a href="index.php">Accueil</a></li>

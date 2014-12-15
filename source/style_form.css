@@ -13,16 +13,6 @@
     margin-right: auto;
 }
 
-
-#formulaire input[type="submit"]
-{
-	float: right;
-	position: relative;
-	top: -10px;
-	left: -25px;
-		z-index: 0;
-}
-
 #formulaire input[type="submit"]:hover
 {
 	background-color: #93DB70;
@@ -30,7 +20,24 @@
 	border-radius: 6px;
 }
 
-
+/* button "dans panier" */
+#acheterRef
+{
+	float: right;
+	position: relative;
+	top: -10px;
+	left: -25px;
+	z-index: 0;
+}
+/* button "payer" */
+#payer
+{
+	float: right;
+	position: relative;
+	top: -10px;
+	left: -25px;
+	z-index: 0;
+}
 
 /* list de references disponibles dans catalogue, moitiée gauche de l'écran */
 .references
@@ -45,4 +52,9 @@
     display: inline-block;
     vertical-align: top;
     width: 49%;
-}		
+}
+
+.modifierReference{
+    text-align: center;
+}
+

@@ -1,13 +1,11 @@
 
-
-
 <?php
 require("inde_fonctionsMC.php");
 $soldeAdherent = SelectionSoldeAdherentMC($_SESSION['inde_adherent']);
 $nbRefPanier = $_SESSION['inde_nbRefPanier'];
 if ( $nbRefPanier == 0)
 {
-	echo "<tr><td>Votre panier est vide.</ td></tr>";
+	echo "<div>Votre panier est vide.</div>";
 }
 else
 {
@@ -22,7 +20,7 @@ else
 		<?php }else{ ?>
 			>Total TTC panier: <?php echo round($prixTotal,2) ?> euros
 		<?php } ?>
-		    <input type="submit" value="Payer" name="payer">
+		    <input type="submit" value="Payer" name="payer" id="payer">
 		</div>
 
 		<div id= "table_reference_list">

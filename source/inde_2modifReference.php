@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-		<!-- En-tête de la page -->
         <meta charset="utf-8" />
 		<link rel="stylesheet" href="style_form.css" />
         <title>MODIF. REFERENCE</title>
@@ -18,11 +17,11 @@
 	$nomCategorie = SelectionNomCategorie($donnees['ID_CATEGORIE']);
 	?>
 	
-	<div class="menu">
-		<?php include 'inde_menu.php'; ?>
-	</div>
-	
 	<body>
+	
+	    <div class="menu">
+		    <?php include 'inde_menu.php'; ?>
+	    </div>
 		<div style="text-align:center">
 			Les champs avec une etoile doivent etre obligatoirement renseignes.
 			<div>
@@ -38,45 +37,35 @@
 							<select class= "col2" name="fournisseur" id="fournisseur" required>
 								<?php	
 								$listeFR = SelectionListeVisiblesFR();
-								foreach($listeFR as $cle => $element)
-								{
-									if($element == $nomFournisseur)
-									{
+								foreach($listeFR as $cle => $element){
+									if($element == $nomFournisseur){
 										?>
 										<option value="<?php echo $donnees['ID_FOURNISSEUR'] ?>" selected="selected"><?php echo $nomFournisseur; ?></option>
 										<?php
-									}
-									else
-									{
+									}else{
 										?>
 										<option value="<?php echo $cle; ?>"><?php echo $element; ?></option>
 										<?php
 									}
-								}
-								?>
+								}?>
 							</select>
 						</p>
-					<p class = "ligne">
+                        <p class = "ligne">
 							<label class = "col1" for="categorie">Categorie* :</label>
 							<select class= "col2" name="categorie" id="categorie" required >
 								<?php	
 								$listeCategories = SelectionListeCategoriesFilles();
-								foreach($listeCategories as $cle => $element)
-								{
-									if($element == $nomCategorie)
-									{
+								foreach($listeCategories as $cle => $element){
+									if($element == $nomCategorie){
 										?>
 										<option value="<?php echo $donnees['ID_CATEGORIE'] ?>" selected="selected"><?php echo $nomCategorie; ?></option>
 										<?php
-									}
-									else
-									{
+									}else{
 										?>
 										<option value="<?php echo $cle; ?>"><?php echo $element; ?></option>
 										<?php
 									}
-								}
-								?>
+								}?>
 							</select>
 						</p>
 						<p class = "ligne">
@@ -87,52 +76,42 @@
 							<label class = "col1" for="tva">T.V.A. :</label>
 							<select class= "col2" name="tva" id="tva">
 								<?php								
-								if($donnees['TVA'] == '0')
-								{
+								if($donnees['TVA'] == '0'){
 									?>
 									<option value="0" selected="selected">0</option>
 									<option value="5.5">5.5</option>
 									<option value="19.6">19.6</option>
 									<?php
-								}
-								else if($donnees['TVA'] == '5.5')
-								{
+								}else if($donnees['TVA'] == '5.5'){
 									?>
 									<option value="0" >0</option>
 									<option value="5.5" selected="selected">5.5</option>
 									<option value="19.6">19.6</option>
 									<?php
-								}
-								else if($donnees['TVA'] == '19.6')
-								{
+								}else if($donnees['TVA'] == '19.6'){
 									?>
 									<option value="0" >0</option>
 									<option value="5.5" >5.5</option>
 									<option value="19.6" selected="selected">19.6</option>
 									<?php
-								}
-								?>
+								}?>
 							</select>
 						</p>
 						<p class = "ligne">
 							<label class = "col1" for="vrac">Vrac :</label>
 							<select type="text" class= "col2" name="vrac" id="vrac">
 								<?php								
-								if($donnees['VRAC'] == '0')
-								{
+								if($donnees['VRAC'] == '0'){
 									?>
 									<option value="1">OUI</option>
 									<option value="0" selected="selected">NON</option>
 									<?php
-								}
-								else
-								{
+								}else{
 									?>
 									<option value="1" selected="selected">OUI</option>
 									<option value="0">NON</option>
 									<?php
-								}
-								?>
+								}?>
 							</select>
 						</p>
 						<p class = "ligne">
@@ -147,30 +126,27 @@
 							<label class = "col1" for="visible">Visible : </label>
 							<select class= "col2" name="visible" id="visible" >
 								<?php								
-								if($donnees['VISIBLE'] == '0')
-								{
+								if($donnees['VISIBLE'] == '0'){
 									?>
 									<option value="1">OUI</option>
 									<option value="0" selected="selected">NON</option>
 									<?php
-								}
-								else
-								{
+								}else{
 									?>
 									<option value="1" selected="selected">OUI</option>
 									<option value="0">NON</option>
 									<?php
-								}
-								?>
+								}?>
 							</select>
 						</p>
-					</div>
-					<br />
-					<div id="bouton">
-						<p>
-							<input type="submit" value="Modifier" name="modifierReference">
+						<p class = "ligne">
+							<label class = "col1" for="alert_stock">Alerte stock (quantité, kg, litre) : </label>
+							<input type="text" class= "col2" name="alert_stock" id="alert_stock" value="<?php echo $donnees['ALERT_STOCK']; ?>" />
 						</p>
 					</div>
+					<div class="modifierReference"><p>
+						<input type="submit" value="Modifier" name="modifierReference">
+					</p></div>
 				</form>
 			</div>
 		</div>

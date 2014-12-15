@@ -1,10 +1,10 @@
 <?php
 	require("fonctions_bd_gase.php");
 	
-	function EnregistrerNouvelleReference($designation, $fournisseur, $categorie, $prix, $tva, $vrac, $codeFournisseur, $commentaire, $visible)
+	function EnregistrerNouvelleReference($designation, $fournisseur, $categorie, $prix, $tva, $vrac, $codeFournisseur, $commentaire, $visible, $alert_stock)
 	{
 		$connection = ConnectionBDD();
-        $requete1 = "INSERT INTO _inde_REFERENCES (DESIGNATION, ID_FOURNISSEUR, VRAC, ID_CATEGORIE, PRIX_TTC, TVA, VISIBLE, CODE_FOURNISSEUR, COMMENTAIRE, DATE_REFERENCEMENT) values('$designation','$fournisseur','$vrac','$categorie','$prix','$tva','$visible','$codeFournisseur', '$commentaire', NOW())";		
+        $requete1 = "INSERT INTO _inde_REFERENCES (DESIGNATION, ID_FOURNISSEUR, VRAC, ID_CATEGORIE, PRIX_TTC, TVA, VISIBLE, CODE_FOURNISSEUR, COMMENTAIRE, ALERT_STOCK, DATE_REFERENCEMENT) values('$designation','$fournisseur','$vrac','$categorie','$prix','$tva','$visible','$codeFournisseur', '$commentaire', '$alert_stock', NOW())";		
         $connection->query($requete1);
 
         $result = $connection->query("SELECT MAX(ID_REFERENCE) FROM _inde_REFERENCES");
@@ -33,7 +33,7 @@
 	{
 		$connection = ConnectionBDD();
 
-		$result = $connection->query("SELECT DESIGNATION, ID_FOURNISSEUR, VRAC, ID_CATEGORIE, PRIX_TTC, TVA, VISIBLE, CODE_FOURNISSEUR, COMMENTAIRE, DATE_REFERENCEMENT FROM _inde_REFERENCES WHERE ID_REFERENCE= '$idReference'");
+		$result = $connection->query("SELECT DESIGNATION, ID_FOURNISSEUR, VRAC, ID_CATEGORIE, PRIX_TTC, TVA, VISIBLE, CODE_FOURNISSEUR, COMMENTAIRE, DATE_REFERENCEMENT, ALERT_STOCK FROM _inde_REFERENCES WHERE ID_REFERENCE= '$idReference'");
 		while ( $row = $result->fetch_array())
 		{		
 			$donnees['DESIGNATION'] = $row[0];
@@ -46,15 +46,16 @@
 			$donnees['CODE_FOURNISSEUR'] = $row[7];
 			$donnees['COMMENTAIRE'] = $row[8];
 			$donnees['DATE_REFERENCEMENT'] = $row[9];
+			$donnees['ALERT_STOCK'] = $row[10];
 		}
 		FermerConnectionBDD($connection);
 		return $donnees;
 	}
 	
-	function MajReference($idReference, $designation, $fournisseur, $categorie, $prix, $tva, $vrac, $codeFournisseur, $commentaire, $visible)
+	function MajReference($idReference, $designation, $fournisseur, $categorie, $prix, $tva, $vrac, $codeFournisseur, $commentaire, $visible, $alert_stock)
 	{
 		$connection = ConnectionBDD();
-		$requete = "UPDATE _inde_REFERENCES SET DESIGNATION = '$designation', ID_FOURNISSEUR='$fournisseur', VRAC='$vrac', ID_CATEGORIE='$categorie', PRIX_TTC = '$prix', TVA = '$tva', VISIBLE = '$visible', CODE_FOURNISSEUR = '$codeFournisseur', COMMENTAIRE = '$commentaire' WHERE ID_REFERENCE = '$idReference'";
+		$requete = "UPDATE _inde_REFERENCES SET DESIGNATION = '$designation', ID_FOURNISSEUR='$fournisseur', VRAC='$vrac', ID_CATEGORIE='$categorie', PRIX_TTC = '$prix', ALERT_STOCK = '$alert_stock', TVA = '$tva', VISIBLE = '$visible', CODE_FOURNISSEUR = '$codeFournisseur', COMMENTAIRE = '$commentaire' WHERE ID_REFERENCE = '$idReference'";
 		$connection->query($requete);
 		FermerConnectionBDD($connection);
 	}
