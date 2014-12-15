@@ -12,7 +12,7 @@
 	require("fonctions_bd_fournisseurs.php"); 
 	require("inde_fonctionsCAT.php"); 
 	
-	$idReference= $_GET[idReference];
+	$idReference= $_GET["idReference"];
 	$donnees = SelectionDonneesReference($idReference);
 	$nomFournisseur = SelectionNomFournisseur($donnees['ID_FOURNISSEUR']);
 	$nomCategorie = SelectionNomCategorie($donnees['ID_CATEGORIE']);

@@ -15,34 +15,25 @@ define ("DB_NAME", $config["DB"]["name"]);
 
 
 function ConnectionBDD(){
-    //this creates an error, should probably make a global variable of $connection ???
-	//if(!$connection){	
-	//if (!mysqli_ping($connection)){
-		$connection = mysql_connect(DB_ADDRESS, DB_USER, DB_PASS) or die(mysql_error());
-		mysql_select_db(DB_NAME) or die(mysql_error());
-		
-	//}
+	$connection = new mysqli(DB_ADDRESS, DB_USER, DB_PASS, DB_NAME);
+	if ($connection->connect_errno) {
+        exit("Failed to connect to MySQL: " . $connection->connect_error);
+    }
     return $connection;
 }
 
 function FermerConnectionBDD($connection){
-	mysql_close($connection);
+	$connection->close();
 }
 
 //this is imported from inde_fonctionsACH.php
 function EnregistrerAchatAdherent($idAdherent, $montantTTC, $nbArticles){
 	$connection = ConnectionBDD();
 
-//		mysql_query("LOCK TABLES _inde_ACHATS WRITE");
-//		mysql_query("SET AUTOCOMMIT = 0");
-	mysql_query("INSERT INTO _inde_ACHATS (DATE_ACHAT,ID_ADHERENT,TOTAL_TTC,NB_REFERENCES) values(NOW(),'$idAdherent','$montantTTC','$nbArticles')", $connection);
-//		mysql_select_db('nouvelle_independante');
-	$idCommande = mysql_insert_id();
-//		mysql_query("COMMIT");
-//		mysql_query("UNLOCK TABLES");
+	$connection->query("INSERT INTO _inde_ACHATS (DATE_ACHAT,ID_ADHERENT,TOTAL_TTC,NB_REFERENCES) values(NOW(),'$idAdherent','$montantTTC','$nbArticles')");
+	$idCommande = $connection->insert_id;
 	
 	FermerConnectionBDD($connection);
-
 	return $idCommande;
 }
 
@@ -51,27 +42,22 @@ function EnregistrerAchatAdherent($idAdherent, $montantTTC, $nbArticles){
 function SelectionInfosAchats($idAchats){
 	$connection = ConnectionBDD();
 
-	$result = mysql_query("SELECT DATE_ACHAT, TOTAL_TTC, NB_REFERENCES FROM _inde_ACHATS WHERE ID_ACHAT = '$idAchats'", $connection);
+	$result = $connection->query("SELECT DATE_ACHAT, TOTAL_TTC, NB_REFERENCES FROM _inde_ACHATS WHERE ID_ACHAT = '$idAchats'");
 	$infosAchats = 0;
-	while ( $row = mysql_fetch_array($result)){
+	while ( $row = $result->fetch_array()){
 		$infosAchats = 'Detail des achats numero '. $idAchats . ' du ' . $row["DATE_ACHAT"] . ', d un montant de  ' . $row["TOTAL_TTC"] . ' euros ('.$row["NB_REFERENCES"].' references).';
 	}
-	
 	FermerConnectionBDD($connection);
-	
 	return $infosAchats;
 }
 	
 	
 //this is imported from inde_fonctionsACH.php
 function SelectionDetailsAchats($idAchats){
-    //echo ("SelectionDetailsAchats\n");
 	$connection = ConnectionBDD();
-
 	$compteur = 0;
-	
-	$result = mysql_query("SELECT r.DESIGNATION, r.PRIX_TTC, c.QUANTITE, r.PRIX_TTC*c.QUANTITE, c.ID_REFERENCE FROM _inde_STOCKS c, _inde_REFERENCES r WHERE c.ID_ACHAT = '$idAchats' AND r.ID_REFERENCE = c.ID_REFERENCE", $connection);
-	while ( $row = mysql_fetch_array($result))
+	$result = $connection->query("SELECT r.DESIGNATION, r.PRIX_TTC, c.QUANTITE, r.PRIX_TTC*c.QUANTITE, c.ID_REFERENCE FROM _inde_STOCKS c, _inde_REFERENCES r WHERE c.ID_ACHAT = '$idAchats' AND r.ID_REFERENCE = c.ID_REFERENCE");
+	while ( $row = $result->fetch_array())
 	{		
 		$ligne['DESIGNATION'] = $row[0];
 		$ligne['PRIX_TTC'] = $row[1];
@@ -84,7 +70,6 @@ function SelectionDetailsAchats($idAchats){
 	}
 
 	FermerConnectionBDD($connection);
-	
 	return $listeRef;
 }
 
@@ -93,15 +78,15 @@ function SelectionDetailsAchats($idAchats){
 function EnregistrerInfoOutil($message){
 	$connection = ConnectionBDD();
 	$requete = "INSERT INTO _inde_VIE_OUTIL (DATE, MESSAGE) values(NOW(),'$message')";
-	mysql_query($requete, $connection);
+	$connection->query($requete);
 	FermerConnectionBDD($connection);
 }
 
 function SelectionListeMessages(){
 	$connection = ConnectionBDD();
 	$compteur = 0;
-	$result = mysql_query("SELECT DATE, MESSAGE FROM _inde_VIE_OUTIL ORDER BY DATE DESC", $connection);
-	while ( $row = mysql_fetch_array($result)){
+	$result = $connection->query("SELECT DATE, MESSAGE FROM _inde_VIE_OUTIL ORDER BY DATE DESC");
+	while ( $row = $result->fetch_array()){
 		$donnees['DATE'] = $row[0];
 		$donnees['MESSAGE'] = $row[1];
 		
