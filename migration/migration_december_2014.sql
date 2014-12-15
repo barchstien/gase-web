@@ -1,2 +1,5 @@
-ALTER TABLE _inde_REFERENCES
-ADD alert_stock;
+
+# 
+ALTER TABLE _inde_REFERENCES ADD ALERT_STOCK;
+
+
