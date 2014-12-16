@@ -28,8 +28,9 @@ $listeAchats = array();
 $listeStocks_min_level = array();
 //get sum of quantity bought for each week
 foreach($weeks as $w){
+    ////Sum purchase
     $result = $connection->query(
-        "SELECT SUM(QUANTITE), MIN(STOCK), MIN(DATE_FORMAT(DATE, '%M %D'))
+        "SELECT SUM(QUANTITE), MIN(DATE_FORMAT(DATE, '%M %D'))
         FROM _inde_STOCKS
         WHERE ID_REFERENCE = $id_reference
             AND OPERATION = 'ACHAT'
@@ -42,7 +43,18 @@ foreach($weeks as $w){
     $week_start = new DateTime();
     $week_start->setISODate($year_stats, $w);
     $listeAchats[] = array($row[0], $week_start->format('j-M'));
-    $listeStocks_min_level[] = $row[1];
+    
+    ////Stocks Minimum
+    $result = $connection->query(
+        "SELECT MIN(STOCK), MIN(DATE_FORMAT(DATE, '%M %D'))
+        FROM _inde_STOCKS
+        WHERE ID_REFERENCE = $id_reference
+            AND YEAR(DATE) = $year_stats
+            AND WEEK(DATE) = $w
+        ORDER BY DATE"
+    );
+    $row = $result->fetch_array();
+    $listeStocks_min_level[] = $row[0];
 }
 
 /*
