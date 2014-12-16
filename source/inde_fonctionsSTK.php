@@ -171,5 +171,27 @@
 	    return $ret;
 	}
 	
+	function get_ecarts_list_for_date($date){
+	    $connection = ConnectionBDD();
+	    $result = $connection->query("SELECT s.QUANTITE, c.NOM, r.DESIGNATION, f.NOM, s.DATE
+                                FROM _inde_STOCKS s, _inde_REFERENCES r, _inde_CATEGORIES c, _inde_FOURNISSEURS f
+                                WHERE s.OPERATION = 'INVENTAIRE'
+                                AND DATE_FORMAT(s.DATE,'%Y-%m-%e') = '$date'
+                                AND s.ID_REFERENCE = r.ID_REFERENCE
+                                AND r.ID_CATEGORIE = c.ID_CATEGORIE
+                                AND r.ID_FOURNISSEUR = f.ID_FOURNISSEUR;");
+	    $ret = array();
+	    while ( $row = $result->fetch_array()){
+            $a = array();
+            $a["ecart"] = $row[0];
+            $a["categorie_nom"] = $row[1];
+            $a["ref_designation"] = $row[2];
+            $a["fournisseur_nom"] = $row[3];
+            $ret[] = $a;
+	    }
+	    FermerConnectionBDD($connection);
+	    return $ret;
+	}
+	
 	
 ?>
