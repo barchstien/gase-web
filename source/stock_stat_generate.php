@@ -18,37 +18,55 @@ $connection = new mysqli($address, $user, $pass, $name);
 if ($connection->connect_errno) {
     exit("Failed to connect to MySQL: " . $connection->connect_error);
 }
+/////////////
+$result = $connection->query(
+    "SELECT DISTINCT YEAR(DATE)
+    FROM _inde_STOCKS
+    WHERE ID_REFERENCE = $id_reference
+        AND OPERATION = 'ACHAT'
+    ORDER BY DATE"
+);
+if ($result != false){
+    while($row = $result->fetch_array()){
+	    error_log("-------".$row[0]);
+    }
+}
+/////////////:
+$months = range(1, 12);
+$year = 2014;
+$listeStocks = array();
+foreach($months as $m){
+    $result = $connection->query(
+        "SELECT SUM(QUANTITE), DATE_FORMAT(DATE, '%Y-%m')
+        FROM _inde_STOCKS
+        WHERE ID_REFERENCE = $id_reference
+            AND OPERATION = 'ACHAT'
+            AND YEAR(DATE) = $year
+            AND MONTH(DATE) = $m
+        ORDER BY DATE"
+    );
+    $row = $result->fetch_array();
+    $listeStocks[] = array($row[0], $year."-".str_pad($m, 2, '0', STR_PAD_LEFT));
+}
 
-$sec_in_a_month = 2682000;//2678400;
+/*
 $result = $connection->query(
     //"SELECT STOCK, DATE
-    "SELECT SUM(QUANTITE), DATE_FORMAT(DATE, '%Y-%m') as DateOnly
+    "SELECT SUM(QUANTITE), DATE_FORMAT(DATE, '%Y-%m')
     FROM _inde_STOCKS
     WHERE ID_REFERENCE = $id_reference
     AND OPERATION = 'ACHAT'
-    AND (UNIX_TIMESTAMP() - UNIX_TIMESTAMP(DATE)) < (60*60*24*31*24)
-    GROUP BY DateOnly
+    AND YEAR(DATE) = $year
+    GROUP BY MONTH(DATE)
     ORDER BY DATE");
 $listeStocks = array();
 $tmp_date;
 if ($result != false){
     while($row = $result->fetch_array()){
-	    if (count($listeStocks) > 0){
-	        $cnt = strtotime(end($listeStocks)[1]);
-	        $cnt2 = strtotime($row[1]);
-	        //if (($cnt2 - $cnt) > $sec_in_a_month){
-	        while (($cnt2 - $cnt) > $sec_in_a_month){
-	            error_log("MORE BETWEEN : ".end($listeStocks)[1]." - ".$row[1]."_____".($cnt2 - $cnt));
-	            $cnt += $sec_in_a_month;
-	            $listeStocks[] = array(end($listeStocks)[0], date("Y-m",$cnt));
-	        }
-	    }
-	
 	    $listeStocks[] = array($row[0], $row[1]);
 	    //error_log(strtotime($row[1]));
-	
     }
-}
+}*/
 
 $connection->close();
 
@@ -67,7 +85,7 @@ $MyData = new pData();
 $cnt = 0;
 for($i=0;$i<count($listeStocks);$i++){
     //$MyData->addPoints(rand(1,15),"Probe 1");
-    $MyData->addPoints($listeStocks[$i][0],"Probe 1");
+    $MyData->addPoints($listeStocks[$i][0],"Achats ".$year);
     $MyData->addPoints($listeStocks[$i][1],"Labels");
 }
 //$MyData->setSerieTicks("Probe 2",4);
@@ -103,7 +121,7 @@ $myPicture->drawText(150,35,"Achats par mois",array("FontSize"=>20,"Align"=>TEXT
 $myPicture->setFontProperties(array("FontName"=>$pChart_path."/fonts/pf_arma_five.ttf","FontSize"=>10));
 
 /* Define the chart area */
-$myPicture->setGraphArea(60,40,$width-50,$height-80);
+$myPicture->setGraphArea(60,40,$width-50,$height-50);
 
 /* Draw the scale */
 //,"LabelSkip"=>10
@@ -112,7 +130,7 @@ $scaleSettings = array("XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"GridR"=>200
 $myPicture->drawScale($scaleSettings);
 
 /* Write the chart legend */
-//$myPicture->drawLegend(640,20,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
+$myPicture->drawLegend(640,20,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
 
 /* Turn on Antialiasing */
 $myPicture->Antialias = TRUE;
