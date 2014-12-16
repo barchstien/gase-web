@@ -107,7 +107,6 @@
 	meaning those that are visible, that have a stock alert, and where stock alert is reached */
 	function getReferencesWithStockAlertRaised(){
 	    $connection = ConnectionBDD();
-	    $connection->query("SELECT");
 	    
 		//rows with ALERT_STOCK == NULL are ignored by r.ALERT_STOCK != -1 ...
 		//... rows with field NULL, can be selected with r.ALERT_STOCK IS NULL (or IS NOT NULL)
@@ -125,7 +124,7 @@
 		    ORDER BY c.NOM, r.DESIGNATION");
 		$listeStocks = null;
 		while ( $row = $result->fetch_array())
-		{		
+		{
 			$donnees['STOCK'] = $row[0];
 			$donnees['DESIGNATION'] = $row[1];
 			$donnees['NOM'] = $row[2];
@@ -139,4 +138,16 @@
 		return $listeStocks;
 	}
 	
+	function getYearWithStats_forReferenceId($ref){
+	    $connection = ConnectionBDD();
+	    $result = $connection->query("SELECT DISTINCT YEAR(DATE) FROM _inde_STOCKS WHERE ID_REFERENCE = '$ref'");
+	    $ret = array();
+	    while ( $row = $result->fetch_array()){
+	        if (0 != $row[0]){
+	            $ret[] = $row[0];
+	        }
+	    }
+	    FermerConnectionBDD($connection);
+	    return $ret;
+	}
 ?>

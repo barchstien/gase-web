@@ -44,9 +44,9 @@
 			<ul>
 				<li><a href="inde_1modifDocument.php">VOIR</a></li>
 				<li><a href="inde_1nouveauDocument.php">ARCHIVER</a></li>
-  </ul>
-</li>
-<li><a href=logouthttp.php>DECONNEXION</a></li>
+            </ul>
+        </li>
+        <li><a href=logouthttp.php>DECONNEXION</a></li>
 	</ul>
 </div>
 

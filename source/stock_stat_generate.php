@@ -1,5 +1,6 @@
 <?php
-//if this line is enabled, the chart is not generated
+//if fonctions_bd_gase.php is included, the chart is not generated...
+//... so need to use only base php here
 //require_once("fonctions_bd_gase.php");
 
 define ("GASE_CONFIG_FILE_PATH", "../config.ini");
@@ -7,7 +8,6 @@ $id_reference = $_GET['id'];
 error_log($id_reference);
 $config = parse_ini_file(GASE_CONFIG_FILE_PATH, true);
 $pChart_path = $config["pCHART"]["path"];
-//$pChart_path = "../pChart";
 
 
 $address = $config["DB"]["address"];
@@ -18,20 +18,7 @@ $connection = new mysqli($address, $user, $pass, $name);
 if ($connection->connect_errno) {
     exit("Failed to connect to MySQL: " . $connection->connect_error);
 }
-/////////////
-$result = $connection->query(
-    "SELECT DISTINCT YEAR(DATE)
-    FROM _inde_STOCKS
-    WHERE ID_REFERENCE = $id_reference
-        AND OPERATION = 'ACHAT'
-    ORDER BY DATE"
-);
-if ($result != false){
-    while($row = $result->fetch_array()){
-	    error_log("-------".$row[0]);
-    }
-}
-/////////////:
+
 $months = range(1, 12);
 $year = 2014;
 $listeAchats = array();
@@ -99,7 +86,7 @@ $MyData->setAbscissa("Labels");
 $MyData->setXAxisDisplay(AXIS_FORMAT_CUSTOM,"XAxisFormat");
 function XAxisFormat($Value) { return($Value);}//date("d/m/Y",strtotime($Value)));}
 
-$width = 900;
+$width = 1200;
 $height = 450;
 /* Create the pChart object */
 $myPicture = new pImage($width,$height,$MyData);
@@ -122,7 +109,7 @@ $myPicture->drawText(150,35,"Achats par mois",array("FontSize"=>20,"Align"=>TEXT
 $myPicture->setFontProperties(array("FontName"=>$pChart_path."/fonts/pf_arma_five.ttf","FontSize"=>10));
 
 /* Define the chart area */
-$myPicture->setGraphArea(60,40,$width-50,$height-50);
+$myPicture->setGraphArea(60,40,$width-10,$height-50);
 
 /* Draw the scale */
 //,"LabelSkip"=>10

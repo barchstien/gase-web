@@ -1,10 +1,11 @@
 ﻿#menu
 {
-display:table; /* IE8 et les autres */
-margin:auto; /* centrage */
-text-align:center; /* preparation au centrage IE7 et inf */
-height:50px;
-
+    display:table; /* IE8 et les autres */
+    margin:auto; /* centrage */
+    text-align:center; /* preparation au centrage IE7 et inf */
+    height:50px;
+    position:relative;
+    z-index:99;
 }
 
 #menu ul 

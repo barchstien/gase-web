@@ -7,20 +7,22 @@
     </head>
 
     <body>
-		<?php include 'inde_menu.php'; ?>
-
-		<?php require("fonctions_bd_gase.php");
+		<?php include 'inde_menu.php';
+		require("fonctions_bd_gase.php");
 		require("inde_fonctionsSTK.php");
 		require("inde_fonctionsREF.php");
-		$ref = SelectionDonneesReference($_GET['id']);
+		$ref_id = $_GET['id'];
+		$ref_details = SelectionDonneesReference($ref_id);
+		$year_list = getYearWithStats_forReferenceId($ref_id);
 		?>
 		
-		<div style="text-align:center;position:relative;top:-20px;">
+		<div style="text-align:center;position:relative;top:-20px;z-index:0;">
 		    <select>
-		        <option value="2014">2014</option>
-		        <option value="2013">2013</option>
+		        <?php foreach($year_list as $year){
+		            echo "<option style='z-index:0;' value='$year'>$year</option>";
+		        }?>
 		    </select>
-		    <strong><?php echo $ref["DESIGNATION"]?></strong> (<?php echo $ref["NOM_FOURNISSEUR"]?>)
+		    <strong><?php echo $ref_details["DESIGNATION"]?></strong> (<?php echo $ref_details["NOM_FOURNISSEUR"]?>)
 		</div>
 		<img style="display: block;margin-left:auto; margin-right:auto;" src="stock_stat_generate.php?id='<?php echo $_GET['id']; ?>'">
 		
