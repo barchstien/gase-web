@@ -22,39 +22,32 @@ if ($connection->connect_errno) {
 $sec_in_a_month = 2682000;//2678400;
 $result = $connection->query(
     //"SELECT STOCK, DATE
-    "SELECT SUM(STOCK), DATE_FORMAT(DATE, '%Y-%m') DateOnly
+    "SELECT SUM(QUANTITE), DATE_FORMAT(DATE, '%Y-%m') as DateOnly
     FROM _inde_STOCKS
     WHERE ID_REFERENCE = $id_reference
+    AND OPERATION = 'ACHAT'
+    AND (UNIX_TIMESTAMP() - UNIX_TIMESTAMP(DATE)) < (60*60*24*31*24)
     GROUP BY DateOnly
     ORDER BY DATE");
 $listeStocks = array();
 $tmp_date;
-//pass first line
-$row = $result->fetch_array();
-$row = $result->fetch_array();
-$row = $result->fetch_array();
-while($row = $result->fetch_array()){		
-	//$donnees['STOCK'] = $row[0];
-	/*$donnees['DESIGNATION'] = $row[1];
-	$donnees['NOM'] = $row[2];
-	$donnees['CATEGORIE'] = $row[3];
-	$donnees['ID_REFERENCE'] = $row[4];*/
-	//$listeStocks[] = $donnees;
-	
-	if (count($listeStocks) > 0){
-	    $cnt = strtotime(end($listeStocks)[1]);
-	    $cnt2 = strtotime($row[1]);
-	    //if (($cnt2 - $cnt) > $sec_in_a_month){
-	    while (($cnt2 - $cnt) > $sec_in_a_month){
-	        error_log("MORE BETWEEN : ".end($listeStocks)[1]." - ".$row[1]."_____".($cnt2 - $cnt));
-	        $cnt += $sec_in_a_month;
-	        $listeStocks[] = array(end($listeStocks)[0], date("Y-m",$cnt));
+if ($result != false){
+    while($row = $result->fetch_array()){
+	    if (count($listeStocks) > 0){
+	        $cnt = strtotime(end($listeStocks)[1]);
+	        $cnt2 = strtotime($row[1]);
+	        //if (($cnt2 - $cnt) > $sec_in_a_month){
+	        while (($cnt2 - $cnt) > $sec_in_a_month){
+	            error_log("MORE BETWEEN : ".end($listeStocks)[1]." - ".$row[1]."_____".($cnt2 - $cnt));
+	            $cnt += $sec_in_a_month;
+	            $listeStocks[] = array(end($listeStocks)[0], date("Y-m",$cnt));
+	        }
 	    }
-	}
 	
-	$listeStocks[] = array($row[0], $row[1]);
-	//error_log(strtotime($row[1]));
+	    $listeStocks[] = array($row[0], $row[1]);
+	    //error_log(strtotime($row[1]));
 	
+    }
 }
 
 $connection->close();
@@ -104,7 +97,7 @@ $myPicture->drawRectangle(0,0,$width-1,$height-1,array("R"=>0,"G"=>0,"B"=>0));
 
 /* Write the chart title */ 
 $myPicture->setFontProperties(array("FontName"=>$pChart_path."/fonts/Forgotte.ttf","FontSize"=>11));
-$myPicture->drawText(150,35,"Unités / Kg / Litres",array("FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
+$myPicture->drawText(150,35,"Achats par mois",array("FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
 
 /* Set the default font */
 $myPicture->setFontProperties(array("FontName"=>$pChart_path."/fonts/pf_arma_five.ttf","FontSize"=>10));
@@ -119,7 +112,7 @@ $scaleSettings = array("XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"GridR"=>200
 $myPicture->drawScale($scaleSettings);
 
 /* Write the chart legend */
-$myPicture->drawLegend(640,20,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
+//$myPicture->drawLegend(640,20,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
 
 /* Turn on Antialiasing */
 $myPicture->Antialias = TRUE;

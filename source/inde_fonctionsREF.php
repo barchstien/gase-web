@@ -41,7 +41,10 @@
 	{
 		$connection = ConnectionBDD();
 
-		$result = $connection->query("SELECT DESIGNATION, ID_FOURNISSEUR, VRAC, ID_CATEGORIE, PRIX_TTC, TVA, VISIBLE, CODE_FOURNISSEUR, COMMENTAIRE, DATE_REFERENCEMENT, ALERT_STOCK FROM _inde_REFERENCES WHERE ID_REFERENCE= '$idReference'");
+		$result = $connection->query("SELECT r.DESIGNATION, r.ID_FOURNISSEUR, r.VRAC, r.ID_CATEGORIE, r.PRIX_TTC, r.TVA, r.VISIBLE, r.CODE_FOURNISSEUR, r.COMMENTAIRE, r.DATE_REFERENCEMENT, r.ALERT_STOCK, f.NOM 
+		    FROM _inde_REFERENCES r, _inde_FOURNISSEURS f 
+		    WHERE ID_REFERENCE = '$idReference'
+		    AND r.ID_FOURNISSEUR = f.ID_FOURNISSEUR");
 		while ( $row = $result->fetch_array())
 		{		
 			$donnees['DESIGNATION'] = $row[0];
@@ -56,11 +59,13 @@
 			$donnees['DATE_REFERENCEMENT'] = $row[9];
 			$donnees['ALERT_STOCK'] = $row[10];
 			//no alert stock (empty) => stored as -1 in db
-	        //... reference wih null as alert will be set to -1 when modified for the first time
+	        //... reference with null as alert will be set to -1 when modified for the first time
 	        //... there might be an alert level set to 0
 	        if ($donnees['ALERT_STOCK'] == "-1"){
 	            $donnees['ALERT_STOCK'] = "";
 	        }
+	        //exra data, usefull for some cases
+	        $donnees['NOM_FOURNISSEUR'] = $row[11];
 		}
 		FermerConnectionBDD($connection);
 		return $donnees;

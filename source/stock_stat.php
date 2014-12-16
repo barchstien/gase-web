@@ -9,9 +9,14 @@
     <body>
 		<?php include 'inde_menu.php'; ?>
 
-		<?php require("fonctions_bd_gase.php"); ?>
-		<?php require("inde_fonctionsSTK.php"); ?>
-		
+		<?php require("fonctions_bd_gase.php");
+		require("inde_fonctionsSTK.php");
+		require("inde_fonctionsREF.php");
+		$ref = SelectionDonneesReference($_GET['id']);
+		?>
+		<div style="text-align:center;">
+		    <strong><?php echo $ref["DESIGNATION"]?></strong> (<?php echo $ref["NOM_FOURNISSEUR"]?>)
+		</div>
 		<img style="display: block;margin-left:auto; margin-right:auto;" src="stock_stat_generate.php?id='<?php echo $_GET['id']; ?>'">
 		
 
