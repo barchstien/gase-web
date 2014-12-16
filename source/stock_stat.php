@@ -31,9 +31,9 @@
 		        $cnt = 0;
 		        foreach($year_list as $year){
 		            if ($year_selected == $year){
-		                echo "<option style='z-index:0;' value='$year' selected>$year</option>";
+		                echo "<option value='$year' selected>$year</option>";
 		            }else{
-		                echo "<option style='z-index:0;' value='$year'>$year</option>";
+		                echo "<option value='$year'>$year</option>";
 		            }
 		            $cnt ++;
 		        }?>

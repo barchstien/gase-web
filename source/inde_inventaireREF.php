@@ -8,8 +8,8 @@
 
     <body>
 	<?php
-	require("inde_fonctionsSTK.php");
-	$listeSTK = SelectionListeSTK();
+	    require("inde_fonctionsSTK.php");
+	    $listeSTK = SelectionListeSTK();
 	?>
 		<?php include 'inde_menu.php'; ?>
 		

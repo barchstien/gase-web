@@ -138,6 +138,8 @@
 		return $listeStocks;
 	}
 	
+	/** @return a list of year within which a purchase occured for $ref
+	for example array(2013, 2014) */
 	function getYearWithPurchase_forReferenceId($ref){
 	    $connection = ConnectionBDD();
 	    $result = $connection->query("SELECT DISTINCT YEAR(DATE) FROM _inde_STOCKS WHERE ID_REFERENCE = '$ref'");
@@ -150,4 +152,24 @@
 	    FermerConnectionBDD($connection);
 	    return $ret;
 	}
+	
+	////////// Inventaire : Ecarts ////////
+	function get_inventaires_dates(){
+	    $connection = ConnectionBDD();
+	    $result = $connection->query("SELECT distinct DATE_FORMAT(DATE,'%Y-%m-%e')
+                                FROM _inde_STOCKS
+                                WHERE OPERATION = 'INVENTAIRE'
+                                group by DATE_FORMAT(DATE,'%Y-%m-%e')
+                                ORDER BY DATE DESC;");
+	    $ret = array();
+	    while ( $row = $result->fetch_array()){
+	        if (0 != $row[0]){
+	            $ret[] = $row[0];
+	        }
+	    }
+	    FermerConnectionBDD($connection);
+	    return $ret;
+	}
+	
+	
 ?>

@@ -9,9 +9,9 @@
 	<?php 
 	require("inde_fonctionsAD.php"); 
 	?>
+	<body>
 	<?php include 'inde_menu.php'; ?>
-	
-    <body>
+    
 		<div style="text-align:center">
 			Cliquez sur le nom d un adherent pour modifier ses donnees.
 		<div>
