@@ -138,7 +138,7 @@
 		return $listeStocks;
 	}
 	
-	function getYearWithStats_forReferenceId($ref){
+	function getYearWithPurchase_forReferenceId($ref){
 	    $connection = ConnectionBDD();
 	    $result = $connection->query("SELECT DISTINCT YEAR(DATE) FROM _inde_STOCKS WHERE ID_REFERENCE = '$ref'");
 	    $ret = array();

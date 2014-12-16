@@ -3,24 +3,32 @@
 //... so need to use only base php here
 //require_once("fonctions_bd_gase.php");
 
+//get path to pChart
 define ("GASE_CONFIG_FILE_PATH", "../config.ini");
-$id_reference = $_GET['id'];
-error_log($id_reference);
 $config = parse_ini_file(GASE_CONFIG_FILE_PATH, true);
 $pChart_path = $config["pCHART"]["path"];
+////GET parameters
+$id_reference = $_GET['id'];
+$year_stats = 0;
+if (isset($_GET['year'])){
+    $year_stats = $_GET['year'];
+}
+//debug
+$year = 2014;
 
-
+////Connect to DB
 $address = $config["DB"]["address"];
 $user = $config["DB"]["user"];
 $pass = $config["DB"]["password"];
 $name =  $config["DB"]["name"];
 $connection = new mysqli($address, $user, $pass, $name);
 if ($connection->connect_errno) {
+    error_log("Failed to connect to MySQL: " . $connection->connect_error);
     exit("Failed to connect to MySQL: " . $connection->connect_error);
 }
-
+////get
 $months = range(1, 12);
-$year = 2014;
+$weeks = range(0, 53);
 $listeAchats = array();
 $listeStocks = array();
 foreach($months as $m){
