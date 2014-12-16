@@ -173,7 +173,7 @@
 	
 	function get_ecarts_list_for_date($date){
 	    $connection = ConnectionBDD();
-	    $result = $connection->query("SELECT s.QUANTITE, c.NOM, r.DESIGNATION, f.NOM, s.DATE
+	    $result = $connection->query("SELECT s.QUANTITE, c.NOM, r.DESIGNATION, f.NOM, r.PRIX_TTC, s.DATE
                                 FROM _inde_STOCKS s, _inde_REFERENCES r, _inde_CATEGORIES c, _inde_FOURNISSEURS f
                                 WHERE s.OPERATION = 'INVENTAIRE'
                                 AND DATE_FORMAT(s.DATE,'%Y-%m-%e') = '$date'
@@ -187,6 +187,7 @@
             $a["categorie_nom"] = $row[1];
             $a["ref_designation"] = $row[2];
             $a["fournisseur_nom"] = $row[3];
+            $a["ref_prix"] = $row[4];
             $ret[] = $a;
 	    }
 	    FermerConnectionBDD($connection);
