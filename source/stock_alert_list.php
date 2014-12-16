@@ -12,7 +12,7 @@
         <h2 style="text-align:center;">Alertes Stock</h2>
 		<?php	
 		require("inde_fonctionsSTK.php");
-		$liste_alertes = getReferencesWithStockAlertRaised();
+		$list_alertes = getReferencesWithStockAlertRaised();
 		?>
 		<table style="margin-left:auto; margin-right:auto;">
 			<tr>
@@ -23,17 +23,19 @@
 				<td width="20%" align="center"><strong>FOURNISSEUR</strong></td>
 			</tr>
 			<?php
-			foreach($liste_alertes as $ref)
-			{
-				?>
-				<tr>
-					<td width="10%"><?php echo $ref['STOCK'];?></td>
-					<td width="10%"><?php echo $ref['ALERT_STOCK'];?></td>
-					<td width="10%"><?php echo $ref['CATEGORIE'];?></td>
-					<td width="50%"><?php echo $ref['DESIGNATION'];?></td>
-					<td width="20%" align="center"><?php echo $ref['NOM'];?></td>
-				</tr>
-				<?php
+			if (count($list_alertes) != 0){
+			    foreach($list_alertes as $ref)
+			    {
+				    ?>
+				    <tr>
+					    <td width="10%"><?php echo $ref['STOCK'];?></td>
+					    <td width="10%"><?php echo $ref['ALERT_STOCK'];?></td>
+					    <td width="10%"><?php echo $ref['CATEGORIE'];?></td>
+					    <td width="50%"><?php echo $ref['DESIGNATION'];?></td>
+					    <td width="20%" align="center"><?php echo $ref['NOM'];?></td>
+				    </tr>
+				    <?php
+			    }
 			}
 			?>			
 		</table>
