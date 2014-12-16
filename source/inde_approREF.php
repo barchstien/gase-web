@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-		<!-- En-tête de la page -->
         <meta charset="utf-8" />
 		<link rel="stylesheet" href="inde_stocksApproREF.css" /> 
 		<title>Appro stocks</title>
@@ -16,9 +15,8 @@
 	?>
 	
     <body>
-		<div class="menu">
-			<?php include 'inde_menu.php'; ?>
-		</div>
+		<?php include 'inde_menu.php'; ?>
+
 		<b><center><font color="red">L APPROVISIONNEMENT DES REFERENCS EN VRAC DOIT ETRE INDIQUE EN KILOGRAMME OU LITRE.</font></center></b>
 		<br />
 		<form id="formulaire" method="post" action="inde_enregistrerApproSTK.php">

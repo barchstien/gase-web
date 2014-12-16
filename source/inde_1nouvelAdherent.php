@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-		<!-- En-tête de la page -->
         <meta charset="utf-8" />
         <link rel="stylesheet" href="style_default.css" /> 
         <title>NOUVEL ADHERENT</title>
     </head>
 
-	<div class="menu">
-		<?php include 'inde_menu.php'; ?>
-	</div>
+	<?php include 'inde_menu.php'; ?>
 	
     <body>
 		<div style="text-align:center">

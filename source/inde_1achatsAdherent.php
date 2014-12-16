@@ -1,12 +1,8 @@
-<?php
-session_start();
-?>
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html>
     <head>
-		<!-- En-tête de la page -->
         <meta charset="utf-8" />
-		<!-- <link rel="stylesheet" href="inde_1AchatsAdherent.css" /> -->
 		<link rel="stylesheet" href="style_default.css" />
 		<link rel="stylesheet" href="style_form.css" />
 		<title>ACHATS</title>
@@ -29,7 +25,6 @@ session_start();
 	$_SESSION['inde_panier']['qteReference'] = array();
 	$_SESSION['inde_panier']['prixReference'] = array();
 
-	//include 'inde_menuAchats.php';
 	?>
 	
     <body>

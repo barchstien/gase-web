@@ -18,10 +18,8 @@
 	?>
 	
 	<body>
-	
-	    <div class="menu">
-		    <?php include 'inde_menu.php'; ?>
-	    </div>
+	    <?php include 'inde_menu.php'; ?>
+
 		<div style="text-align:center">
 			Les champs avec une etoile doivent etre obligatoirement renseignes.
 			<div>

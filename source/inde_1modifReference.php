@@ -12,9 +12,8 @@
 	require("inde_fonctionsCAT.php"); 
 	?>
 	<body>
-	    <div class="menu">
-		    <?php include 'inde_menu.php'; ?>
-	    </div>
+	    <?php include 'inde_menu.php'; ?>
+
 		<div style="text-align:center">
 			Cliquez sur le nom de la reference a modifier.
 		<div>

@@ -1,18 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-		<!-- En-tête de la page -->
         <meta charset="utf-8" />
 		<link rel="stylesheet" href="style_default.css" />
 		<title>COMPTE</title>
     </head>
 
     <body>
-		<div class="menu">
-			<p>
-				<?php include 'inde_menu.php'; ?>
-			</p>
-		</div>
+		<?php include 'inde_menu.php'; ?>
 
 		<div style="text-align:center">
 			Versement effectue.

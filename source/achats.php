@@ -7,9 +7,7 @@
     </head>
 
     <body>
-		<div class="menu">
-			<?php include 'inde_menu.php'; ?>
-		</div>
+		<?php include 'inde_menu.php'; ?>
 		
 		<?php require("inde_fonctionsAD.php"); ?>
 		<div style="text-align:center">

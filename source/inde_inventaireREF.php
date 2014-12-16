@@ -11,9 +11,7 @@
 	require("inde_fonctionsSTK.php");
 	$listeSTK = SelectionListeSTK();
 	?>
-		<div class="menu">
-			<?php include 'inde_menu.php'; ?>
-		</div>
+		<?php include 'inde_menu.php'; ?>
 		
 		<form id="formulaire" method="post" action="inde_enregistrerInventaireSTK.php">
 			<div>

@@ -17,6 +17,7 @@
 				<li><a href="inde_1approREF.php">APPROVISIONNER</a></li>
 				<li><a href="inde_inventaireREF.php">INVENTAIRE</a></li>
 				<li><a href="stock_alert_list.php">ALERTE STOCK</a></li>
+				<li><a href="inventaire_ecarts.php">ECARTS</a></li>
 			</ul>
 		</li>
 		<li><a href="#">REFERENCES</a>

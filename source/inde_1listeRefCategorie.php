@@ -4,11 +4,9 @@ session_start();
 <!DOCTYPE html>
 <html>
     <head>
-		<!-- En-tête de la page -->
         <meta charset="utf-8" />
 		<link rel="stylesheet" href="style_default.css" />
 		<link rel="stylesheet" href="style_form.css" />
-		<!-- <link rel="stylesheet" href="inde_1AchatsAdherent.css" /> -->
 		<title>ACHATS</title>
     </head>
 
@@ -22,9 +20,7 @@ session_start();
 	?>
 
 	<body>
-		<div class="menu">
-			<?php include 'inde_menuAchats.php'; ?>
-		</div>
+		<?php include 'inde_menuAchats.php'; ?>
 		
 		<div class="references">
 			<?php include 'inde_listeReferences.php'; ?>

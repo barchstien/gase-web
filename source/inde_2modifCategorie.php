@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-		<!-- En-tête de la page -->
         <meta charset="utf-8" />
 		<link rel="stylesheet" href="style_default.css" />
         <title>MODIF. CATEGORIE</title>
@@ -9,15 +8,11 @@
 
 	<?php 
 	require("inde_fonctionsCAT.php"); 
-	
 	$idCategorie= $_GET[idCategorie];
 	$donneesCategorie = SelectionDonneesCategorie($idCategorie);
-
 	?>
 	
-	<div class="menu">
-		<?php include 'inde_menu.php'; ?>
-	</div>
+	<?php include 'inde_menu.php'; ?>
 	
 	<body>
 		<div style="text-align:center">

@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-		<!-- En-tête de la page -->
         <meta charset="utf-8" />
 		<title>COMPTE</title>
     </head>
 
     <body>
-		<div class="menu">
-			<?php include 'inde_menu.php'; ?>
-		</div>
+		<?php include 'inde_menu.php'; ?>
 
 		<?php require("inde_fonctionsAD.php"); ?>
 		<div style="text-align:center">
