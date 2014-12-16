@@ -24,8 +24,9 @@
 		?>
 		
 		<div style="text-align:center;position:relative;top:-20px;z-index:0;">
-		    <form>
-		    <select>
+		    <form action="stock_stat.php" method="GET">
+		    <input type="hidden" name="id" value="<?php echo $ref_id; ?>">
+		    <select name="year" onchange="this.form.submit()">
 		        <?php 
 		        $cnt = 0;
 		        foreach($year_list as $year){

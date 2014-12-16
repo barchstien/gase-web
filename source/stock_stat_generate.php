@@ -25,11 +25,11 @@ if ($connection->connect_errno) {
 ////create data to plot
 $weeks = range(1, 54);
 $listeAchats = array();
-$listeStocks = array();
-//get sume of quantity bought for each week
+$listeStocks_min_level = array();
+//get sum of quantity bought for each week
 foreach($weeks as $w){
     $result = $connection->query(
-        "SELECT SUM(QUANTITE), MIN(DATE_FORMAT(DATE, '%M %D'))
+        "SELECT SUM(QUANTITE), MIN(STOCK), MIN(DATE_FORMAT(DATE, '%M %D'))
         FROM _inde_STOCKS
         WHERE ID_REFERENCE = $id_reference
             AND OPERATION = 'ACHAT'
@@ -41,7 +41,8 @@ foreach($weeks as $w){
     //compute day corresponding to the start of the week
     $week_start = new DateTime();
     $week_start->setISODate($year_stats, $w);
-    $listeAchats[] = array($row[0], $week_start->format('j-n'));
+    $listeAchats[] = array($row[0], $week_start->format('j-M'));
+    $listeStocks_min_level[] = $row[1];
 }
 
 /*
@@ -83,12 +84,15 @@ $MyData = new pData();
 for($i=0;$i<count($listeAchats);$i++){
     //$MyData->addPoints(rand(1,15),"Probe 1");
     $MyData->addPoints($listeAchats[$i][0],"Achats ".$year_stats);
-    $MyData->addPoints($listeAchats[$i][1],"Labels");
+    $MyData->addPoints($listeAchats[$i][1],"Date");
+    $MyData->addPoints($listeStocks_min_level[$i],"Stock Minimum");
 }
+//set series color
+$MyData->setPalette("Stock Minimum", array("R"=>255,"G"=>0,"B"=>0,"Alpha"=>250));
+$MyData->setPalette("Achats ".$year_stats, array("R"=>0,"G"=>0,"B"=>255,"Alpha"=>250));
 
 $MyData->setAxisName(0,"Unités/Kg/Litres");
-$MyData->setSerieDescription("Labels","Date");
-$MyData->setAbscissa("Labels");
+$MyData->setAbscissa("Date");
 //$MyData->setXAxisDisplay(AXIS_FORMAT_DATE, "d/m/y");
 ////// ???  correct ??$MyData->setXAxisName(0,"Unités/Kg/Litres");
 $MyData->setXAxisDisplay(AXIS_FORMAT_CUSTOM,"XAxisFormat");
@@ -109,7 +113,7 @@ $myPicture->drawRectangle(0,0,$width-1,$height-1,array("R"=>0,"G"=>0,"B"=>0));
 
 /* Write the chart title */ 
 $myPicture->setFontProperties(array("FontName"=>$pChart_path."/fonts/Forgotte.ttf","FontSize"=>11));
-$myPicture->drawText(150,35,"Achats par semaine",array("FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
+$myPicture->drawText(250,35,"Achats vs Stocks Minimum par semaine",array("FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
 
 /* Set the default font */
 $myPicture->setFontProperties(array("FontName"=>$pChart_path."/fonts/pf_arma_five.ttf","FontSize"=>10));
@@ -120,11 +124,11 @@ $myPicture->setGraphArea(60,40,$width-10,$height-50);
 /* Draw the scale */
 //,"LabelSkip"=>10
 $scaleSettings = array("XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"GridR"=>200,"GridG"=>200,"GridB"=>200,"GridAlpha"=>100,"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE
-,"LabelRotation"=>30,"LabelingMethod"=>LABELING_ALL);
+,"LabelRotation"=>40,"LabelingMethod"=>LABELING_ALL,"Factors"=>array(1, 5, 10));
 $myPicture->drawScale($scaleSettings);
 
 /* Write the chart legend */
-$myPicture->drawLegend($width-150,20,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
+$myPicture->drawLegend($width-250,20,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
 
 /* Turn on Antialiasing */
 $myPicture->Antialias = TRUE;
@@ -138,7 +142,7 @@ $Threshold = "";
 $Threshold[] = array("Min"=>5,"Max"=>10,"R"=>240,"G"=>132,"B"=>20,"Alpha"=>100);
 $Threshold[] = array("Min"=>10,"Max"=>20,"R"=>240,"G"=>91,"B"=>20,"Alpha"=>100);
 */
-$myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>20));
+$myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
 $myPicture->drawAreaChart(array("Threshold"=>$Threshold));
 
 /* Draw a line chart over */
