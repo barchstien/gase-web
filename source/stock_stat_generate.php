@@ -34,6 +34,7 @@ if ($result != false){
 /////////////:
 $months = range(1, 12);
 $year = 2014;
+$listeAchats = array();
 $listeStocks = array();
 foreach($months as $m){
     $result = $connection->query(
@@ -46,7 +47,7 @@ foreach($months as $m){
         ORDER BY DATE"
     );
     $row = $result->fetch_array();
-    $listeStocks[] = array($row[0], $year."-".str_pad($m, 2, '0', STR_PAD_LEFT));
+    $listeAchats[] = array($row[0], $year."-".str_pad($m, 2, '0', STR_PAD_LEFT));
 }
 
 /*
@@ -83,10 +84,10 @@ include($pChart_path."/class/pImage.class.php");
 $MyData = new pData();
 //for($i=0;$i<=30;$i++){
 $cnt = 0;
-for($i=0;$i<count($listeStocks);$i++){
+for($i=0;$i<count($listeAchats);$i++){
     //$MyData->addPoints(rand(1,15),"Probe 1");
-    $MyData->addPoints($listeStocks[$i][0],"Achats ".$year);
-    $MyData->addPoints($listeStocks[$i][1],"Labels");
+    $MyData->addPoints($listeAchats[$i][0],"Achats ".$year);
+    $MyData->addPoints($listeAchats[$i][1],"Labels");
 }
 //$MyData->setSerieTicks("Probe 2",4);
 $MyData->setAxisName(0,"Unités/Kg/Litres");
