@@ -9,12 +9,8 @@ $config = parse_ini_file(GASE_CONFIG_FILE_PATH, true);
 $pChart_path = $config["pCHART"]["path"];
 ////GET parameters
 $id_reference = $_GET['id'];
-$year_stats = 0;
-if (isset($_GET['year'])){
-    $year_stats = $_GET['year'];
-}
-//debug
-$year = 2014;
+$year_stats = $_GET['year'];
+
 
 ////Connect to DB
 $address = $config["DB"]["address"];
@@ -26,23 +22,26 @@ if ($connection->connect_errno) {
     error_log("Failed to connect to MySQL: " . $connection->connect_error);
     exit("Failed to connect to MySQL: " . $connection->connect_error);
 }
-////get
-$months = range(1, 12);
-$weeks = range(0, 53);
+////create data to plot
+$weeks = range(1, 54);
 $listeAchats = array();
 $listeStocks = array();
-foreach($months as $m){
+//get sume of quantity bought for each week
+foreach($weeks as $w){
     $result = $connection->query(
-        "SELECT SUM(QUANTITE), DATE_FORMAT(DATE, '%Y-%m')
+        "SELECT SUM(QUANTITE), MIN(DATE_FORMAT(DATE, '%M %D'))
         FROM _inde_STOCKS
         WHERE ID_REFERENCE = $id_reference
             AND OPERATION = 'ACHAT'
-            AND YEAR(DATE) = $year
-            AND MONTH(DATE) = $m
+            AND YEAR(DATE) = $year_stats
+            AND WEEK(DATE) = $w
         ORDER BY DATE"
     );
     $row = $result->fetch_array();
-    $listeAchats[] = array($row[0], $year."-".str_pad($m, 2, '0', STR_PAD_LEFT));
+    //compute day corresponding to the start of the week
+    $week_start = new DateTime();
+    $week_start->setISODate($year_stats, $w);
+    $listeAchats[] = array($row[0], $week_start->format('j-n'));
 }
 
 /*
@@ -66,7 +65,9 @@ if ($result != false){
 
 $connection->close();
 
-
+//////////// MAKE the CHART /////////////
+$width = 1300;
+$height = 500;
 
 /* CAT:Area Chart */
 
@@ -77,25 +78,22 @@ include($pChart_path."/class/pImage.class.php");
 
 /* Create and populate the pData object */
 $MyData = new pData();
-//for($i=0;$i<=30;$i++){
-$cnt = 0;
+//transfert data to pChart structure
+//TODO put it directly into this struct ???
 for($i=0;$i<count($listeAchats);$i++){
     //$MyData->addPoints(rand(1,15),"Probe 1");
-    $MyData->addPoints($listeAchats[$i][0],"Achats ".$year);
+    $MyData->addPoints($listeAchats[$i][0],"Achats ".$year_stats);
     $MyData->addPoints($listeAchats[$i][1],"Labels");
 }
-//$MyData->setSerieTicks("Probe 2",4);
+
 $MyData->setAxisName(0,"Unités/Kg/Litres");
-
-
 $MyData->setSerieDescription("Labels","Date");
 $MyData->setAbscissa("Labels");
 //$MyData->setXAxisDisplay(AXIS_FORMAT_DATE, "d/m/y");
+////// ???  correct ??$MyData->setXAxisName(0,"Unités/Kg/Litres");
 $MyData->setXAxisDisplay(AXIS_FORMAT_CUSTOM,"XAxisFormat");
 function XAxisFormat($Value) { return($Value);}//date("d/m/Y",strtotime($Value)));}
 
-$width = 1200;
-$height = 450;
 /* Create the pChart object */
 $myPicture = new pImage($width,$height,$MyData);
 
@@ -111,7 +109,7 @@ $myPicture->drawRectangle(0,0,$width-1,$height-1,array("R"=>0,"G"=>0,"B"=>0));
 
 /* Write the chart title */ 
 $myPicture->setFontProperties(array("FontName"=>$pChart_path."/fonts/Forgotte.ttf","FontSize"=>11));
-$myPicture->drawText(150,35,"Achats par mois",array("FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
+$myPicture->drawText(150,35,"Achats par semaine",array("FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
 
 /* Set the default font */
 $myPicture->setFontProperties(array("FontName"=>$pChart_path."/fonts/pf_arma_five.ttf","FontSize"=>10));
@@ -126,7 +124,7 @@ $scaleSettings = array("XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"GridR"=>200
 $myPicture->drawScale($scaleSettings);
 
 /* Write the chart legend */
-$myPicture->drawLegend(640,20,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
+$myPicture->drawLegend($width-150,20,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
 
 /* Turn on Antialiasing */
 $myPicture->Antialias = TRUE;

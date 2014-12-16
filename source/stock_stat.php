@@ -16,22 +16,31 @@
 		$ref_details = SelectionDonneesReference($ref_id);
 		//get years during which this reference has been purchased
 		$year_list = getYearWithPurchase_forReferenceId($ref_id);
+		//display last year available by default
+		$year_selected = max($year_list);
+		if (isset($_GET['year'])){
+            $year_selected = $_GET['year'];
+        }
 		?>
 		
 		<div style="text-align:center;position:relative;top:-20px;z-index:0;">
+		    <form>
 		    <select>
-		        <?php foreach($year_list as $year){
-		            echo "<option style='z-index:0;' value='$year'>$year</option>";
+		        <?php 
+		        $cnt = 0;
+		        foreach($year_list as $year){
+		            if ($year_selected == $year){
+		                echo "<option style='z-index:0;' value='$year' selected>$year</option>";
+		            }else{
+		                echo "<option style='z-index:0;' value='$year'>$year</option>";
+		            }
+		            $cnt ++;
 		        }?>
 		    </select>
 		    <strong><?php echo $ref_details["DESIGNATION"]?></strong> (<?php echo $ref_details["NOM_FOURNISSEUR"]?>)
+		    </form>
 		</div>
-		<?php
-		    $GET_param = "?id='$ref_id'";
-		    if(isset($_GET['year'])){
-		        $GET_param .= "&year=".$_GET['year'];
-		    }
-		?>
+		<?php $GET_param = "?id=$ref_id&year=$year_selected";?>
 		<img style="display: block;margin-left:auto; margin-right:auto;" src="stock_stat_generate.php<?php echo $GET_param; ?>">
 	</body>
 </html>
