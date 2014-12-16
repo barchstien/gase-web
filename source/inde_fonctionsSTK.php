@@ -105,7 +105,7 @@
 	
 	/** get list of references with alert on stock raised
 	meaning those that are visible, that have a stock alert, and where stock alert is reached */
-	function getReferencesWithStockAlert(){
+	function getReferencesWithStockAlertRaised(){
 	    $connection = ConnectionBDD();
 	    $connection->query("SELECT");
 	    

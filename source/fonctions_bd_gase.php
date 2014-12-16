@@ -1,17 +1,15 @@
 ﻿<?php
-    //this file was originally un-used, while it should be used by all !!!!!!!!
-
 //avoid double insertion
 if (!defined("FONCTION_BD_GASE_PHP")){
 define("FONCTION_BD_GASE_PHP", 1);
 
 //path to config file
-define ("CONFIG_FILE_PATH", "../config.ini");
+define ("GASE_CONFIG_FILE_PATH", "../config.ini");
 
 
 function ConnectionBDD(){
     //extract DB details from config.ini file
-    $config = parse_ini_file(CONFIG_FILE_PATH, true);
+    $config = parse_ini_file(GASE_CONFIG_FILE_PATH, true);
     $address = $config["DB"]["address"];
     $user = $config["DB"]["user"];
     $pass = $config["DB"]["password"];
@@ -101,19 +99,19 @@ function SelectionListeMessages(){
 //////////////// EMAIL ////////////////
 function get_email_origin(){
     //extract email origin from config.ini file
-    $config = parse_ini_file(CONFIG_FILE_PATH, true);
+    $config = parse_ini_file(GASE_CONFIG_FILE_PATH, true);
     return $config["EMAIL"]["origin"];
 }
 
 function get_email_subject(){
     //extract email origin from config.ini file
-    $config = parse_ini_file(CONFIG_FILE_PATH, true);
+    $config = parse_ini_file(GASE_CONFIG_FILE_PATH, true);
     return $config["EMAIL"]["subject"];
 }
 
 /** return NULL if not debug, else the debug email destination */
 function get_email_debug_destination(){
-    $config = parse_ini_file(CONFIG_FILE_PATH, true);
+    $config = parse_ini_file(GASE_CONFIG_FILE_PATH, true);
     $debug = $config["EMAIL"]["debug"];
     $ret = null;
     if ($debug){

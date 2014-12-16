@@ -12,7 +12,7 @@
 		<?php require("fonctions_bd_gase.php"); ?>
 		<?php require("inde_fonctionsSTK.php"); ?>
 		<div class="notification_alert_stock">
-		    <?php $alert_list = getReferencesWithStockAlert();
+		    <?php $alert_list = getReferencesWithStockAlertRaised();
 		        if (count($alert_list) > 0){
 		            echo "<strong>Alerte Stock ! </strong><a href=\"stock_alert_list.php\">détail</a>";
 		        }
