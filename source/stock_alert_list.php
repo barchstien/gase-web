@@ -14,7 +14,7 @@
 		require("inde_fonctionsSTK.php");
 		$list_alertes = getReferencesWithStockAlertRaised();
 		?>
-		<table style="margin-left:auto; margin-right:auto;">
+		<table style="margin-left:auto; margin-right:auto; max-width:1000px;">
 			<tr>
 				<td width="10%" align="center"><strong>QUANTITE</strong></td>
 				<td width="10%" align="center"><strong>ALERTE</strong></td>
@@ -28,11 +28,11 @@
 			    {
 				    ?>
 				    <tr>
-					    <td width="10%"><?php echo $ref['STOCK'];?></td>
-					    <td width="10%"><?php echo $ref['ALERT_STOCK'];?></td>
-					    <td width="10%"><?php echo $ref['CATEGORIE'];?></td>
-					    <td width="50%"><?php echo $ref['DESIGNATION'];?></td>
-					    <td width="20%" align="center"><?php echo $ref['NOM'];?></td>
+					    <td><?php echo $ref['STOCK'];?></td>
+					    <td><?php echo $ref['ALERT_STOCK'];?></td>
+					    <td><?php echo $ref['CATEGORIE'];?></td>
+					    <td><?php echo $ref['DESIGNATION'];?></td>
+					    <td align="center"><?php echo $ref['NOM'];?></td>
 				    </tr>
 				    <?php
 			    }

@@ -5,10 +5,17 @@
 
 3. Copy Apache and PHP config file
     TODO
+    create proper symlinks
     
 4. Create DB scheme and user with appropriate rights
     TODO
     
 5. Copy project folder (/var/www)
+    use git
+    set config.ini
+    set backup_script.sh with proper path to config
 
-6. 
+6. Backup
+    http://www.thegeekstuff.com/2011/05/anacron-examples/ for anacron
+    
+7. Setup email send

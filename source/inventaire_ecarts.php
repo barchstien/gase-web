@@ -36,17 +36,17 @@
                     }
                 }?>
             </select>
-             - <strong>Total Ecart : </strong><?php echo $total_ecart ?> euro
+             - <strong>Total Ecart* : </strong><?php echo round($total_ecart, 2) ?> euro
             </form>
         </div>
         
-        <table style="margin-left:auto; margin-right:auto;">
+        <table style="margin-left:auto; margin-right:auto;max-width:1000px;">
 			<tr>
-				<td width="5%" align="center"><strong>ECART</strong></td>
+				<td width="5%" align="center"><strong>ECART**</strong></td>
 				<td width="5%" align="center"><strong>ECART Euro</strong></td>
 				<td width="10%" align="center"><strong>CATEGORIE</strong></td>
-				<td width="50%" align="center"><strong>DESIGNATION</strong></td>
-				<td width="20%" align="center"><strong>FOURNISSEUR</strong></td>
+				<td width="20%" align="center"><strong>DESIGNATION</strong></td>
+				<td width="10%" align="center"><strong>FOURNISSEUR</strong></td>
 				<td width="5%" align="center"><strong>STATS</strong></td>
 			</tr>
 			<?php
@@ -54,16 +54,24 @@
 			{
 				?>
 				<tr>
-					<td width="5%"><?php echo $e['ecart'];?></td>
-					<td width="5%"><?php echo round($e['ref_prix']*$e['ecart'], 2);?></td>
-					<td width="10%"><?php echo $e['categorie_nom'];?></td>
-					<td width="50%"><?php echo $e['ref_designation'];?></td>
-					<td width="20%" align="center"><?php echo $e['fournisseur_nom'];?></td>
-					<td width="5%" align="center"><!--<a href="stock_stat.php?id=<?php echo $ref['ID_REFERENCE'];?>">stats</a>--></td>
+					<td><?php echo $e['ecart'];?></td>
+					<td><?php echo round($e['ref_prix']*$e['ecart'], 2);?></td>
+					<td><?php echo $e['categorie_nom'];?></td>
+					<td><?php echo $e['ref_designation'];?></td>
+					<td align="center"><?php echo $e['fournisseur_nom'];?></td>
+					<td align="center"><!--<a href="stock_stat.php?id=<?php echo $ref['ID_REFERENCE'];?>">stats</a>--></td>
 				</tr>
 				<?php
 			}
 			?>			
 		</table>
+		<br>
+		<div style="text-align:center;">
+		    <strong>*</strong>Les prix utilisés sont les prix actuellement enregistrés. Il est possible qu'il soient différents de ceux utilisé lors de l'inventaire
+		</div>
+		<div style="text-align:center;">
+		    <strong>**</strong>Une valeur négative signifie une perte (un produit disparu)
+		</div>
+		<br>
 	</body>
 </html>
