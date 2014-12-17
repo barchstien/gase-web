@@ -22,6 +22,13 @@ if ($connection->connect_errno) {
     error_log("Failed to connect to MySQL: " . $connection->connect_error);
     exit("Failed to connect to MySQL: " . $connection->connect_error);
 }
+
+/* pChart library inclusions */
+//included here to use th VOID constant that correspond to no data for a serie
+include($pChart_path."/class/pData.class.php");
+include($pChart_path."/class/pDraw.class.php");
+include($pChart_path."/class/pImage.class.php");
+
 ////create data to plot
 $weeks = range(1, 54);
 $listeAchats = array();
@@ -48,9 +55,9 @@ foreach($weeks as $w){
         if (1 == $d->invert){
             //$now > $week_start - $week_start is NOT in future, value is relevant
             $listeAchats[] = array($row[0], $week_start->format('j-M'));
-        }/*else{
+        }else{
             $listeAchats[] = array(VOID, $week_start->format('j-M'));
-        }*/
+        }
     }
     
     ////Stocks Minimum
@@ -63,8 +70,10 @@ foreach($weeks as $w){
         ORDER BY DATE"
     );
     $row = $result->fetch_array();
-    if ($row != NULL){
+    if (1 == $d->invert){
         $listeStocks_min_level[] = $row[0];
+    }else{
+        $listeStocks_min_level[] = VOID;
     }
 }
 
@@ -76,11 +85,6 @@ $width = 1200;
 $height = 500;
 
 /* CAT:Area Chart */
-
-/* pChart library inclusions */
-include($pChart_path."/class/pData.class.php");
-include($pChart_path."/class/pDraw.class.php");
-include($pChart_path."/class/pImage.class.php");
 
 /* Create and populate the pData object */
 $MyData = new pData();
