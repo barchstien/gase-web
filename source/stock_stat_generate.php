@@ -35,7 +35,7 @@ foreach($weeks as $w){
         WHERE ID_REFERENCE = $id_reference
             AND OPERATION = 'ACHAT'
             AND YEAR(DATE) = $year_stats
-            AND WEEK(DATE) = $w
+            AND WEEK(DATE,1) = $w
         ORDER BY DATE"
     );
     $row = $result->fetch_array();
@@ -50,7 +50,7 @@ foreach($weeks as $w){
         FROM _inde_STOCKS
         WHERE ID_REFERENCE = $id_reference
             AND YEAR(DATE) = $year_stats
-            AND WEEK(DATE) = $w
+            AND WEEK(DATE,1) = $w
         ORDER BY DATE"
     );
     $row = $result->fetch_array();
@@ -79,7 +79,7 @@ if ($result != false){
 $connection->close();
 
 //////////// MAKE the CHART /////////////
-$width = 1300;
+$width = 1200;
 $height = 500;
 
 /* CAT:Area Chart */
