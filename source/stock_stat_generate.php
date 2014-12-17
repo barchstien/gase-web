@@ -39,10 +39,19 @@ foreach($weeks as $w){
         ORDER BY DATE"
     );
     $row = $result->fetch_array();
-    //compute day corresponding to the start of the week
-    $week_start = new DateTime();
-    $week_start->setISODate($year_stats, $w);
-    $listeAchats[] = array($row[0], $week_start->format('j-M'));
+    if ($row != NULL){
+        //compute day corresponding to the start of the week
+        $week_start = new DateTime();
+        $week_start->setISODate($year_stats, $w);
+        $now = new DateTime();
+        $d = $now->diff($week_start);
+        if (1 == $d->invert){
+            //$now > $week_start - $week_start is NOT in future, value is relevant
+            $listeAchats[] = array($row[0], $week_start->format('j-M'));
+        }/*else{
+            $listeAchats[] = array(VOID, $week_start->format('j-M'));
+        }*/
+    }
     
     ////Stocks Minimum
     $result = $connection->query(
@@ -54,27 +63,11 @@ foreach($weeks as $w){
         ORDER BY DATE"
     );
     $row = $result->fetch_array();
-    $listeStocks_min_level[] = $row[0];
+    if ($row != NULL){
+        $listeStocks_min_level[] = $row[0];
+    }
 }
 
-/*
-$result = $connection->query(
-    //"SELECT STOCK, DATE
-    "SELECT SUM(QUANTITE), DATE_FORMAT(DATE, '%Y-%m')
-    FROM _inde_STOCKS
-    WHERE ID_REFERENCE = $id_reference
-    AND OPERATION = 'ACHAT'
-    AND YEAR(DATE) = $year
-    GROUP BY MONTH(DATE)
-    ORDER BY DATE");
-$listeStocks = array();
-$tmp_date;
-if ($result != false){
-    while($row = $result->fetch_array()){
-	    $listeStocks[] = array($row[0], $row[1]);
-	    //error_log(strtotime($row[1]));
-    }
-}*/
 
 $connection->close();
 
