@@ -11,8 +11,8 @@
 		<?php require("fonctions_bd_fournisseurs.php"); ?>
 		<div style="text-align:center">
 			Choisissez un fournisseur.
-			</br>
-			</br>
+			<br>
+			<br>
 			<form id="formulaire" method="post" action="inde_approREF.php">
 				<select name="fournisseur" id="fournisseur" onchange="this.form.submit()">
 					<option value="" selected="selected"></option>

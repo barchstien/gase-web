@@ -5,14 +5,13 @@
         <link rel="stylesheet" href="style_default.css" />
         <title>INVENTAIRE</title>
     </head>
-
     <body>
-	<?php
-	    require("inde_fonctionsSTK.php");
-	    $listeSTK = SelectionListeSTK();
-	?>
-		<?php include 'inde_menu.php'; ?>
-		
+        <?php include 'inde_menu.php'; ?>
+        <?php
+            require("inde_fonctionsSTK.php");
+            $listeSTK = SelectionListeSTK();
+        ?>
+
 		<form id="formulaire" method="post" action="inde_enregistrerInventaireSTK.php">
 			<div>
 			<table style="margin-left:auto; margin-right:auto;">

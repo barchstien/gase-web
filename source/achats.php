@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-		<!-- En-tête de la page -->
         <meta charset="utf-8" />
 		<title>ACHATS</title>
     </head>
-
     <body>
 		<?php include 'inde_menu.php'; ?>
 		

@@ -5,15 +5,13 @@
         <link rel="stylesheet" href="style_default.css" /> 
 		<title>REFERENCES</title>
     </head>
-
-	<?php 
-	require("inde_fonctionsREF.php"); 
-	require("fonctions_bd_fournisseurs.php"); 
-	require("inde_fonctionsCAT.php"); 
-	?>
 	<body>
-	    <?php include 'inde_menu.php'; ?>
-
+        <?php include 'inde_menu.php'; ?>
+        <?php 
+            require("inde_fonctionsREF.php"); 
+            require("fonctions_bd_fournisseurs.php"); 
+            require("inde_fonctionsCAT.php"); 
+        ?>
 		<div style="text-align:center">
 			Cliquez sur le nom de la reference a modifier.
 		<div>

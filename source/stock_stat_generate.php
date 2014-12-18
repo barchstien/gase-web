@@ -33,6 +33,7 @@ include($pChart_path."/class/pImage.class.php");
 $weeks = range(1, 54);
 $listeAchats = array();
 $listeStocks_min_level = array();
+$listeStocks_max_level = array();
 //get sum of quantity bought for each week
 foreach($weeks as $w){
     ////Sum purchase
@@ -60,9 +61,9 @@ foreach($weeks as $w){
         }
     }
     
-    ////Stocks Minimum
+    ////Stocks Minimum & Maximum
     $result = $connection->query(
-        "SELECT MIN(STOCK), MIN(DATE_FORMAT(DATE, '%M %D'))
+        "SELECT MIN(STOCK), MAX(STOCK), MIN(DATE_FORMAT(DATE, '%M %D'))
         FROM _inde_STOCKS
         WHERE ID_REFERENCE = $id_reference
             AND YEAR(DATE) = $year_stats
@@ -72,8 +73,10 @@ foreach($weeks as $w){
     $row = $result->fetch_array();
     if (1 == $d->invert){
         $listeStocks_min_level[] = $row[0];
+        $listeStocks_max_level[] = $row[1];
     }else{
         $listeStocks_min_level[] = VOID;
+        $listeStocks_max_level[] = VOID;
     }
 }
 
@@ -93,11 +96,17 @@ $MyData = new pData();
 for($i=0;$i<count($listeAchats);$i++){
     //$MyData->addPoints(rand(1,15),"Probe 1");
     $MyData->addPoints($listeAchats[$i][0],"Achats ".$year_stats);
+    //$MyData->addPoints($listeAchats[$i][0],"Achats");
     $MyData->addPoints($listeAchats[$i][1],"Date");
-    $MyData->addPoints($listeStocks_min_level[$i],"Stock Minimum");
+    $MyData->addPoints($listeStocks_max_level[$i],"Stock");
+    $MyData->addPoints($listeStocks_min_level[$i],"Floating 0");
 }
+//disable the span lower edge
+$MyData->setSerieDrawable("Floating 0", false);
+$MyData->setSerieDescription("Stock","Stock (min/max)"); 
+
 //set series color
-$MyData->setPalette("Stock Minimum", array("R"=>255,"G"=>0,"B"=>0,"Alpha"=>250));
+$MyData->setPalette("Stock", array("R"=>204,"G"=>102,"B"=>0,"Alpha"=>250));
 $MyData->setPalette("Achats ".$year_stats, array("R"=>0,"G"=>0,"B"=>255,"Alpha"=>250));
 
 $MyData->setAxisName(0,"Unités/Kg/Litres");
@@ -122,7 +131,7 @@ $myPicture->drawRectangle(0,0,$width-1,$height-1,array("R"=>0,"G"=>0,"B"=>0));
 
 /* Write the chart title */ 
 $myPicture->setFontProperties(array("FontName"=>$pChart_path."/fonts/Forgotte.ttf","FontSize"=>11));
-$myPicture->drawText(250,35,"Achats vs Stocks Minimum par semaine",array("FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
+$myPicture->drawText(250,35,"Achats vs Stocks par semaine",array("FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
 
 /* Set the default font */
 $myPicture->setFontProperties(array("FontName"=>$pChart_path."/fonts/pf_arma_five.ttf","FontSize"=>10));
@@ -145,6 +154,17 @@ $myPicture->Antialias = TRUE;
 /* Enable shadow computing */
 $myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
 
+////////////// Bar chart
+$MyData->setSerieDrawable("Achats ".$year_stats, false);
+$MyData->setSerieDrawable("Stock", true);
+//$myPicture->drawBarChart();
+$settings = array("Floating0Serie"=>"Floating 0","Surrounding"=>10);
+$myPicture->drawBarChart($settings);
+
+////////////////// Line chart
+$MyData->setSerieDrawable("Stock", false);
+$MyData->setSerieDrawable("Achats ".$year_stats, true);
+
 /* Draw the area chart */
 $Threshold = "";
 /*$Threshold[] = array("Min"=>0,"Max"=>5,"R"=>187,"G"=>220,"B"=>0,"Alpha"=>100);
@@ -159,6 +179,7 @@ $myPicture->drawLineChart(array("ForceColor"=>TRUE,"ForceR"=>0,"ForceG"=>0,"Forc
 
 /* Draw a plot chart over */
 $myPicture->drawPlotChart(array("PlotBorder"=>TRUE,"BorderSize"=>1,"Surrounding"=>-255,"BorderAlpha"=>80));
+
 
 /* Write the thresholds */
 //$myPicture->drawThreshold(5,array("WriteCaption"=>TRUE,"Caption"=>"Warn Zone","Alpha"=>70,"Ticks"=>2,"R"=>0,"G"=>0,"B"=>255));
