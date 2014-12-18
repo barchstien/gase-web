@@ -5,12 +5,9 @@
         <link rel="stylesheet" href="style_default.css" />
 		<title>FOURNISSEURS</title>
     </head>
-
-	<?php require("fonctions_bd_fournisseurs.php"); ?>
-	
-	<?php include 'inde_menu.php'; ?>
-	
     <body>
+        <?php include 'inde_menu.php'; ?>
+	    <?php require("fonctions_bd_fournisseurs.php"); ?>
 		<div style="text-align:center">
 			Cliquez sur le nom du fournisseur a modifier.
 		<div>

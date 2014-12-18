@@ -5,15 +5,12 @@
         <link rel="stylesheet" href="style_default.css" />
 		<title>ARCHIVES</title>
     </head>
-
-	<?php 
-	require("inde_fonctionsDOCU.php");
-	require("fonctions_bd_fournisseurs.php");
-	?>
-	
-	<?php include 'inde_menu.php'; ?>
-	
     <body>
+        <?php include 'inde_menu.php'; ?>
+	    <?php 
+	    require("inde_fonctionsDOCU.php");
+	    require("fonctions_bd_fournisseurs.php");
+	    ?>
 		<div style="text-align:center">
 			Ensemble des documents archives.
 		<div>

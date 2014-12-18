@@ -5,12 +5,9 @@
 		<link rel="stylesheet" href="style_default.css" />
 		<title>ADHERENTS</title>
     </head>
-
-	<?php 
-	require("inde_fonctionsAD.php"); 
-	?>
 	<body>
-	<?php include 'inde_menu.php'; ?>
+	    <?php include 'inde_menu.php'; ?>
+	    <?php require("inde_fonctionsAD.php"); ?>
     
 		<div style="text-align:center">
 			Cliquez sur le nom d un adherent pour modifier ses donnees.

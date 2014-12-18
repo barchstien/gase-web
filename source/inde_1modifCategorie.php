@@ -5,13 +5,8 @@
 		<link rel="stylesheet" href="style_default.css" />
 		<title>MODIF. CATEGORIE</title>
     </head>
-
-	<?php 
-	require("inde_fonctionsCAT.php"); 
-	?>
-	
 	<?php include 'inde_menu.php'; ?>
-	
+	<?php require("inde_fonctionsCAT.php"); ?>
     <body>
 		<div style="text-align:center">
 			Cliquez sur le nom de la categorie a modifier.
