@@ -43,7 +43,7 @@
         <table style="margin-left:auto; margin-right:auto;max-width:1000px;">
 			<tr>
 				<td width="5%" align="center"><strong>ECART**</strong></td>
-				<td width="5%" align="center"><strong>ECART Euro</strong></td>
+				<td width="5%" align="center"><strong>ECART Euro**</strong></td>
 				<td width="10%" align="center"><strong>CATEGORIE</strong></td>
 				<td width="20%" align="center"><strong>DESIGNATION</strong></td>
 				<td width="10%" align="center"><strong>FOURNISSEUR</strong></td>
@@ -59,7 +59,7 @@
 					<td><?php echo $e['categorie_nom'];?></td>
 					<td><?php echo $e['ref_designation'];?></td>
 					<td align="center"><?php echo $e['fournisseur_nom'];?></td>
-					<td align="center"><!--<a href="stock_stat.php?id=<?php echo $ref['ID_REFERENCE'];?>">stats</a>--></td>
+					<td align="center"><!--<a href="stock_stat.php?id=<?php /*echo $ref['ID_REFERENCE'];*/?>">stats</a>--></td>
 				</tr>
 				<?php
 			}
