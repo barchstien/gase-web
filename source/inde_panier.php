@@ -1,22 +1,16 @@
-
 <?php
-require("inde_fonctionsMC.php");
+//require("inde_fonctionsMC.php");
 $soldeAdherent = SelectionSoldeAdherentMC($_SESSION['inde_adherent']);
 $nbRefPanier = $_SESSION['inde_nbRefPanier'];
-if ( $nbRefPanier == 0)
-{
+if ( $nbRefPanier == 0){
 	echo "<div>Votre panier est vide.</div>";
-}
-else
-{
+}else{
 	$prixTotal=$_SESSION['inde_montantPanier'];
-	?>
+?>
 	<form id="formulaire" method="post" action="inde_payer.php">
-		<div>-***- Montant MoneyCoop: <?php echo round($soldeAdherent,2) ?> euros -***-</div>
-		
 		<div 
 		<?php if($prixTotal > $soldeAdherent){ ?>
-			style="color: #FF0000" >** ATTENTION ** Total TTC panier: <?php echo round($prixTotal,2) ?> euros
+			style="color: #FF0000" >**ATTENTION** Total TTC panier: <?php echo round($prixTotal,2) ?> euros
 		<?php }else{ ?>
 			>Total TTC panier: <?php echo round($prixTotal,2) ?> euros
 		<?php } ?>

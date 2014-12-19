@@ -1,17 +1,10 @@
-
-
-<?php	
-require("inde_fonctionsREF.php");
-
+<?php
 //	$idCategorie = $_GET['idCategorie'];
 $idCategorie = $_SESSION['inde_idCategorie'];
 $listeReferences = SelectionListeReferencesMenu($idCategorie);
 ?>
-
 	<form id="formulaire" method="post" action="inde_versPanier.php">
-
-		<div><font color="red">N oubliez pas de cliquer sur le bouton</font></div>
-		<div><font color="red">"Dans panier" pour chaque categorie</font>
+		<div><font color="red">Validez vos choix avec le boutton "Dans panier"</font>
 		    <input type="submit" value="Dans panier" name="acheterRef" id="acheterRef">
 		</div>
 

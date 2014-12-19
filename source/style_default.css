@@ -19,3 +19,8 @@ td{
     top: 50px;
     right: 10px;
 }
+
+.name_and_balance{
+    position: relative;
+    top: -20px;
+}
