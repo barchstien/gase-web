@@ -11,7 +11,7 @@
 
 #extract db details from config.ini file
 #!!! path to config.ini file should be ABSOLUTE
-config_file_path="/var/www/html/gase-web/config.ini"
+config_file_path="/home/gase/Web/gase/config.ini"
 
 
 ################
@@ -34,6 +34,10 @@ echo "delete old backup : " $db_backup_directory/$oldest_file_name
 rm $db_backup_directory/$oldest_file_name
 num_of_backup=$(ls $db_backup_directory | grep -c gase_db_backup)
 done
+
+#trigger grive sync
+cp $db_backup_directory
+grive
 
 #to restore restore
 # mysql -u $db_user -p$db_pass $db_name < dumpfilename.sql
