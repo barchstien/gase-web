@@ -1,5 +1,4 @@
 
 
-
 TODO :
-_ envois ticket : _inde_ADHERENTS.TICKET_CAISSE does not seam to be used
+    _
