@@ -12,6 +12,9 @@
 #extract db details from config.ini file
 #!!! path to config.ini file should be ABSOLUTE
 config_file_path="/var/www/html/gase-web/config.ini"
+
+
+################
 db_user=$(awk -F " = " '/user/ {print $2}' $config_file_path)
 db_pass=$(awk -F " = " '/password/ {print $2}' $config_file_path)
 db_name=$(awk -F " = " '/name/ {print $2}' $config_file_path)

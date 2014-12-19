@@ -1,5 +1,4 @@
 <?php
-//require("inde_fonctionsMC.php");
 $soldeAdherent = SelectionSoldeAdherentMC($_SESSION['inde_adherent']);
 $nbRefPanier = $_SESSION['inde_nbRefPanier'];
 if ( $nbRefPanier == 0){

@@ -1,4 +1,10 @@
 
+Google drive
+sudo add-apt-repository ppa:thefanclub/grive-tools
+sudo apt-get update
+sudo apt-get install grive grive-tools
+sudo grive-setup
 
 TODO :
-    _
+    _ use PHPMailer to be local SMTP server independent
+        https://github.com/PHPMailer/PHPMailer

@@ -1,7 +1,10 @@
 
-1. Install Ubuntu/Debian
+1. Install Ubuntu/Debian (Xubuntu Ubuntu Gnome)
+    Prefer LTS version
+    http://www.ubuntu.com/download/desktop
 
 2. Install LAMP
+    sudo apt-get install LAMP^
 
 3. Copy Apache and PHP config file
     TODO
@@ -16,6 +19,7 @@
     set backup_script.sh with proper path to config
 
 6. Backup
+    set config file path in backup_script.sh
     http://www.thegeekstuff.com/2011/05/anacron-examples/ for anacron
     
 7. Setup email send

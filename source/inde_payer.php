@@ -47,8 +47,9 @@ session_start();
 			{
 				echo "<div style=\"text-align:center; color: #FF0000\">Attention, le total de vos achats et superieur au solde de votre compte MoneyCoop.<br />Veuillez approvisionner votre MoneyCoop avant de re-enregistrer vos achats.</div>";  
 				echo "
-				    <br />
-				    <li>Pour aller a la page d accueil : <a href=\"index.php\">cliquez ici</a>cliquez ici</a></li>
+				    <br>
+				    <li>Pour modifier votre panier  <a href=\"javascript:window.history.back()\">cliquez ici</a></li>
+				    <li>Pour aller a la page d accueil : <a href=\"index.php\">cliquez ici</a></li>
 				";
 			}
 		}
