@@ -6,7 +6,7 @@
 //get path to pChart
 define ("GASE_CONFIG_FILE_PATH", "../config.ini");
 $config = parse_ini_file(GASE_CONFIG_FILE_PATH, true);
-$pChart_path = $config["pCHART"]["path"];
+$pChart_path = $config["libs"]["pChart_path"];
 ////GET parameters
 $id_reference = $_GET['id'];
 $year_stats = $_GET['year'];

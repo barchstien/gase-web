@@ -8,3 +8,5 @@ sudo grive-setup
 TODO :
     _ use PHPMailer to be local SMTP server independent
         https://github.com/PHPMailer/PHPMailer
+        https://github.com/PHPMailer/PHPMailer/blob/master/examples/gmail.phps
+    _ explain griv setup

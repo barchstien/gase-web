@@ -16,7 +16,7 @@
     <body>
 		<div style="text-align:center">
 			<?php
-			$idAchats = $_GET[idAch];
+			$idAchats = $_GET["idAch"];
 			$infosAchats = SelectionInfosAchats($idAchats);
 			//this wasn't workin before nayway, should fix it
 			echo "infosAchats " . $infosAchats;

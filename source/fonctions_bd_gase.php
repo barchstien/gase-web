@@ -97,6 +97,7 @@ function SelectionListeMessages(){
 }
 
 //////////////// EMAIL ////////////////
+///TODO  Too much open/read of confgi.ini that could be reduced into one
 function get_email_origin(){
     //extract email origin from config.ini file
     $config = parse_ini_file(GASE_CONFIG_FILE_PATH, true);
@@ -118,6 +119,24 @@ function get_email_debug_destination(){
         $ret = $config["EMAIL"]["debug_destination"];
     }
     return $ret;
+}
+
+function should_use_gmail(){
+    //extract email origin from config.ini file
+    $config = parse_ini_file(GASE_CONFIG_FILE_PATH, true);
+    return $config["EMAIL"]["use_gmail"];
+}
+
+function get_gmail_user(){
+    //extract email origin from config.ini file
+    $config = parse_ini_file(GASE_CONFIG_FILE_PATH, true);
+    return $config["EMAIL"]["gmail_user"];
+}
+
+function get_gmail_pass(){
+    //extract email origin from config.ini file
+    $config = parse_ini_file(GASE_CONFIG_FILE_PATH, true);
+    return $config["EMAIL"]["gmail_pass"];
 }
 
 }//end of define "FONCTION_BD_GASE_PHP"
