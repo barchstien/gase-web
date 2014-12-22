@@ -98,7 +98,6 @@ function SelectionListeMessages(){
 
 function RemoveMessage($date){
 	$connection = ConnectionBDD();
-	error_log("DELETE FROM _inde_VIE_OUTIL WHERE DATE='$date'");
 	$connection->query("DELETE FROM _inde_VIE_OUTIL WHERE DATE='$date'");
 	FermerConnectionBDD($connection);
 }
