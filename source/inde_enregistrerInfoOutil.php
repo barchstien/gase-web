@@ -10,8 +10,8 @@ if (isset ($_POST['enregistrerInfoOutil']))
 	$info = str_replace("'", "_", $info);
 
 	EnregistrerInfoOutil($info);
-	include ('inde_infoCreationInfoOutil.php');
 
+    header('location:inde_1infoOutil.php');
 }
 
 
