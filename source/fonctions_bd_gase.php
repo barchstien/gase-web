@@ -96,6 +96,13 @@ function SelectionListeMessages(){
 	return $listeMsg;
 }
 
+function RemoveMessage($date){
+	$connection = ConnectionBDD();
+	error_log("DELETE FROM _inde_VIE_OUTIL WHERE DATE='$date'");
+	$connection->query("DELETE FROM _inde_VIE_OUTIL WHERE DATE='$date'");
+	FermerConnectionBDD($connection);
+}
+
 //////////////// EMAIL ////////////////
 ///TODO  Too much open/read of confgi.ini that could be reduced into one
 function get_email_origin(){
