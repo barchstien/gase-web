@@ -50,15 +50,12 @@
 							<label class = "col1" for="ticket">Envoi ticket de caisse : </label>
 							<select class= "col2" name="ticket" id="ticket" >
 								<?php								
-								if($donnees['TICKET_CAISSE'] == '0')
-								{
+								if($donnees['TICKET_CAISSE'] == '0'){
 									?>
 									<option value="1">OUI</option>
 									<option value="0" selected="selected">NON</option>
 									<?php
-								}
-								else
-								{
+								}else{
 									?>
 									<option value="1" selected="selected">OUI</option>
 									<option value="0">NON</option>
@@ -75,15 +72,12 @@
 							<label class = "col1" for="visible">Visible : </label>
 							<select class= "col2" name="visible" id="visible" >
 								<?php								
-								if($donnees['VISIBLE'] == '0')
-								{
+								if($donnees['VISIBLE'] == '0'){
 									?>
 									<option value="1">OUI</option>
 									<option value="0" selected="selected">NON</option>
 									<?php
-								}
-								else
-								{
+								}else{
 									?>
 									<option value="1" selected="selected">OUI</option>
 									<option value="0">NON</option>

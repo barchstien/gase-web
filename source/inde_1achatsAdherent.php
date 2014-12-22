@@ -17,6 +17,7 @@
 	}
 	
 	$identiteAdherent = SelectionPrenomNomAdherent($_SESSION['inde_adherent']);
+	$data =  SelectionDonneesAdherent($_SESSION['inde_adherent']);
 	
 	$_SESSION['inde_montantPanier'] = 0;
 	$_SESSION['inde_nbRefPanier'] = 0;
@@ -30,12 +31,21 @@
     <body>
         <?php include 'inde_menuAchats.php'; ?>
 		Bonjour <strong><?php echo $identiteAdherent; ?></strong>
-		<br />
+		<br>
 		Choisissez une categorie de produits pour commencer vos achats.
-		<br />
-		<br />
+		<br>
+		<?php
+		    //si retard ou cotisation détecté, écrire en rouge !!
+		    if (stripos($data["COMMENTAIRE"], "retard") !== false
+		        ||  stripos($data["COMMENTAIRE"], "cotisation") !== false)
+		    {
+		        echo "<div style=\"color:red;font-weight:bold;text-align:center;\">".$data["COMMENTAIRE"]."</div>";
+		    }else{
+		        echo "<div>".$data["COMMENTAIRE"]."</div>";
+		    }
+		?>
+		<br>
 		Historique de vos achats :
-		<br />
 	
 	<?php
 	$listeAchats = SelectionListeAchatsAdherent($_SESSION['inde_adherent']);

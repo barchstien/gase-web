@@ -31,9 +31,10 @@ include($pChart_path."/class/pImage.class.php");
 
 ////create data to plot
 $weeks = range(1, 54);
-$listeAchats = array();
-$listeStocks_min_level = array();
-$listeStocks_max_level = array();
+$min_scale = 0;
+$max_scale = 0;
+$MyData = new pData();
+
 //get sum of quantity bought for each week
 foreach($weeks as $w){
     ////Sum purchase
@@ -55,10 +56,11 @@ foreach($weeks as $w){
         $d = $now->diff($week_start);
         if (1 == $d->invert){
             //$now > $week_start - $week_start is NOT in future, value is relevant
-            $listeAchats[] = array($row[0], $week_start->format('j-M'));
+            $MyData->addPoints($row[0],"Achats ".$year_stats);
         }else{
-            $listeAchats[] = array(VOID, $week_start->format('j-M'));
+            $MyData->addPoints(VOID,"Achats ".$year_stats);
         }
+        $MyData->addPoints($week_start->format('j-M'),"Date");
     }
     
     ////Stocks Minimum & Maximum
@@ -72,14 +74,13 @@ foreach($weeks as $w){
     );
     $row = $result->fetch_array();
     if (1 == $d->invert){
-        $listeStocks_min_level[] = $row[0];
-        $listeStocks_max_level[] = $row[1];
+        $MyData->addPoints($row[1],"Stock");
+        $MyData->addPoints($row[0],"Floating 0");
     }else{
-        $listeStocks_min_level[] = VOID;
-        $listeStocks_max_level[] = VOID;
+        $MyData->addPoints(VOID,"Stock");
+        $MyData->addPoints(VOID,"Floating 0");
     }
 }
-
 
 $connection->close();
 
@@ -87,20 +88,6 @@ $connection->close();
 $width = 1200;
 $height = 500;
 
-/* CAT:Area Chart */
-
-/* Create and populate the pData object */
-$MyData = new pData();
-//transfert data to pChart structure
-//TODO put it directly into this struct ???
-for($i=0;$i<count($listeAchats);$i++){
-    //$MyData->addPoints(rand(1,15),"Probe 1");
-    $MyData->addPoints($listeAchats[$i][0],"Achats ".$year_stats);
-    //$MyData->addPoints($listeAchats[$i][0],"Achats");
-    $MyData->addPoints($listeAchats[$i][1],"Date");
-    $MyData->addPoints($listeStocks_max_level[$i],"Stock");
-    $MyData->addPoints($listeStocks_min_level[$i],"Floating 0");
-}
 //disable the span lower edge
 $MyData->setSerieDrawable("Floating 0", false);
 $MyData->setSerieDescription("Stock","Stock (min/max)"); 
@@ -140,9 +127,10 @@ $myPicture->setFontProperties(array("FontName"=>$pChart_path."/fonts/pf_arma_fiv
 $myPicture->setGraphArea(60,40,$width-10,$height-50);
 
 /* Draw the scale */
-//,"LabelSkip"=>10
-$scaleSettings = array("XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"GridR"=>200,"GridG"=>200,"GridB"=>200,"GridAlpha"=>100,"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE
-,"LabelRotation"=>40,"LabelingMethod"=>LABELING_ALL,"Factors"=>array(1, 5, 10));
+//$AxisBoundaries = array(0=>array("Min"=>-500,"Max"=>500));
+//$scaleSettings = array("LabelRotation"=>40, "Mode"=>SCALE_MODE_MANUAL,"ManualScale"=>$AxisBoundaries);
+$scaleSettings = array("LabelRotation"=>40);
+
 $myPicture->drawScale($scaleSettings);
 
 /* Write the chart legend */
