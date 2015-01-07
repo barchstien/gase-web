@@ -91,6 +91,29 @@
 								?>
 							</select>
 						</p>
+						<p class = "ligne">
+							<label class = "col1" for="receive_alert_stock">Recevoir les Alertes Stock : </label>
+							<select class= "col2" name="receive_alert_stock" id="receive_alert_stock" >
+								<?php
+								$receive_alert_stock = $donnees['RECEIVE_ALERT_STOCK'];
+								//if null, should be considered like a false
+								if ($receive_alert_stock === null){
+								    $receive_alert_stock = "0";
+								}
+								if($receive_alert_stock == '0'){
+									?>
+									<option value="1">OUI</option>
+									<option value="0" selected="selected">NON</option>
+									<?php
+								}else{
+									?>
+									<option value="1" selected="selected">OUI</option>
+									<option value="0">NON</option>
+									<?php
+								}
+								?>
+							</select>
+						</p>
 					</div>
 					<br />
 					<div id="bouton">

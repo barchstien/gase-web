@@ -35,7 +35,7 @@
 	function SelectionDonneesAdherent($idAdherent)
 	{
 		$connection = ConnectionBDD();
-		$result = $connection->query("SELECT NOM, PRENOM, MAIL, TELEPHONE_FIXE, TELEPHONE_PORTABLE, ADRESSE, COMMENTAIRE, TICKET_CAISSE, DATE_INSCRIPTION, VISIBLE FROM _inde_ADHERENTS WHERE ID_ADHERENT = '$idAdherent'");
+		$result = $connection->query("SELECT NOM, PRENOM, MAIL, TELEPHONE_FIXE, TELEPHONE_PORTABLE, ADRESSE, COMMENTAIRE, TICKET_CAISSE, DATE_INSCRIPTION, VISIBLE, RECEIVE_ALERT_STOCK FROM _inde_ADHERENTS WHERE ID_ADHERENT = '$idAdherent'");
 		while ( $row = $result->fetch_array())
 		{		
 			$donnees['NOM'] = $row[0];
@@ -48,6 +48,7 @@
 			$donnees['TICKET_CAISSE'] = $row[7];
 			$donnees['DATE_INSCRIPTION'] = $row[8];
 			$donnees['VISIBLE'] = $row[9];
+			$donnees['RECEIVE_ALERT_STOCK'] = $row[10];
 		}
 		FermerConnectionBDD($connection);
 		return $donnees;
