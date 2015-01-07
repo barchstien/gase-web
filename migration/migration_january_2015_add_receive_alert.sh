@@ -8,6 +8,13 @@ db_name=$(awk -F " = " '/^name/ {print $2}' $config_file_path)
 
 mysql -u $db_user -p$db_pass -D $db_name << EOF
 ALTER TABLE _inde_ADHERENTS ADD RECEIVE_ALERT_STOCK tinyint;
+
+CREATE TABLE `_inde_ALERTS_STOCK_RAISED` (
+  `id_inde_ALERTS_STOCK_RAISED` INT NOT NULL,
+  `REFERENCE_ID` INT NULL,
+  PRIMARY KEY (`id_inde_ALERTS_STOCK_RAISED`));
+
+
 EOF
 
 
