@@ -35,6 +35,9 @@ if (isset ($_POST['payer']))
                 generate_email($idAdherent, $totalTTC);
             }
             
+            //check stok for new alert and send email to person that subscribed to it
+            check_for_new_stock_alert();
+            
 			echo "Achats " . $numeroAchat . " enregistree.<br />";
 			echo "<div style=\"text-align:center\">Le solde de votre compte est maintenant de " . round($nouveauSolde, 2) . " euros.</div>";
 			echo "Merci.<br />";
@@ -75,7 +78,6 @@ function generate_email($idAdherent, $totalTTC){
     }else{
 	    $passage_ligne = "\n";
     }
-    //=====Déclaration des messages au format texte et au format HTML
     /* Message texte */
     $message_txt = "Vos achats du " . $date . "\n";
     for($i = 0; $i < count($_SESSION['inde_panier']['nomReference']); $i++){
@@ -108,90 +110,15 @@ function generate_email($idAdherent, $totalTTC){
         $mail = $debug_destination;
         $subject .= " -debug- ";
     }
+    $ret_mail = false;
     if (should_use_gmail()){
-        send_email_using_gmail($mail, $origin, $subject, $message_txt);
+        $ret_mail = send_email_using_gmail($mail, $origin, $subject, $message_txt);
     }else{
-        send_email_using_php_mail($mail, $origin, $subject, $message_txt);
+        $ret_mail = send_email_using_php_mail($mail, $origin, $subject, $message_txt);
     }
-}
-
-function send_email_using_gmail($dst, $origin, $subject, $message){
-    //Create a new PHPMailer instance
-    $mail = new PHPMailer;
-    //Tell PHPMailer to use SMTP
-    $mail->isSMTP();
-    //Enable SMTP debugging
-    // 0 = off (for production use)
-    // 1 = client messages
-    // 2 = client and server messages
-    $mail->SMTPDebug = 0;
-    //Ask for HTML-friendly debug output
-    $mail->Debugoutput = 'html';
-    //Set the hostname of the mail server
-    $mail->Host = 'smtp.gmail.com';
-    //Set the SMTP port number - 587 for authenticated TLS, a.k.a. RFC4409 SMTP submission
-    $mail->Port = 587;
-    //Set the encryption system to use - ssl (deprecated) or tls
-    $mail->SMTPSecure = 'tls';
-    //Whether to use SMTP authentication
-    $mail->SMTPAuth = true;
-    //Username to use for SMTP authentication - use full email address for gmail
-    $mail->Username = get_gmail_user();
-    //Password to use for SMTP authentication
-    $mail->Password = get_gmail_pass();
-    //Set who the message is to be sent from
-    ////$mail->setFrom('gasiersdelesclain@example.com', 'Les Gasiers de l\'Esclain');
-    $mail->setFrom($origin);
-    //Set an alternative reply-to address
-    //$mail->addReplyTo('replyto@example.com', 'First Last');
-    //Set who the message is to be sent to
-    $mail->addAddress($dst);
-    //Set the subject line
-    $mail->Subject = $subject;
-    //Read an HTML message body from an external file, convert referenced images to embedded,
-    //convert HTML into a basic plain-text alternative body
-    //$mail->msgHTML(file_get_contents('contents.html'), dirname(__FILE__));
-    //Replace the plain text body with one created manually
-    //$mail->AltBody = 'This is a plain-text message body';
-    $mail->Body = $message;
-    //Attach an image file
-    //$mail->addAttachment('images/phpmailer_mini.png');
-    //send the message, check for errors
-    if (!$mail->send()) {
-        echo "Mailer Error: " . $mail->ErrorInfo."<br>";
-    } else {
-        echo "Ticket envoyé à ".$dst."<br>";
+    if ($ret_mail) {
+        echo "Ticket envoyé à ".$mail."<br>";
     }
-}
-
-function send_email_using_php_mail($dst, $origin, $subject, $message_txt){
-    //usual microsoft shit, which needs special newline
-    $passage_ligne = "\n";
-    if (!preg_match("#^[a-z0-9._-]+@(hotmail|live|msn).[a-z]{2,4}$#", $dst)){
-	    $passage_ligne = "\r\n";
-    }
-    
-    //=====Création de la boundary
-    $boundary = "-----=".md5(rand());
-
-    //=====Création du header de l'e-mail.
-    $header = "From: <".$origin.">".$passage_ligne;
-    $header.= "Reply-to: <".$origin.">".$passage_ligne;
-    $header.= "MIME-Version: 1.0".$passage_ligne;
-    $header.= "Content-Type: multipart/alternative;".$passage_ligne." boundary=\"$boundary\"".$passage_ligne;
-    //=====Création du message.
-    $message = $passage_ligne."--".$boundary.$passage_ligne;
-    //=====Ajout du message au format texte
-    $message.= "Content-Type: text/plain; charset=\"ISO-8859-1\"".$passage_ligne;
-    $message.= "Content-Transfer-Encoding: 8bit".$passage_ligne;
-    $message.= $passage_ligne.$message_txt.$passage_ligne;
-    //==========
-    $message.= $passage_ligne."--".$boundary."--".$passage_ligne;
-    $message.= $passage_ligne."--".$boundary."--".$passage_ligne;
-    //==========
-     
-    //=====Envoi de l'e-mail
-    mail($dst, $subject, $message, $header);
 }
 
 ?>
