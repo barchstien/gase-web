@@ -68,6 +68,11 @@
 							<label class = "col1" for="commentaire">Commentaire :</label>
 							<textarea name="commentaire" id="commentaire" cols="35" rows = "2"><?php echo $donnees['COMMENTAIRE']; ?></textarea>
 						</p>
+						<p>
+						    <small>utilisez le mot "cotisation" dans le commentaire, pour que celui-ci affiche un rappel à l'adhérent
+						    </br>Par exemple : Cotisation non à jour
+						    </small>
+						</p>
 						<p class = "ligne">
 							<label class = "col1" for="visible">Visible : </label>
 							<select class= "col2" name="visible" id="visible" >
