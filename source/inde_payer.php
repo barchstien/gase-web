@@ -95,7 +95,7 @@ function generate_email($idAdherent, $totalTTC){
     $message_txt .= "Merci.";
 
     //=====Définition du sujet (config.ini)
-    $subject = get_email_subject();
+    $subject = get_email_subject()." Ticket achats";
      
     //=====Création du header de l'e-mail (config.ini)
     $origin = get_email_origin();

@@ -63,44 +63,34 @@ function SelectionStockRefSTK($idReference)
 	return $stock;
 }
 
-function ModifierSTK($idReference, $quantite)
+function modifierSTK_generic($idReference, $nouveauStock, $quantite, $type, $idAchat='NULL')
 {
-	$nouveauStock = SelectionStockRefSTK($idReference) + $quantite;
 	$nouveauStock = str_replace(",", ".", $nouveauStock);
 	$quantite = str_replace(",", ".", $quantite);
 	
 	$connection = ConnectionBDD();
-	$requete = "INSERT INTO _inde_STOCKS (ID_REFERENCE, STOCK, OPERATION, DATE, QUANTITE, ID_ACHAT) values('$idReference','$nouveauStock','APPROVISIONNEMENT', NOW(), '$quantite', NULL)";
+	$requete = "INSERT INTO _inde_STOCKS (ID_REFERENCE, STOCK, OPERATION, DATE, QUANTITE, ID_ACHAT) values('$idReference','$nouveauStock', '$type', NOW(), '$quantite', $idAchat)";
 	$connection->query($requete);
 	
 	FermerConnectionBDD($connection);
+}
+
+function ModifierSTK($idReference, $quantite)
+{
+    $nouveauStock = SelectionStockRefSTK($idReference) + $quantite;
+	modifierSTK_generic($idReference, $nouveauStock, $quantite, "APPROVISIONNEMENT");
 }
 
 function AchatSTK($idAchat, $idReference, $quantite)
 {
-	$nouveauStock = SelectionStockRefSTK($idReference) - $quantite;
-
-	$nouveauStock = str_replace(",", ".", $nouveauStock);
-	$quantite = str_replace(",", ".", $quantite);
-
-    $connection = ConnectionBDD();
-	$requete = "INSERT INTO _inde_STOCKS (ID_REFERENCE, STOCK, OPERATION, DATE, QUANTITE, ID_ACHAT) values('$idReference','$nouveauStock','ACHAT', NOW(), '$quantite', '$idAchat')";
-	$connection->query($requete);
-	FermerConnectionBDD($connection);
+    $nouveauStock = SelectionStockRefSTK($idReference) - $quantite;
+	modifierSTK_generic($idReference, $nouveauStock, $quantite, "ACHAT", $idAchat);
 }
 
 function ModifierInventaireSTK($idReference, $quantite)
 {
-	$nouveauStock = SelectionStockRefSTK($idReference) + $quantite;
-
-	$nouveauStock = str_replace(",", ".", $nouveauStock);
-	$quantite = str_replace(",", ".", $quantite);
-
-    $connection = ConnectionBDD();
-	$requete = "INSERT INTO _inde_STOCKS (ID_REFERENCE, STOCK, OPERATION, DATE, QUANTITE, ID_ACHAT) values('$idReference','$nouveauStock','INVENTAIRE', NOW(), '$quantite', NULL)";
-	$connection->query($requete);	
-	
-	FermerConnectionBDD($connection);
+    $nouveauStock = SelectionStockRefSTK($idReference) + $quantite;
+	modifierSTK_generic($idReference, $nouveauStock, $quantite, "INVENTAIRE");
 }
 
 /** get list of references with alert on stock raised
@@ -180,7 +170,7 @@ function send_stock_alert_email($reference){
     $message_txt .= "Niveau actuel : ".$reference['STOCK']."\n";
 
     //=====Définition du sujet (config.ini)
-    $subject = "Alerte Stock - ".$reference['DESIGNATION']." - ".$reference['NOM'];
+    $subject = get_email_subject()." Alerte Stock - ".$reference['DESIGNATION']." - ".$reference['NOM'];
      
     //=====Création du header de l'e-mail (config.ini)
     $origin = get_email_origin();
@@ -329,12 +319,11 @@ function send_email_using_gmail($dst, $origin, $subject, $message){
     //Attach an image file
     //$mail->addAttachment('images/phpmailer_mini.png');
     //send the message, check for errors
-    if (!$mail->send()) {
+    $ret = $mail->send();
+    if (! $ret) {
         echo "Mailer Error: " . $mail->ErrorInfo."<br>";
-    }/* else {
-        echo "Ticket envoyé à ".$dst."<br>";
-    }*/
-    return $mail->send();
+    }
+    return $ret;
 }
 
 function send_email_using_php_mail($dst, $origin, $subject, $message_txt){

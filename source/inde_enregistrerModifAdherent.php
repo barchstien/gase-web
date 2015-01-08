@@ -49,7 +49,7 @@
 			        $receive_alert_stock = $_POST['receive_alert_stock'];
 			
 			        MajAdherent($idAdherent, $nom, $prenom, $email, $telephone_fixe, $telephone_portable, $adresse, $commentaire, $ticket, $visible, $receive_alert_stock);
-			        echo 'Mise a jour des donnees de ' . $prenom . ' ' . $nom . ' enregistree.';
+			        echo '<p style="text-align:center">Mise a jour des donnees de ' . $prenom . ' ' . $nom . ' enregistree.</p>';
 		        }
 	        }
         }
