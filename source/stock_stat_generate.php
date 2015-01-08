@@ -56,9 +56,9 @@ foreach($weeks as $w){
         $d = $now->diff($week_start);
         if (1 == $d->invert){
             //$now > $week_start - $week_start is NOT in future, value is relevant
-            $MyData->addPoints($row[0],"Achats ".$year_stats);
+            $MyData->addPoints($row[0],"Achats");
         }else{
-            $MyData->addPoints(VOID,"Achats ".$year_stats);
+            $MyData->addPoints(VOID,"Achats");
         }
         $MyData->addPoints($week_start->format('j-M'),"Date");
     }
@@ -94,7 +94,7 @@ $MyData->setSerieDescription("Stock","Stock (min/max)");
 
 //set series color
 $MyData->setPalette("Stock", array("R"=>204,"G"=>102,"B"=>0,"Alpha"=>250));
-$MyData->setPalette("Achats ".$year_stats, array("R"=>0,"G"=>0,"B"=>255,"Alpha"=>250));
+$MyData->setPalette("Achats", array("R"=>0,"G"=>0,"B"=>255,"Alpha"=>250));
 
 $MyData->setAxisName(0,"Unités/Kg/Litres");
 $MyData->setAbscissa("Date");
@@ -117,14 +117,17 @@ $myPicture->drawGradientArea(0,0,$width,$height,DIRECTION_HORIZONTAL,array("Star
 $myPicture->drawRectangle(0,0,$width-1,$height-1,array("R"=>0,"G"=>0,"B"=>0));
 
 /* Write the chart title */ 
-$myPicture->setFontProperties(array("FontName"=>$pChart_path."/fonts/Forgotte.ttf","FontSize"=>11));
-$myPicture->drawText(250,35,"Achats vs Stocks par semaine",array("FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
-
-/* Set the default font */
-$myPicture->setFontProperties(array("FontName"=>$pChart_path."/fonts/pf_arma_five.ttf","FontSize"=>10));
+$myPicture->setFontProperties(array("FontName"=>$pChart_path."/fonts/calibri.ttf","FontSize"=>10));
+$myPicture->drawText(250,35,"Achats et Stock (min/max) par semaine",array("FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
 
 /* Define the chart area */
-$myPicture->setGraphArea(60,40,$width-10,$height-50);
+$myPicture->setGraphArea(50,50,$width-10,$height-60);
+
+/* Write the chart legend */
+$myPicture->drawLegend($width-300,20,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL,"FontSize"=>15));
+
+/* Set the default font */
+$myPicture->setFontProperties(array("FontName"=>$pChart_path."/fonts/Bedizen.ttf","FontSize"=>12));
 
 /* Draw the scale */
 //$AxisBoundaries = array(0=>array("Min"=>-500,"Max"=>500));
@@ -133,9 +136,6 @@ $scaleSettings = array("LabelRotation"=>40);
 
 $myPicture->drawScale($scaleSettings);
 
-/* Write the chart legend */
-$myPicture->drawLegend($width-250,20,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
-
 /* Turn on Antialiasing */
 $myPicture->Antialias = TRUE;
 
@@ -143,7 +143,7 @@ $myPicture->Antialias = TRUE;
 $myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
 
 ////////////// Bar chart
-$MyData->setSerieDrawable("Achats ".$year_stats, false);
+$MyData->setSerieDrawable("Achats", false);
 $MyData->setSerieDrawable("Stock", true);
 //$myPicture->drawBarChart();
 $settings = array("Floating0Serie"=>"Floating 0","Surrounding"=>10);
@@ -151,7 +151,7 @@ $myPicture->drawBarChart($settings);
 
 ////////////////// Line chart
 $MyData->setSerieDrawable("Stock", false);
-$MyData->setSerieDrawable("Achats ".$year_stats, true);
+$MyData->setSerieDrawable("Achats", true);
 
 /* Draw the area chart */
 $Threshold = "";
@@ -167,11 +167,6 @@ $myPicture->drawLineChart(array("ForceColor"=>TRUE,"ForceR"=>0,"ForceG"=>0,"Forc
 
 /* Draw a plot chart over */
 $myPicture->drawPlotChart(array("PlotBorder"=>TRUE,"BorderSize"=>1,"Surrounding"=>-255,"BorderAlpha"=>80));
-
-
-/* Write the thresholds */
-//$myPicture->drawThreshold(5,array("WriteCaption"=>TRUE,"Caption"=>"Warn Zone","Alpha"=>70,"Ticks"=>2,"R"=>0,"G"=>0,"B"=>255));
-//$myPicture->drawThreshold(10,array("WriteCaption"=>TRUE,"Caption"=>"Error Zone","Alpha"=>70,"Ticks"=>2,"R"=>0,"G"=>0,"B"=>255));
 
 //header('Content-Type: image/png');
 /* Render the picture (choose the best way) */
