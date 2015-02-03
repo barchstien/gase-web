@@ -5,15 +5,14 @@
         <link rel="stylesheet" href="style_default.css" /> 
         <title>DETAIL ACHATS</title>
     </head>
-
+    <body>
 	<?php 
 	//require("inde_fonctionsACH.php"); 
 	require("fonctions_bd_gase.php"); 
 	?>
-	
 	<?php include 'inde_menu.php'; ?>
 	
-    <body>
+    
 		<div style="text-align:center">
 			<?php
 			$idAchats = $_GET["idAch"];
@@ -24,7 +23,7 @@
 			<br />
 			<br />
 			<div>
-				<table>
+				<table style="margin-left:auto; margin-right:auto; max-width:1000px;">
 					<tr>
 					   <td><label class="colonne1"><strong>DESIGNATION</strong></label></td>
 					   <td><label class="colonne2"><strong>P.U.</strong></label></td>
