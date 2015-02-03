@@ -12,7 +12,7 @@
         <h2 style="text-align:center;">Alertes Stock</h2>
 		<?php	
 		require("inde_fonctionsSTK.php");
-		$list_alertes = getReferencesWithStockAlertRaised();
+		$list_alertes = getReferencesWithStockAlert();
 		?>
 		<table style="margin-left:auto; margin-right:auto; max-width:1000px;">
 			<tr>

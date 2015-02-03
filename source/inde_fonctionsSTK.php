@@ -95,7 +95,7 @@ function ModifierInventaireSTK($idReference, $quantite)
 
 /** get list of references with alert on stock raised
 meaning those that are visible, that have a stock alert, and where stock alert is reached */
-function getReferencesWithStockAlertRaised(){
+function getReferencesWithStockAlert(){
     $connection = ConnectionBDD();
     
 	//rows with ALERT_STOCK == NULL are ignored by r.ALERT_STOCK != -1 ...
@@ -130,9 +130,10 @@ function getReferencesWithStockAlertRaised(){
 
 /** check for alert, 
 send email for an alert that is not already raised,
-register new alerts as raised */
+register new alerts as raised 
+It is called at every purchase */
 function check_for_new_stock_alert(){
-    $alert_array = getReferencesWithStockAlertRaised();
+    $alert_array = getReferencesWithStockAlert();
     //get raised alert
     $connection = ConnectionBDD();
 	$result = $connection->query("SELECT * FROM _inde_ALERTS_STOCK_RAISED");
@@ -182,7 +183,6 @@ function send_stock_alert_email($reference){
     $debug_destination = get_email_debug_destination();
     if ($debug_destination != null){
         //debug, sent to the test email
-        //send_email_using_gmail($debug_destination, $origin, $subject." -debug- ", $message_txt);
         $mail_dst[] = $debug_destination;
         $subject .= " -debug- ";
     }else{
@@ -199,12 +199,6 @@ function send_stock_alert_email($reference){
     
     //send to all email in array
     for ($i=0; $i<count($mail_dst); $i++){
-        //usual microsoft shit, which needs special newline
-        if (!preg_match("#^[a-z0-9._-]+@(hotmail|live|msn).[a-z]{2,4}$#", $mail_dst[$i])){
-	        $passage_ligne = "\r\n";
-        }else{
-	        $passage_ligne = "\n";
-        }
         if (should_use_gmail()){
             send_email_using_gmail($mail_dst[$i], $origin, $subject, $message_txt);
         }else{
