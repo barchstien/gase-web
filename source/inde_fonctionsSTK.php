@@ -196,14 +196,11 @@ function send_stock_alert_email($reference){
 		    $mail_dst[] = $row[0];
 	    }
     }
-    
-    //send to all email in array
-    for ($i=0; $i<count($mail_dst); $i++){
-        if (should_use_gmail()){
-            send_email_using_gmail($mail_dst[$i], $origin, $subject, $message_txt);
-        }else{
-            send_email_using_php_mail($mail_dst[$i], $origin, $subject, $message_txt);
-        }
+    //send to all email(s) in array
+    if (should_use_gmail()){
+        send_email_using_gmail($mail_dst, $origin, $subject, $message_txt);
+    }else{
+        send_email_using_php_mail($mail_dst, $origin, $subject, $message_txt);
     }
 }
 
@@ -270,8 +267,10 @@ function get_ecarts_list_for_date($date){
 
 ////////////: EMAIL SEND //////////////////
 
-
-function send_email_using_gmail($dst, $origin, $subject, $message){
+/**
+@param $dst_array array of emails
+*/
+function send_email_using_gmail($dst_array, $origin, $subject, $message){
     //Create a new PHPMailer instance
     $mail = new PHPMailer;
     //Tell PHPMailer to use SMTP
@@ -301,7 +300,9 @@ function send_email_using_gmail($dst, $origin, $subject, $message){
     //Set an alternative reply-to address
     //$mail->addReplyTo('replyto@example.com', 'First Last');
     //Set who the message is to be sent to
-    $mail->addAddress($dst);
+    foreach($dst_array as $dst){
+        $mail->addAddress($dst);
+    }
     //Set the subject line
     $mail->Subject = $subject;
     //Read an HTML message body from an external file, convert referenced images to embedded,
@@ -320,12 +321,15 @@ function send_email_using_gmail($dst, $origin, $subject, $message){
     return $ret;
 }
 
-function send_email_using_php_mail($dst, $origin, $subject, $message_txt){
+/**
+@param $dst_array array of emails
+*/
+function send_email_using_php_mail($dst_array, $origin, $subject, $message_txt){
     //usual microsoft shit, which needs special newline
     $passage_ligne = "\n";
-    if (!preg_match("#^[a-z0-9._-]+@(hotmail|live|msn).[a-z]{2,4}$#", $dst)){
+    /*if (!preg_match("#^[a-z0-9._-]+@(hotmail|live|msn).[a-z]{2,4}$#", $dst)){
 	    $passage_ligne = "\r\n";
-    }
+    }*/
     
     //=====Création de la boundary
     $boundary = "-----=".md5(rand());
@@ -347,6 +351,7 @@ function send_email_using_php_mail($dst, $origin, $subject, $message_txt){
     //==========
      
     //=====Envoi de l'e-mail
+    $dst = implode(", ", $dst_array);
     mail($dst, $subject, $message, $header);
 }
 

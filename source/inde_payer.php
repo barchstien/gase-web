@@ -111,10 +111,12 @@ function generate_email($idAdherent, $totalTTC){
         $subject .= " -debug- ";
     }
     $ret_mail = false;
+    //functions require array as input
+    $mail_tmp_array = array($mail);
     if (should_use_gmail()){
-        $ret_mail = send_email_using_gmail($mail, $origin, $subject, $message_txt);
+        $ret_mail = send_email_using_gmail($mail_tmp_array, $origin, $subject, $message_txt);
     }else{
-        $ret_mail = send_email_using_php_mail($mail, $origin, $subject, $message_txt);
+        $ret_mail = send_email_using_php_mail($mail_tmp_array, $origin, $subject, $message_txt);
     }
     if ($ret_mail) {
         echo "Ticket envoyé à ".$mail."<br>";
