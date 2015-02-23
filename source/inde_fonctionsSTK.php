@@ -71,8 +71,9 @@ function modifierSTK_generic($idReference, $nouveauStock, $quantite, $type, $idA
 	$connection = ConnectionBDD();
 	$requete = "INSERT INTO _inde_STOCKS (ID_REFERENCE, STOCK, OPERATION, DATE, QUANTITE, ID_ACHAT) values('$idReference','$nouveauStock', '$type', NOW(), '$quantite', $idAchat)";
 	$connection->query($requete);
-	
 	FermerConnectionBDD($connection);
+	//remove an entry form raised alert, for $idReference, if stock is above alert limit
+	remove_raised_alerts_if_any($idReference);
 }
 
 function ModifierSTK($idReference, $quantite)
@@ -93,8 +94,8 @@ function ModifierInventaireSTK($idReference, $quantite)
 	modifierSTK_generic($idReference, $nouveauStock, $quantite, "INVENTAIRE");
 }
 
-/** get list of references with alert on stock raised
-meaning those that are visible, that have a stock alert, and where stock alert is reached */
+/** get list of references with stocks below the alert limit
+THIS IS NOT the rows of _inde_ALERTS_STOCK_RAISED */
 function getReferencesWithStockAlert(){
     $connection = ConnectionBDD();
     
@@ -205,8 +206,10 @@ function send_stock_alert_email($reference){
 }
 
 /** remove raised alert, if related stock has been updated */
-function remove_raised_alerts(){
-    
+function remove_raised_alerts_if_any($idReference){
+    $connection = ConnectionBDD();
+	$result = $connection->query("DELETE FROM _inde_ALERTS_STOCK_RAISED WHERE ID_REFERENCE = '$idReference'");
+	FermerConnectionBDD($connection);
 }
 
 /** @return a list of year within which a purchase occured for $ref
