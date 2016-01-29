@@ -12,6 +12,18 @@
 			Cliquez sur le nom du fournisseur a modifier.
 		<div>
 		<br />
+		<?php
+			/*
+			 * AC 29-01-2016
+			 * Ajout d'un bouton pour afficher/masquer les références visibles
+			 */
+			$all = isset($_GET['all']) ? true : false;
+			$link = $_SERVER["SCRIPT_NAME"];
+			if (!$all) $link .= '?all';
+		?>
+		<div class="center">
+			<a href="<?= $link ?>"><?= $all ? 'Masquer les non visibles' : 'Montrer les non visibles' ?></a>
+		</div>
 		<div class="liste" style="text-align:left">
 			<table>
 				<tr>
@@ -25,12 +37,12 @@
 					<td><label class="colonne8"><center><strong>DATE DE REFERENCEMENT</strong></center></label></td>
 				</tr>
 				<?php	
-				$listeFournisseurs = SelectionListeFournisseurs();
+				$listeFournisseurs = SelectionListeFournisseurs($all);
 				foreach($listeFournisseurs as $cle => $element)
 				{
 					$donneesFournisseur = SelectionDonneesFournisseur($cle);
 					?>
-					<tr>
+					<tr <?= $donneesFournisseur['VISIBLE'] == 0 ? 'class="inactive"' : '' ?>>
 					   <td><a href="inde_2modifFournisseur.php?idFournisseur=<?php echo  $cle; ?>" title="<?php echo $element; ?>" class="bouton"><?php echo  "&nbsp;".$element."&nbsp;"; ?></a></td>
 					   <td><label class="colonne2"></label><?php echo  "&nbsp;".$donneesFournisseur['MAIL']."&nbsp;"; ?></td>
 					   <td><label class="colonne3"></label><?php echo  "&nbsp;".$donneesFournisseur['CONTACT']."&nbsp;"; ?></td>
