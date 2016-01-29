@@ -24,3 +24,17 @@ td{
     position: relative;
     top: -20px;
 }
+
+/*
+ * AC 29-01-2016
+ * Ajouts de règles CSS génériques
+ */
+.center {
+	text-align: center;
+}
+.right {
+	text-align: right;
+}
+.inactive {
+	background-color: #ccc;
+}
