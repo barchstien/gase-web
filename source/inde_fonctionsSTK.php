@@ -1,19 +1,28 @@
 <?php
 require("fonctions_bd_gase.php");
 
-function SelectionListeSTK()
+/* 
+ * AC 29-01-2016 
+ *  - ajout d'un paramètre $all pour filtrer les non-visibles
+ *  - retourne également la colonne VISIBLE
+ */
+function SelectionListeSTK($all = false)
 {
 	$connection = ConnectionBDD();
 	$compteur = 0;
 	
-	$result = $connection->query(
-	    "SELECT s1.STOCK, r.DESIGNATION, f.NOM, c.NOM, r.ID_REFERENCE 
+	$sql = "SELECT s1.STOCK, r.DESIGNATION, f.NOM, c.NOM, r.ID_REFERENCE, r.VISIBLE 
 	    FROM _inde_STOCKS s1, _inde_REFERENCES r, _inde_FOURNISSEURS f, _inde_CATEGORIES c 
 	    WHERE s1.DATE = (SELECT MAX(s2.DATE) FROM _inde_STOCKS s2 WHERE s2.ID_REFERENCE=s1.ID_REFERENCE) 
 	    AND r.ID_REFERENCE = s1.ID_REFERENCE 
 	    AND f.ID_FOURNISSEUR = r.ID_FOURNISSEUR 
-	    AND c.ID_CATEGORIE = r.ID_CATEGORIE 
-	    ORDER BY c.NOM, r.DESIGNATION");
+	    AND c.ID_CATEGORIE = r.ID_CATEGORIE";
+	
+	if (!$all) $sql .= "	AND r.VISIBLE=1";
+	
+	$sql .= "	ORDER BY c.NOM, r.DESIGNATION";
+	
+	$result = $connection->query($sql);
 	while ( $row = $result->fetch_array())
 	{		
 		$donnees['STOCK'] = $row[0];
@@ -21,6 +30,7 @@ function SelectionListeSTK()
 		$donnees['NOM'] = $row[2];
 		$donnees['CATEGORIE'] = $row[3];
 		$donnees['ID_REFERENCE'] = $row[4];
+		$donnees['VISIBLE'] = $row[5] == 0 ? 'NON' : 'OUI';
 		
 		$listeStocks[$compteur] = $donnees;
 		$compteur++;
