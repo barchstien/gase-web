@@ -1,10 +1,19 @@
 <?php
 require("fonctions_bd_gase.php");
 
-function SelectionListeFournisseurs()
+/*
+ * AC 29-01-2016
+ *  - ajout d'un paramètre $all pour filtrer les non-visibles
+ *  - retourne également la colonne VISIBLE
+ */
+function SelectionListeFournisseurs($all = false)
 {
 	$connection = ConnectionBDD();
-	$result = $connection->query("SELECT ID_FOURNISSEUR, NOM FROM _inde_FOURNISSEURS ORDER BY NOM");
+	if ($all)
+		$sql = "SELECT ID_FOURNISSEUR, NOM FROM _inde_FOURNISSEURS ORDER BY NOM";
+	else
+		$sql = "SELECT ID_FOURNISSEUR, NOM FROM _inde_FOURNISSEURS WHERE VISIBLE=1 ORDER BY NOM";
+	$result = $connection->query($sql);
 	while ( $row = $result->fetch_array())
 	{
 		$listeAdherents[$row["ID_FOURNISSEUR"]] = $row["NOM"];
