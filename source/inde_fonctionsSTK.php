@@ -106,14 +106,18 @@ function ModifierInventaireSTK($idReference, $quantite)
 
 /** get list of references with stocks below the alert limit
 THIS IS NOT the rows of _inde_ALERTS_STOCK_RAISED */
-function getReferencesWithStockAlert(){
+/*
+ * AC 29-01-2016
+ *  - ajout d'un paramètre $all pour filtrer les non-visibles
+ *  - retourne également la colonne VISIBLE
+ */
+function getReferencesWithStockAlert($all = false){
     $connection = ConnectionBDD();
     
 	//rows with ALERT_STOCK == NULL are ignored by r.ALERT_STOCK != -1 ...
 	//... rows with field NULL, can be selected with r.ALERT_STOCK IS NULL (or IS NOT NULL)
 	//... != -1 important, in case stock error get stock to below -1
-	$result = $connection->query(
-	    "SELECT s1.STOCK, r.DESIGNATION, f.NOM, c.NOM, r.ID_REFERENCE, r.ALERT_STOCK 
+	$sql = "SELECT s1.STOCK, r.DESIGNATION, f.NOM, c.NOM, r.ID_REFERENCE, r.ALERT_STOCK, r.VISIBLE 
 	    FROM _inde_STOCKS s1, _inde_REFERENCES r, _inde_FOURNISSEURS f, _inde_CATEGORIES c 
 	    WHERE s1.DATE = 
 	        (SELECT MAX(s2.DATE) FROM _inde_STOCKS s2 WHERE s2.ID_REFERENCE=s1.ID_REFERENCE) 
@@ -121,8 +125,10 @@ function getReferencesWithStockAlert(){
 	    AND f.ID_FOURNISSEUR = r.ID_FOURNISSEUR 
 	    AND c.ID_CATEGORIE = r.ID_CATEGORIE 
 	    AND r.ALERT_STOCK != -1 
-	    AND r.ALERT_STOCK >= s1.STOCK
-	    ORDER BY c.NOM, r.DESIGNATION");
+	    AND r.ALERT_STOCK >= s1.STOCK";
+	if (!$all) $sql .= "	AND r.VISIBLE = 1";
+	$sql .= "	ORDER BY c.NOM, r.DESIGNATION";
+    $result = $connection->query($sql);
 	$listeStocks = null;
 	while ( $row = $result->fetch_array())
 	{
@@ -132,6 +138,7 @@ function getReferencesWithStockAlert(){
 		$donnees['CATEGORIE'] = $row[3];
 		$donnees['ID_REFERENCE'] = $row[4];
 		$donnees['ALERT_STOCK'] = $row[5];
+		$donnees['VISIBLE'] = $row[6] == 0 ? 'NON' : 'OUI';
 		
 		$listeStocks[] = $donnees;
 	}
