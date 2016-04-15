@@ -21,6 +21,7 @@
 	{
 		global $mysql;
 		$result = $mysql->query("SELECT MONTANT,DATE FROM _inde_COMPTES WHERE ID_ADHERENT='$idAdherent' AND OPERATION = 'APPROVISIONNEMENT' UNION SELECT -MONTANT,DATE FROM _inde_COMPTES WHERE ID_ADHERENT='$idAdherent' AND OPERATION = 'DEPENSE' ORDER BY 2 DESC ");
+		$tabVersements = [];
 		while ( $row = $result->fetch())
 		{
 			$tabVersements[$row["DATE"]] = $row["MONTANT"];
