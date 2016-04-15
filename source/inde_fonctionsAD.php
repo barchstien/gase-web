@@ -1,42 +1,44 @@
 <?php
 	require("fonctions_bd_gase.php");
 
+	/*
+	 * AC 15-04-2016 nouvelle connexion mysql
+	 */	
+	
 	function EnregistrerNouvelAdherent($nom, $prenom, $mail, $telephone_fixe, $telephone_portable, $adresse, $commentaire, $ticket, $visible)
 	{
-		$connection = ConnectionBDD();
+		global $mysql;
 		$requete = "INSERT INTO _inde_ADHERENTS (NOM, PRENOM, MAIL, TELEPHONE_FIXE, TELEPHONE_PORTABLE, ADRESSE, COMMENTAIRE, TICKET_CAISSE, DATE_INSCRIPTION, VISIBLE) values('$nom','$prenom','$mail','$telephone_fixe','$telephone_portable', '$adresse', '$commentaire', '$ticket', NOW(),'$visible')";
-		$connection->query($requete);
+		$mysql->query($requete);
 		
 		$result = $connection->query("SELECT MAX(ID_ADHERENT) FROM _inde_ADHERENTS");
-		while ( $row = $result->fetch_array())
+		while ( $row = $result->fetch())
 		{
 			$idAdherentMax = $row[0];
 		}
 		
 		$requete = "INSERT INTO _inde_COMPTES (ID_ADHERENT, SOLDE, DATE, OPERATION, MONTANT) values('$idAdherentMax',0,NOW(),'CREATION',0)";
-		$connection->query($requete);
-		FermerConnectionBDD($connection);
+		$mysql->query($requete);
 	}
 	
 	function SelectionListeAdherents()
 	{
-		$connection = ConnectionBDD();
+		global $mysql;
 
-		$result = $connection->query("SELECT ID_ADHERENT, NOM FROM _inde_ADHERENTS ORDER BY NOM");
-		while ( $row = $result->fetch_array())
+		$result = $mysql->query("SELECT ID_ADHERENT, NOM FROM _inde_ADHERENTS ORDER BY NOM");
+		while ( $row = $result->fetch())
 		{
 			$listeAdherents[$row["ID_ADHERENT"]] = $row["NOM"];
 		}
 		
-		FermerConnectionBDD($connection);
 		return $listeAdherents;
 	}
 	
 	function SelectionDonneesAdherent($idAdherent)
 	{
-		$connection = ConnectionBDD();
-		$result = $connection->query("SELECT NOM, PRENOM, MAIL, TELEPHONE_FIXE, TELEPHONE_PORTABLE, ADRESSE, COMMENTAIRE, TICKET_CAISSE, DATE_INSCRIPTION, VISIBLE, RECEIVE_ALERT_STOCK FROM _inde_ADHERENTS WHERE ID_ADHERENT = '$idAdherent'");
-		while ( $row = $result->fetch_array())
+		global $mysql;
+		$result = $mysql->query("SELECT NOM, PRENOM, MAIL, TELEPHONE_FIXE, TELEPHONE_PORTABLE, ADRESSE, COMMENTAIRE, TICKET_CAISSE, DATE_INSCRIPTION, VISIBLE, RECEIVE_ALERT_STOCK FROM _inde_ADHERENTS WHERE ID_ADHERENT = '$idAdherent'");
+		while ( $row = $result->fetch())
 		{		
 			$donnees['NOM'] = $row[0];
 			$donnees['PRENOM'] = $row[1];
@@ -50,25 +52,23 @@
 			$donnees['VISIBLE'] = $row[9];
 			$donnees['RECEIVE_ALERT_STOCK'] = $row[10];
 		}
-		FermerConnectionBDD($connection);
 		return $donnees;
 	}
 	
 	function MajAdherent($idAdherent, $nom, $prenom, $email, $telephone_fixe, $telephone_portable, $adresse, $commentaire, $ticket, $visible, $receive_alert_stock)
 	{
-		$connection = ConnectionBDD();
+		global $mysql;
 
 		$requete = "UPDATE _inde_ADHERENTS SET NOM = '$nom', PRENOM = '$prenom', MAIL='$email', TELEPHONE_FIXE = '$telephone_fixe', TELEPHONE_PORTABLE = '$telephone_portable', ADRESSE = '$adresse', COMMENTAIRE = '$commentaire', TICKET_CAISSE = '$ticket', VISIBLE = '$visible', RECEIVE_ALERT_STOCK = '$receive_alert_stock' WHERE ID_ADHERENT = '$idAdherent'";
-		$connection->query($requete);
-		FermerConnectionBDD($connection);
+		$mysql->query($requete);
 	}
 	
 	function SelectionListeAD()
 	{
-		$connection = ConnectionBDD();
+		global $mysql;
 		$compteur = 0;
-		$result = $connection->query("SELECT ID_ADHERENT, NOM, PRENOM FROM _inde_ADHERENTS ORDER BY NOM");
-		while ( $row = $result->fetch_array())
+		$result = $mysql->query("SELECT ID_ADHERENT, NOM, PRENOM FROM _inde_ADHERENTS ORDER BY NOM");
+		while ( $row = $result->fetch())
 		{		
 			$donnees['ID_ADHERENT'] = $row[0];
 			$donnees['NOM'] = $row[1];
@@ -77,16 +77,15 @@
 			$listeAdherents[$compteur] = $donnees;
 			$compteur++;
 		}
-		FermerConnectionBDD($connection);
 		return $listeAdherents;
 	}
 	
 	function SelectionListeActifsAD()
 	{
-		$connection = ConnectionBDD();
+		global $mysql;
 		$compteur = 0;
-		$result = $connection->query("SELECT ID_ADHERENT, NOM, PRENOM FROM _inde_ADHERENTS WHERE VISIBLE = 1 ORDER BY NOM");
-		while ( $row = $result->fetch_array())
+		$result = $mysql->query("SELECT ID_ADHERENT, NOM, PRENOM FROM _inde_ADHERENTS WHERE VISIBLE = 1 ORDER BY NOM");
+		while ( $row = $result->fetch())
 		{		
 			$donnees['ID_ADHERENT'] = $row[0];
 			$donnees['NOM'] = $row[1];
@@ -95,29 +94,27 @@
 			$listeAdherents[$compteur] = $donnees;
 			$compteur++;
 		}
-		FermerConnectionBDD($connection);
 		return $listeAdherents;
 	}
 	
 	function SelectionPrenomNomAdherent($idAdherent)
 	{
-		$connection = ConnectionBDD();
-		$result = $connection->query("SELECT PRENOM, NOM FROM _inde_ADHERENTS WHERE ID_ADHERENT = '$idAdherent'");
-		while ( $row = $result->fetch_array())
+		global $mysql;
+		$result = $mysql->query("SELECT PRENOM, NOM FROM _inde_ADHERENTS WHERE ID_ADHERENT = '$idAdherent'");
+		while ( $row = $result->fetch())
 		{
 			$prenomAdherent = $row["PRENOM"];
 			$nomAdherent = $row["NOM"];
 		}
-		FermerConnectionBDD($connection);
 		return $prenomAdherent.' '.$nomAdherent.' ';
 	}
 	
 	function SelectionListeAchatsAdherent($idAdherent)
 	{
-		$connection = ConnectionBDD();
+		global $mysql;
 		$compteur = 0;
-		$result = $connection->query("SELECT c.ID_ACHAT, c.TOTAL_TTC, c.NB_REFERENCES, c.DATE_ACHAT FROM _inde_ACHATS c WHERE c.ID_ADHERENT = '$idAdherent' ORDER BY c.DATE_ACHAT DESC");
-		while ( $row = $result->fetch_array())
+		$result = $mysql->query("SELECT c.ID_ACHAT, c.TOTAL_TTC, c.NB_REFERENCES, c.DATE_ACHAT FROM _inde_ACHATS c WHERE c.ID_ADHERENT = '$idAdherent' ORDER BY c.DATE_ACHAT DESC");
+		while ( $row = $result->fetch())
 		{		
 			$ligne['ID_ACHATS'] = $row[0];
 			$ligne['MONTANT'] = $row[1];
@@ -127,31 +124,28 @@
 			$listeCde[$compteur] = $ligne;
 			$compteur++;
 		}
-		FermerConnectionBDD($connection);
 		return $listeCde;
 	}
 		
 	function SelectionMailAdherentAD($idAdherent)
 	{
-		$connection = ConnectionBDD();
+		global $mysql;
 
-		$result = $connection->query("SELECT MAIL FROM _inde_ADHERENTS WHERE ID_ADHERENT= '$idAdherent'");
-		$row = $result->fetch_array();
+		$result = $mysql->query("SELECT MAIL FROM _inde_ADHERENTS WHERE ID_ADHERENT= '$idAdherent'");
+		$row = $result->fetch();
 		$mail = $row["MAIL"];
 
-		FermerConnectionBDD($connection);
 		return $mail;
 	}
 	
 	function SelectionAdherent_TicketCaisse($idAdherent)
 	{
-		$connection = ConnectionBDD();
+		global $mysql;
 
-		$result = $connection->query("SELECT TICKET_CAISSE FROM _inde_ADHERENTS WHERE ID_ADHERENT= '$idAdherent'");
-		$row = $result->fetch_array();
+		$result = $mysql->query("SELECT TICKET_CAISSE FROM _inde_ADHERENTS WHERE ID_ADHERENT= '$idAdherent'");
+		$row = $result->fetch();
 		$ticket_caisse = $row["TICKET_CAISSE"];
 
-		FermerConnectionBDD($connection);
 		return $ticket_caisse;
 	}
 ?>

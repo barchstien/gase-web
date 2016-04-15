@@ -1,6 +1,10 @@
 <?php
 require("fonctions_bd_gase.php");
 
+	/*
+	 * AC 15-04-2016 nouvelle connexion mysql
+	 */
+
 /* 
  * AC 29-01-2016 
  *  - ajout d'un paramètre $all pour filtrer les non-visibles
@@ -8,7 +12,7 @@ require("fonctions_bd_gase.php");
  */
 function SelectionListeSTK($all = false)
 {
-	$connection = ConnectionBDD();
+	global $mysql;
 	$compteur = 0;
 	
 	$sql = "SELECT s1.STOCK, r.DESIGNATION, f.NOM, c.NOM, r.ID_REFERENCE, r.VISIBLE 
@@ -22,8 +26,8 @@ function SelectionListeSTK($all = false)
 	
 	$sql .= "	ORDER BY c.NOM, r.DESIGNATION";
 	
-	$result = $connection->query($sql);
-	while ( $row = $result->fetch_array())
+	$result = $mysql->query($sql);
+	while ( $row = $result->fetch())
 	{		
 		$donnees['STOCK'] = $row[0];
 		$donnees['DESIGNATION'] = $row[1];
@@ -35,18 +39,18 @@ function SelectionListeSTK($all = false)
 		$listeStocks[$compteur] = $donnees;
 		$compteur++;
 	}
-	FermerConnectionBDD($connection);
+	
 	return $listeStocks;
 }
 
 function SelectionStocks($idFournisseur)
 {
-	$connection = ConnectionBDD();
-	$result = $connection->query("SELECT r.CODE_FOURNISSEUR, r.ID_REFERENCE, r.DESIGNATION, c.NOM FROM _inde_REFERENCES r, _inde_FOURNISSEURS f, _inde_CATEGORIES c WHERE f.ID_FOURNISSEUR = '$idFournisseur' AND f.ID_FOURNISSEUR = r.ID_FOURNISSEUR AND c.ID_CATEGORIE = r.ID_CATEGORIE ORDER BY c.NOM, r.DESIGNATION");
+	global $mysql;
+	$result = $mysql->query("SELECT r.CODE_FOURNISSEUR, r.ID_REFERENCE, r.DESIGNATION, c.NOM FROM _inde_REFERENCES r, _inde_FOURNISSEURS f, _inde_CATEGORIES c WHERE f.ID_FOURNISSEUR = '$idFournisseur' AND f.ID_FOURNISSEUR = r.ID_FOURNISSEUR AND c.ID_CATEGORIE = r.ID_CATEGORIE ORDER BY c.NOM, r.DESIGNATION");
 	
 	$compteur = 0;
 	$listeStocks = array();
-	while ( $row = $result->fetch_array())
+	while ( $row = $result->fetch())
 	{		
 		$donnees['CODE_FOURNISSEUR'] = $row[0];
 		$donnees['ID_REFERENCE'] = $row[1];
@@ -58,18 +62,18 @@ function SelectionStocks($idFournisseur)
 		$listeStocks[$compteur] = $donnees;
 		$compteur++;
 	}
-	FermerConnectionBDD($connection);
+	
 	return $listeStocks;
 }
 	
 function SelectionStockRefSTK($idReference)
 {
-	$connection = ConnectionBDD();
-	$result = $connection->query("SELECT STOCK FROM _inde_STOCKS WHERE ID_REFERENCE='$idReference' AND DATE = (SELECT MAX(DATE) FROM _inde_STOCKS WHERE ID_REFERENCE='$idReference')");
-	$row = $result->fetch_array();
+	global $mysql;
+	$result = $mysql->query("SELECT STOCK FROM _inde_STOCKS WHERE ID_REFERENCE='$idReference' AND DATE = (SELECT MAX(DATE) FROM _inde_STOCKS WHERE ID_REFERENCE='$idReference')");
+	$row = $result->fetch();
 	$stock = $row["STOCK"];
 	
-	FermerConnectionBDD($connection);
+	
 	return $stock;
 }
 
@@ -78,10 +82,10 @@ function modifierSTK_generic($idReference, $nouveauStock, $quantite, $type, $idA
 	$nouveauStock = str_replace(",", ".", $nouveauStock);
 	$quantite = str_replace(",", ".", $quantite);
 	
-	$connection = ConnectionBDD();
+	global $mysql;
 	$requete = "INSERT INTO _inde_STOCKS (ID_REFERENCE, STOCK, OPERATION, DATE, QUANTITE, ID_ACHAT) values('$idReference','$nouveauStock', '$type', NOW(), '$quantite', $idAchat)";
-	$connection->query($requete);
-	FermerConnectionBDD($connection);
+	$mysql->query($requete);
+	
 	//remove an entry form raised alert, for $idReference, if stock is above alert limit
 	remove_raised_alerts_if_any($idReference);
 }
@@ -112,7 +116,7 @@ THIS IS NOT the rows of _inde_ALERTS_STOCK_RAISED */
  *  - retourne également la colonne VISIBLE
  */
 function getReferencesWithStockAlert($all = false){
-    $connection = ConnectionBDD();
+    global $mysql;
     
 	//rows with ALERT_STOCK == NULL are ignored by r.ALERT_STOCK != -1 ...
 	//... rows with field NULL, can be selected with r.ALERT_STOCK IS NULL (or IS NOT NULL)
@@ -128,9 +132,9 @@ function getReferencesWithStockAlert($all = false){
 	    AND r.ALERT_STOCK >= s1.STOCK";
 	if (!$all) $sql .= "	AND r.VISIBLE = 1";
 	$sql .= "	ORDER BY c.NOM, r.DESIGNATION";
-    $result = $connection->query($sql);
+    $result = $mysql->query($sql);
 	$listeStocks = null;
-	while ( $row = $result->fetch_array())
+	while ( $row = $result->fetch())
 	{
 		$donnees['STOCK'] = $row[0];
 		$donnees['DESIGNATION'] = $row[1];
@@ -142,7 +146,7 @@ function getReferencesWithStockAlert($all = false){
 		
 		$listeStocks[] = $donnees;
 	}
-	FermerConnectionBDD($connection);
+	
 	return $listeStocks;
 }
 
@@ -153,11 +157,11 @@ It is called at every purchase */
 function check_for_new_stock_alert(){
     $alert_array = getReferencesWithStockAlert();
     //get raised alert
-    $connection = ConnectionBDD();
-	$result = $connection->query("SELECT * FROM _inde_ALERTS_STOCK_RAISED");
-	FermerConnectionBDD($connection);
+    global $mysql;
+	$result = $mysql->query("SELECT * FROM _inde_ALERTS_STOCK_RAISED");
+	
 	$alert_raised_array = array();
-	while ( $row = $result->fetch_array()){
+	while ( $row = $result->fetch()){
 		$alert_raised_array[] = $row[1];
 	}
 	//check if alert are already raised...
@@ -165,11 +169,11 @@ function check_for_new_stock_alert(){
 	for ($i=0; $i < count($alert_array); $i++){
 	    if (! in_array($alert_array[$i]['ID_REFERENCE'], $alert_raised_array)){
 	        //echo $alert_array[$i]['DESIGNATION']." not raised";
-	        $connection = ConnectionBDD();
+	        global $mysql;
 	        send_stock_alert_email($alert_array[$i]);
 	        $req = "INSERT INTO _inde_ALERTS_STOCK_RAISED (ID_REFERENCE) values('".$alert_array[$i]['ID_REFERENCE']."')";
-		    $connection->query($req);
-		    FermerConnectionBDD($connection);
+		    $mysql->query($req);
+		    
 	    }else{
 	        //echo $alert_array[$i]['DESIGNATION']." ALREADY raised";
 	    }
@@ -205,12 +209,12 @@ function send_stock_alert_email($reference){
         $subject .= " -debug- ";
     }else{
         //populate array with email from all adherents that subscribed to alert notification
-        $connection = ConnectionBDD();
-	    $result = $connection->query("SELECT MAIL FROM _inde_ADHERENTS 
+        global $mysql;
+	    $result = $mysql->query("SELECT MAIL FROM _inde_ADHERENTS 
 	        WHERE RECEIVE_ALERT_STOCK IS NOT NULL
 	        AND RECEIVE_ALERT_STOCK = 1 ");
-	    FermerConnectionBDD($connection);
-	    while ($row = $result->fetch_array()){
+	    
+	    while ($row = $result->fetch()){
 		    $mail_dst[] = $row[0];
 	    }
     }
@@ -224,47 +228,47 @@ function send_stock_alert_email($reference){
 
 /** remove raised alert, if related stock has been updated */
 function remove_raised_alerts_if_any($idReference){
-    $connection = ConnectionBDD();
-	$result = $connection->query("DELETE FROM _inde_ALERTS_STOCK_RAISED WHERE ID_REFERENCE = '$idReference'");
-	FermerConnectionBDD($connection);
+    global $mysql;
+	$result = $mysql->query("DELETE FROM _inde_ALERTS_STOCK_RAISED WHERE ID_REFERENCE = '$idReference'");
+	
 }
 
 /** @return a list of year within which a purchase occured for $ref
 for example array(2013, 2014) */
 function getYearWithPurchase_forReferenceId($ref){
-    $connection = ConnectionBDD();
-    $result = $connection->query("SELECT DISTINCT YEAR(DATE) FROM _inde_STOCKS WHERE ID_REFERENCE = '$ref'");
+    global $mysql;
+    $result = $mysql->query("SELECT DISTINCT YEAR(DATE) FROM _inde_STOCKS WHERE ID_REFERENCE = '$ref'");
     $ret = array();
-    while ( $row = $result->fetch_array()){
+    while ( $row = $result->fetch()){
         if (0 != $row[0]){
             $ret[] = $row[0];
         }
     }
-    FermerConnectionBDD($connection);
+    
     return $ret;
 }
 
 ////////// Inventaire : Ecarts ////////
 function get_inventaires_dates(){
-    $connection = ConnectionBDD();
-    $result = $connection->query("SELECT distinct DATE_FORMAT(DATE,'%Y-%m-%e')
+    global $mysql;
+    $result = $mysql->query("SELECT distinct DATE_FORMAT(DATE,'%Y-%m-%e')
                             FROM _inde_STOCKS
                             WHERE OPERATION = 'INVENTAIRE'
                             group by DATE_FORMAT(DATE,'%Y-%m-%e')
                             ORDER BY DATE DESC;");
     $ret = array();
-    while ( $row = $result->fetch_array()){
+    while ( $row = $result->fetch()){
         if (0 != $row[0]){
             $ret[] = $row[0];
         }
     }
-    FermerConnectionBDD($connection);
+    
     return $ret;
 }
 
 function get_ecarts_list_for_date($date){
-    $connection = ConnectionBDD();
-    $result = $connection->query("SELECT s.QUANTITE, c.NOM, r.DESIGNATION, f.NOM, r.PRIX_TTC, s.DATE
+    global $mysql;
+    $result = $mysql->query("SELECT s.QUANTITE, c.NOM, r.DESIGNATION, f.NOM, r.PRIX_TTC, s.DATE
                             FROM _inde_STOCKS s, _inde_REFERENCES r, _inde_CATEGORIES c, _inde_FOURNISSEURS f
                             WHERE s.OPERATION = 'INVENTAIRE'
                             AND DATE_FORMAT(s.DATE,'%Y-%m-%e') = '$date'
@@ -272,7 +276,7 @@ function get_ecarts_list_for_date($date){
                             AND r.ID_CATEGORIE = c.ID_CATEGORIE
                             AND r.ID_FOURNISSEUR = f.ID_FOURNISSEUR;");
     $ret = array();
-    while ( $row = $result->fetch_array()){
+    while ( $row = $result->fetch()){
         $a = array();
         $a["ecart"] = $row[0];
         $a["categorie_nom"] = $row[1];
@@ -281,7 +285,7 @@ function get_ecarts_list_for_date($date){
         $a["ref_prix"] = $row[4];
         $ret[] = $a;
     }
-    FermerConnectionBDD($connection);
+    
     return $ret;
 }
 
