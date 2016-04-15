@@ -114,6 +114,7 @@
 		global $mysql;
 		$compteur = 0;
 		$result = $mysql->query("SELECT c.ID_ACHAT, c.TOTAL_TTC, c.NB_REFERENCES, c.DATE_ACHAT FROM _inde_ACHATS c WHERE c.ID_ADHERENT = '$idAdherent' ORDER BY c.DATE_ACHAT DESC");
+		$listeCde = [];
 		while ( $row = $result->fetch())
 		{		
 			$ligne['ID_ACHATS'] = $row[0];

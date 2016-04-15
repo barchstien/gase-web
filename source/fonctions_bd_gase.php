@@ -12,6 +12,7 @@ define ("GASE_CONFIG_FILE_PATH", "../config.ini");
  *  - dans les fonctions, appeler la connexion avec `global $mysql`
  *  - remplacer $connection par $mysql pour les query()
  *  - remplacer fetch_array() par fetch() car différent avec PDO
+ *  - remplacer insert_id par lastInsertId()
  * TODO: la prochaine étape sera d'encapsuler tout ça dans une classe pour
  * ne pas avoir à utiliser de variable globale
  */
@@ -32,7 +33,7 @@ function EnregistrerAchatAdherent($idAdherent, $montantTTC, $nbArticles){
 	global $mysql;
 
 	$mysql->query("INSERT INTO _inde_ACHATS (DATE_ACHAT,ID_ADHERENT,TOTAL_TTC,NB_REFERENCES) values(NOW(),'$idAdherent','$montantTTC','$nbArticles')");
-	$idCommande = $mysql->insert_id;
+	$idCommande = $mysql->lastInsertId();
 	
 	return $idCommande;
 }
