@@ -3,28 +3,28 @@
 
 	/*
 	 * AC 15-04-2016 nouvelle connexion mysql
-	 * AC 02-05-2016 fonction globale requete()
+	 * AC 02-05-2016 fonction globale requete() + DB_PREFIX
 	 */	
 	
 	function EnregistrerNouvelAdherent($nom, $prenom, $mail, $telephone_fixe, $telephone_portable, $adresse, $commentaire, $ticket, $visible)
 	{
-		$requete = "INSERT INTO _inde_ADHERENTS (NOM, PRENOM, MAIL, TELEPHONE_FIXE, TELEPHONE_PORTABLE, ADRESSE, COMMENTAIRE, TICKET_CAISSE, DATE_INSCRIPTION, VISIBLE) values('$nom','$prenom','$mail','$telephone_fixe','$telephone_portable', '$adresse', '$commentaire', '$ticket', NOW(),'$visible')";
+		$requete = "INSERT INTO ".DB_PREFIX."ADHERENTS (NOM, PRENOM, MAIL, TELEPHONE_FIXE, TELEPHONE_PORTABLE, ADRESSE, COMMENTAIRE, TICKET_CAISSE, DATE_INSCRIPTION, VISIBLE) values('$nom','$prenom','$mail','$telephone_fixe','$telephone_portable', '$adresse', '$commentaire', '$ticket', NOW(),'$visible')";
 		requete($requete);
 		
-		$result = requete("SELECT MAX(ID_ADHERENT) FROM _inde_ADHERENTS");
+		$result = requete("SELECT MAX(ID_ADHERENT) FROM ".DB_PREFIX."ADHERENTS");
 		while ( $row = $result->fetch())
 		{
 			$idAdherentMax = $row[0];
 		}
 		
-		$requete = "INSERT INTO _inde_COMPTES (ID_ADHERENT, SOLDE, DATE, OPERATION, MONTANT) values('$idAdherentMax',0,NOW(),'CREATION',0)";
+		$requete = "INSERT INTO ".DB_PREFIX."COMPTES (ID_ADHERENT, SOLDE, DATE, OPERATION, MONTANT) values('$idAdherentMax',0,NOW(),'CREATION',0)";
 		requete($requete);
 	}
 	
 	function SelectionListeAdherents()
 	{
 
-		$result = requete("SELECT ID_ADHERENT, NOM FROM _inde_ADHERENTS ORDER BY NOM");
+		$result = requete("SELECT ID_ADHERENT, NOM FROM ".DB_PREFIX."ADHERENTS ORDER BY NOM");
 		while ( $row = $result->fetch())
 		{
 			$listeAdherents[$row["ID_ADHERENT"]] = $row["NOM"];
@@ -35,7 +35,7 @@
 	
 	function SelectionDonneesAdherent($idAdherent)
 	{
-		$result = requete("SELECT NOM, PRENOM, MAIL, TELEPHONE_FIXE, TELEPHONE_PORTABLE, ADRESSE, COMMENTAIRE, TICKET_CAISSE, DATE_INSCRIPTION, VISIBLE, RECEIVE_ALERT_STOCK FROM _inde_ADHERENTS WHERE ID_ADHERENT = '$idAdherent'");
+		$result = requete("SELECT NOM, PRENOM, MAIL, TELEPHONE_FIXE, TELEPHONE_PORTABLE, ADRESSE, COMMENTAIRE, TICKET_CAISSE, DATE_INSCRIPTION, VISIBLE, RECEIVE_ALERT_STOCK FROM ".DB_PREFIX."ADHERENTS WHERE ID_ADHERENT = '$idAdherent'");
 		while ( $row = $result->fetch())
 		{		
 			$donnees['NOM'] = $row[0];
@@ -56,14 +56,14 @@
 	function MajAdherent($idAdherent, $nom, $prenom, $email, $telephone_fixe, $telephone_portable, $adresse, $commentaire, $ticket, $visible, $receive_alert_stock)
 	{
 
-		$requete = "UPDATE _inde_ADHERENTS SET NOM = '$nom', PRENOM = '$prenom', MAIL='$email', TELEPHONE_FIXE = '$telephone_fixe', TELEPHONE_PORTABLE = '$telephone_portable', ADRESSE = '$adresse', COMMENTAIRE = '$commentaire', TICKET_CAISSE = '$ticket', VISIBLE = '$visible', RECEIVE_ALERT_STOCK = '$receive_alert_stock' WHERE ID_ADHERENT = '$idAdherent'";
+		$requete = "UPDATE ".DB_PREFIX."ADHERENTS SET NOM = '$nom', PRENOM = '$prenom', MAIL='$email', TELEPHONE_FIXE = '$telephone_fixe', TELEPHONE_PORTABLE = '$telephone_portable', ADRESSE = '$adresse', COMMENTAIRE = '$commentaire', TICKET_CAISSE = '$ticket', VISIBLE = '$visible', RECEIVE_ALERT_STOCK = '$receive_alert_stock' WHERE ID_ADHERENT = '$idAdherent'";
 		requete($requete);
 	}
 	
 	function SelectionListeAD()
 	{
 		$compteur = 0;
-		$result = requete("SELECT ID_ADHERENT, NOM, PRENOM FROM _inde_ADHERENTS ORDER BY NOM");
+		$result = requete("SELECT ID_ADHERENT, NOM, PRENOM FROM ".DB_PREFIX."ADHERENTS ORDER BY NOM");
 		while ( $row = $result->fetch())
 		{		
 			$donnees['ID_ADHERENT'] = $row[0];
@@ -79,7 +79,7 @@
 	function SelectionListeActifsAD()
 	{
 		$compteur = 0;
-		$result = requete("SELECT ID_ADHERENT, NOM, PRENOM FROM _inde_ADHERENTS WHERE VISIBLE = 1 ORDER BY NOM");
+		$result = requete("SELECT ID_ADHERENT, NOM, PRENOM FROM ".DB_PREFIX."ADHERENTS WHERE VISIBLE = 1 ORDER BY NOM");
 		while ( $row = $result->fetch())
 		{		
 			$donnees['ID_ADHERENT'] = $row[0];
@@ -94,7 +94,7 @@
 	
 	function SelectionPrenomNomAdherent($idAdherent)
 	{
-		$result = requete("SELECT PRENOM, NOM FROM _inde_ADHERENTS WHERE ID_ADHERENT = '$idAdherent'");
+		$result = requete("SELECT PRENOM, NOM FROM ".DB_PREFIX."ADHERENTS WHERE ID_ADHERENT = '$idAdherent'");
 		while ( $row = $result->fetch())
 		{
 			$prenomAdherent = $row["PRENOM"];
@@ -106,7 +106,7 @@
 	function SelectionListeAchatsAdherent($idAdherent)
 	{
 		$compteur = 0;
-		$result = requete("SELECT c.ID_ACHAT, c.TOTAL_TTC, c.NB_REFERENCES, c.DATE_ACHAT FROM _inde_ACHATS c WHERE c.ID_ADHERENT = '$idAdherent' ORDER BY c.DATE_ACHAT DESC");
+		$result = requete("SELECT c.ID_ACHAT, c.TOTAL_TTC, c.NB_REFERENCES, c.DATE_ACHAT FROM ".DB_PREFIX."ACHATS c WHERE c.ID_ADHERENT = '$idAdherent' ORDER BY c.DATE_ACHAT DESC");
 		$listeCde = [];
 		while ( $row = $result->fetch())
 		{		
@@ -124,7 +124,7 @@
 	function SelectionMailAdherentAD($idAdherent)
 	{
 
-		$result = requete("SELECT MAIL FROM _inde_ADHERENTS WHERE ID_ADHERENT= '$idAdherent'");
+		$result = requete("SELECT MAIL FROM ".DB_PREFIX."ADHERENTS WHERE ID_ADHERENT= '$idAdherent'");
 		$row = $result->fetch();
 		$mail = $row["MAIL"];
 
@@ -134,7 +134,7 @@
 	function SelectionAdherent_TicketCaisse($idAdherent)
 	{
 
-		$result = requete("SELECT TICKET_CAISSE FROM _inde_ADHERENTS WHERE ID_ADHERENT= '$idAdherent'");
+		$result = requete("SELECT TICKET_CAISSE FROM ".DB_PREFIX."ADHERENTS WHERE ID_ADHERENT= '$idAdherent'");
 		$row = $result->fetch();
 		$ticket_caisse = $row["TICKET_CAISSE"];
 

@@ -3,6 +3,8 @@
 //... so need to use only base php here
 //require_once("fonctions_bd_gase.php");
 
+// AC 02-05-2016 DB_PREFIX
+
 //get path to pChart
 define ("GASE_CONFIG_FILE_PATH", "../config.ini");
 $config = parse_ini_file(GASE_CONFIG_FILE_PATH, true);
@@ -17,11 +19,13 @@ $address = $config["DB"]["address"];
 $user = $config["DB"]["user"];
 $pass = $config["DB"]["password"];
 $name =  $config["DB"]["name"];
+$prefix = $config["DB"]["prefix"];
 $connection = new mysqli($address, $user, $pass, $name);
 if ($connection->connect_errno) {
     error_log("Failed to connect to MySQL: " . $connection->connect_error);
     exit("Failed to connect to MySQL: " . $connection->connect_error);
 }
+define("DB_PREFIX", $prefix);
 
 /* pChart library inclusions */
 //included here to use th VOID constant that correspond to no data for a serie
@@ -40,7 +44,7 @@ foreach($weeks as $w){
     ////Sum purchase
     $result = $connection->query(
         "SELECT SUM(QUANTITE), MIN(DATE_FORMAT(DATE, '%M %D'))
-        FROM _inde_STOCKS
+        FROM ".DB_PREFIX."STOCKS
         WHERE ID_REFERENCE = $id_reference
             AND OPERATION = 'ACHAT'
             AND YEAR(DATE) = $year_stats
@@ -66,7 +70,7 @@ foreach($weeks as $w){
     ////Stocks Minimum & Maximum
     $result = $connection->query(
         "SELECT MIN(STOCK), MAX(STOCK), MIN(DATE_FORMAT(DATE, '%M %D'))
-        FROM _inde_STOCKS
+        FROM ".DB_PREFIX."STOCKS
         WHERE ID_REFERENCE = $id_reference
             AND YEAR(DATE) = $year_stats
             AND WEEK(DATE,1) = $w

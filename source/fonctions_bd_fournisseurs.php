@@ -3,7 +3,7 @@ require("fonctions_bd_gase.php");
 
 /*
  * AC 15-04-2016 nouvelle connexion mysql
- * AC 02-05-2016 fonction globale requete()
+ * AC 02-05-2016 fonction globale requete() + DB_PREFIX
  */
 
 /*
@@ -14,9 +14,9 @@ require("fonctions_bd_gase.php");
 function SelectionListeFournisseurs($all = false)
 {
 	if ($all)
-		$sql = "SELECT ID_FOURNISSEUR, NOM FROM _inde_FOURNISSEURS ORDER BY NOM";
+		$sql = "SELECT ID_FOURNISSEUR, NOM FROM ".DB_PREFIX."FOURNISSEURS ORDER BY NOM";
 	else
-		$sql = "SELECT ID_FOURNISSEUR, NOM FROM _inde_FOURNISSEURS WHERE VISIBLE=1 ORDER BY NOM";
+		$sql = "SELECT ID_FOURNISSEUR, NOM FROM ".DB_PREFIX."FOURNISSEURS WHERE VISIBLE=1 ORDER BY NOM";
 	$result = requete($sql);
 	while ( $row = $result->fetch())
 	{
@@ -27,13 +27,13 @@ function SelectionListeFournisseurs($all = false)
 
 function EnregistrerNouveauFournisseur($nom, $mail, $adresse, $contact, $telephoneFixe, $telephonePortable, $fax, $commentaire, $visible)
 {
-	$requete = "INSERT INTO _inde_FOURNISSEURS (NOM, MAIL, ADRESSE, CONTACT, TELEPHONE_FIXE, TELEPHONE_PORTABLE, FAX, COMMENTAIRE, DATE_REFERENCEMENT, VISIBLE) values('$nom','$mail','$adresse','$contact','$telephoneFixe','$telephonePortable', '$fax', '$commentaire', NOW(),'$visible')";
+	$requete = "INSERT INTO ".DB_PREFIX."FOURNISSEURS (NOM, MAIL, ADRESSE, CONTACT, TELEPHONE_FIXE, TELEPHONE_PORTABLE, FAX, COMMENTAIRE, DATE_REFERENCEMENT, VISIBLE) values('$nom','$mail','$adresse','$contact','$telephoneFixe','$telephonePortable', '$fax', '$commentaire', NOW(),'$visible')";
 	requete($requete);
 }
 
 function SelectionDonneesFournisseur($idFournisseur)
 {
-	$result = requete("SELECT NOM, MAIL, CONTACT, ADRESSE, TELEPHONE_FIXE, TELEPHONE_PORTABLE, FAX, COMMENTAIRE, VISIBLE, DATE_REFERENCEMENT FROM _inde_FOURNISSEURS WHERE ID_FOURNISSEUR= '$idFournisseur'");
+	$result = requete("SELECT NOM, MAIL, CONTACT, ADRESSE, TELEPHONE_FIXE, TELEPHONE_PORTABLE, FAX, COMMENTAIRE, VISIBLE, DATE_REFERENCEMENT FROM ".DB_PREFIX."FOURNISSEURS WHERE ID_FOURNISSEUR= '$idFournisseur'");
 	while ( $row = $result->fetch())
 	{		
 		$donnees['NOM'] = $row[0];
@@ -53,14 +53,14 @@ function SelectionDonneesFournisseur($idFournisseur)
 function MajFournisseur($idFournisseur, $nom, $mail, $adresse, $contact, $telephoneFixe, $telephonePortable, $fax, $commentaire, $visible)
 {
 
-	$requete = "UPDATE _inde_FOURNISSEURS SET NOM = '$nom', MAIL='$mail', CONTACT='$contact', ADRESSE = '$adresse', TELEPHONE_FIXE = '$telephoneFixe', TELEPHONE_PORTABLE = '$telephonePortable', FAX = '$fax', COMMENTAIRE = '$commentaire', VISIBLE = '$visible' WHERE ID_FOURNISSEUR = '$idFournisseur'";
+	$requete = "UPDATE ".DB_PREFIX."FOURNISSEURS SET NOM = '$nom', MAIL='$mail', CONTACT='$contact', ADRESSE = '$adresse', TELEPHONE_FIXE = '$telephoneFixe', TELEPHONE_PORTABLE = '$telephonePortable', FAX = '$fax', COMMENTAIRE = '$commentaire', VISIBLE = '$visible' WHERE ID_FOURNISSEUR = '$idFournisseur'";
 	requete($requete);
 
 }
 
 function SelectionListeVisiblesFR()
 {
-	$result = requete("SELECT ID_FOURNISSEUR, NOM FROM _inde_FOURNISSEURS WHERE VISIBLE = 1 ORDER BY NOM");
+	$result = requete("SELECT ID_FOURNISSEUR, NOM FROM ".DB_PREFIX."FOURNISSEURS WHERE VISIBLE = 1 ORDER BY NOM");
 	while ( $row = $result->fetch())
 	{
 		$listeAdherents[$row["ID_FOURNISSEUR"]] = $row["NOM"];
@@ -70,7 +70,7 @@ function SelectionListeVisiblesFR()
 
 function SelectionNomFournisseur($idFournisseur)
 {
-	$result = requete("SELECT NOM FROM _inde_FOURNISSEURS WHERE ID_FOURNISSEUR = '$idFournisseur'");
+	$result = requete("SELECT NOM FROM ".DB_PREFIX."FOURNISSEURS WHERE ID_FOURNISSEUR = '$idFournisseur'");
 	while ( $row = $result->fetch())
 	{
 		$nom = $row["NOM"];
