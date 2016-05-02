@@ -3,11 +3,11 @@
 	
 	/*
 	 * AC 15-04-2016 nouvelle connexion mysql
+	 * AC 02-05-2016 fonction globale requete()
 	 */
 	
 	function EnregistrerNouvelleReference($designation, $fournisseur, $categorie, $prix, $tva, $vrac, $codeFournisseur, $commentaire, $visible, $alert_stock)
 	{
-		global $mysql;
 		
 		//no alert stock (empty) => stored as -1 in db
 	    //... reference wih null as alert will be set to -1 when modified
@@ -17,22 +17,21 @@
 	    }
 	    
         $requete1 = "INSERT INTO _inde_REFERENCES (DESIGNATION, ID_FOURNISSEUR, VRAC, ID_CATEGORIE, PRIX_TTC, TVA, VISIBLE, CODE_FOURNISSEUR, COMMENTAIRE, ALERT_STOCK, DATE_REFERENCEMENT) values('$designation','$fournisseur','$vrac','$categorie','$prix','$tva','$visible','$codeFournisseur', '$commentaire', '$alert_stock', NOW())";		
-        $mysql->query($requete1);
+        requete($requete1);
 
-        $result = $mysql->query("SELECT MAX(ID_REFERENCE) FROM _inde_REFERENCES");
+        $result = requete("SELECT MAX(ID_REFERENCE) FROM _inde_REFERENCES");
         $resultat = $result->fetch_row();
 
         $idRefMax = $resultat[0];
 
         $requete2 = "INSERT INTO _inde_STOCKS (ID_REFERENCE, STOCK, OPERATION, DATE, ID_ACHAT, QUANTITE) values('$idRefMax',0,'CREATION',NOW(),NULL, 0)";
-        $mysql->query($requete2);		
+        requete($requete2);		
 		
 	}
 	
 	function SelectionListeReferences()
 	{
-		global $mysql;
-		$result = $mysql->query("SELECT ID_REFERENCE, DESIGNATION FROM _inde_REFERENCES ORDER BY DESIGNATION");
+		$result = requete("SELECT ID_REFERENCE, DESIGNATION FROM _inde_REFERENCES ORDER BY DESIGNATION");
 		while ( $row = $result->fetch())
 		{
 			$listeAdherents[$row["ID_REFERENCE"]] = $row["DESIGNATION"];
@@ -43,9 +42,8 @@
 	
 	function SelectionDonneesReference($idReference)
 	{
-		global $mysql;
 
-		$result = $mysql->query("SELECT r.DESIGNATION, r.ID_FOURNISSEUR, r.VRAC, r.ID_CATEGORIE, r.PRIX_TTC, r.TVA, r.VISIBLE, r.CODE_FOURNISSEUR, r.COMMENTAIRE, r.DATE_REFERENCEMENT, r.ALERT_STOCK, f.NOM 
+		$result = requete("SELECT r.DESIGNATION, r.ID_FOURNISSEUR, r.VRAC, r.ID_CATEGORIE, r.PRIX_TTC, r.TVA, r.VISIBLE, r.CODE_FOURNISSEUR, r.COMMENTAIRE, r.DATE_REFERENCEMENT, r.ALERT_STOCK, f.NOM 
 		    FROM _inde_REFERENCES r, _inde_FOURNISSEURS f 
 		    WHERE ID_REFERENCE = '$idReference'
 		    AND r.ID_FOURNISSEUR = f.ID_FOURNISSEUR");
@@ -77,7 +75,6 @@
 	
 	function MajReference($idReference, $designation, $fournisseur, $categorie, $prix, $tva, $vrac, $codeFournisseur, $commentaire, $visible, $alert_stock)
 	{
-		global $mysql;
 		//no alert stock (empty) => stored as -1 in db
 	    //... reference wih null as alert will be set to -1 when modified
 	    //... there might be an alert level set to 0
@@ -86,16 +83,15 @@
 	    }
 	    
 		$requete = "UPDATE _inde_REFERENCES SET DESIGNATION = '$designation', ID_FOURNISSEUR='$fournisseur', VRAC='$vrac', ID_CATEGORIE='$categorie', PRIX_TTC = '$prix', ALERT_STOCK = '$alert_stock', TVA = '$tva', VISIBLE = '$visible', CODE_FOURNISSEUR = '$codeFournisseur', COMMENTAIRE = '$commentaire' WHERE ID_REFERENCE = '$idReference'";
-		$mysql->query($requete);
+		requete($requete);
 		
 	}
 	
 	function SelectionListeReferencesMenu($idCategorie)
 	{
-		global $mysql;
 
 		$compteur = 0;
-		$result = $mysql->query("SELECT p.NOM, r.DESIGNATION, r.PRIX_TTC, r.ID_REFERENCE, r.VRAC FROM _inde_REFERENCES r, _inde_FOURNISSEURS p WHERE r.ID_CATEGORIE = '$idCategorie' AND p.ID_FOURNISSEUR = r.ID_FOURNISSEUR AND r.VISIBLE = 1 ORDER BY r.DESIGNATION");
+		$result = requete("SELECT p.NOM, r.DESIGNATION, r.PRIX_TTC, r.ID_REFERENCE, r.VRAC FROM _inde_REFERENCES r, _inde_FOURNISSEURS p WHERE r.ID_CATEGORIE = '$idCategorie' AND p.ID_FOURNISSEUR = r.ID_FOURNISSEUR AND r.VISIBLE = 1 ORDER BY r.DESIGNATION");
 		while ( $row = $result->fetch())
 		{		
 			$ligne['PRODUCTEUR'] = $row[0];

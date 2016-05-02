@@ -3,30 +3,28 @@
 
 	/*
 	 * AC 15-04-2016 nouvelle connexion mysql
+	 * AC 02-05-2016 fonction globale requete()
 	 */	
     
     function EnregistrerNouvelleCategorie($nom)
 	{
-		global $mysql;
 		$requete = "INSERT INTO _inde_CATEGORIES (NOM) values('$nom')";
-		$mysql->query($requete);
+		requete($requete);
 		
 	}	
 	
 	function EnregistrerNouvelleSousCategorie($nom, $idCatSup)
 	{
-		global $mysql;
 		$requete = "INSERT INTO _inde_CATEGORIES (NOM, ID_CAT_SUP) values('$nom','$idCatSup')";
-		$mysql->query($requete);
+		requete($requete);
 		$requete = "UPDATE _inde_CATEGORIES SET SOUS_CATEGORIES = 1 WHERE ID_CATEGORIE = '$idCatSup'";
-		$mysql->query($requete);
+		requete($requete);
 		
 	}
 	
 	function SelectionListeCategoriesMeres()
 	{
-		global $mysql;
-		$result = $mysql->query("SELECT ID_CATEGORIE, NOM FROM _inde_CATEGORIES WHERE ID_CAT_SUP is NULL ORDER BY NOM");
+		$result = requete("SELECT ID_CATEGORIE, NOM FROM _inde_CATEGORIES WHERE ID_CAT_SUP is NULL ORDER BY NOM");
 		while ( $row = $result->fetch())
 		{
 			$listeCategories[$row["ID_CATEGORIE"]] = $row["NOM"];
@@ -37,8 +35,7 @@
 	
 	function SelectionListeCategories()
 	{
-		global $mysql;
-		$result = $mysql->query("SELECT ID_CATEGORIE, NOM FROM _inde_CATEGORIES ORDER BY NOM");
+		$result = requete("SELECT ID_CATEGORIE, NOM FROM _inde_CATEGORIES ORDER BY NOM");
 		while ( $row = $result->fetch())
 		{
 			$listeCategories[$row["ID_CATEGORIE"]] = $row["NOM"];
@@ -49,8 +46,7 @@
 	
 	function SelectionDonneesCategorie($idCategorie)
 	{
-		global $mysql;
-		$result = $mysql->query("SELECT NOM, ID_CAT_SUP, SOUS_CATEGORIES, VISIBLE FROM _inde_CATEGORIES WHERE ID_CATEGORIE = '$idCategorie'");
+		$result = requete("SELECT NOM, ID_CAT_SUP, SOUS_CATEGORIES, VISIBLE FROM _inde_CATEGORIES WHERE ID_CATEGORIE = '$idCategorie'");
 		while ( $row = $result->fetch())
 		{		
 			$donnees['NOM'] = $row[0];
@@ -64,8 +60,7 @@
 	
 	function SelectionNomCategorieMere($idCategorie)
 	{
-		global $mysql;
-		$result = $mysql->query("SELECT c2.NOM FROM _inde_CATEGORIES c1, _inde_CATEGORIES c2 WHERE c1.ID_CATEGORIE = '$idCategorie' AND c2.ID_CATEGORIE = c1.ID_CAT_SUP");
+		$result = requete("SELECT c2.NOM FROM _inde_CATEGORIES c1, _inde_CATEGORIES c2 WHERE c1.ID_CATEGORIE = '$idCategorie' AND c2.ID_CATEGORIE = c1.ID_CAT_SUP");
 		
 		$nom = "";
 		while ( $row = $result->fetch())
@@ -78,16 +73,14 @@
 	
 	function MajCategorie($idCategorie, $nom, $visible)
 	{
-		global $mysql;
 		$requete = "UPDATE _inde_CATEGORIES SET NOM = '$nom', VISIBLE = '$visible' WHERE ID_CATEGORIE = '$idCategorie'";
-		$mysql->query($requete);
+		requete($requete);
 		
 	}
 	
 	function SelectionIdCategorieMere($idCategorie)
 	{
-		global $mysql;
-		$result = $mysql->query("SELECT ID_CAT_SUP FROM _inde_CATEGORIES WHERE ID_CATEGORIE = '$idCategorie'");
+		$result = requete("SELECT ID_CAT_SUP FROM _inde_CATEGORIES WHERE ID_CATEGORIE = '$idCategorie'");
 		while ( $row = $result->fetch())
 		{		
 			$id = $row['ID_CAT_SUP'];
@@ -98,14 +91,13 @@
 	
 	function MajSousCategorie($idCategorie, $nom, $visible, $NouvelleCatMere, $ancienneCatMere)
 	{
-		global $mysql;
 		$requete = "UPDATE _inde_CATEGORIES SET NOM = '$nom', VISIBLE = '$visible', ID_CAT_SUP = '$NouvelleCatMere' WHERE ID_CATEGORIE = '$idCategorie'";
-		$mysql->query($requete);
+		requete($requete);
 		
 		$requete = "UPDATE _inde_CATEGORIES SET SOUS_CATEGORIES = '1' WHERE ID_CATEGORIE = '$NouvelleCatMere'";
-		$mysql->query($requete);
+		requete($requete);
 
-		$result = $mysql->query("SELECT COUNT(*) FROM _inde_CATEGORIES c WHERE c.ID_CAT_SUP = '$ancienneCatMere'");
+		$result = requete("SELECT COUNT(*) FROM _inde_CATEGORIES c WHERE c.ID_CAT_SUP = '$ancienneCatMere'");
 		while ( $row = $result->fetch())
 		{		
 			$nbre = $row[0];
@@ -114,15 +106,14 @@
 		if($nbre == 0)
 		{
 			$requete = "UPDATE _inde_CATEGORIES SET SOUS_CATEGORIES = '0' WHERE ID_CATEGORIE = '$ancienneCatMere'";
-			$mysql->query($requete);
+			requete($requete);
 		}
 		
 	}
 	
 	function SelectionListeCategoriesFilles()
 	{
-		global $mysql;
-		$result = $mysql->query("SELECT ID_CATEGORIE, NOM FROM _inde_CATEGORIES WHERE SOUS_CATEGORIES = 0 ORDER BY NOM");
+		$result = requete("SELECT ID_CATEGORIE, NOM FROM _inde_CATEGORIES WHERE SOUS_CATEGORIES = 0 ORDER BY NOM");
 		while ( $row = $result->fetch())
 		{
 			$listeCategories[$row["ID_CATEGORIE"]] = $row["NOM"];
@@ -133,8 +124,7 @@
 	
 	function SelectionNomCategorie($idCategorie)
 	{
-		global $mysql;
-		$result = $mysql->query("SELECT NOM FROM _inde_CATEGORIES WHERE ID_CATEGORIE = '$idCategorie'");
+		$result = requete("SELECT NOM FROM _inde_CATEGORIES WHERE ID_CATEGORIE = '$idCategorie'");
 		while ( $row = $result->fetch())
 		{
 			$nom = $row["NOM"];
@@ -145,11 +135,10 @@
 	
 	function SelectionListeCategoriesMenu()
 	{
-		global $mysql;
 
 		$compteur = 0;
 		$visible = 1;
-		$result = $mysql->query("SELECT ID_CATEGORIE, NOM, ID_CAT_SUP, SOUS_CATEGORIES FROM _inde_CATEGORIES WHERE VISIBLE = '$visible' ORDER BY NOM");
+		$result = requete("SELECT ID_CATEGORIE, NOM, ID_CAT_SUP, SOUS_CATEGORIES FROM _inde_CATEGORIES WHERE VISIBLE = '$visible' ORDER BY NOM");
 		while ( $row = $result->fetch())
 		{		
 			$ligne['ID_CATEGORIE'] = $row[0];
@@ -166,11 +155,10 @@
 	
 	function SelectionListeSousCategories($idCategorie)
 	{
-		global $mysql;
 
 		$compteur = 0;
 		$visible = 1;
-		$result = $mysql->query("SELECT ID_CATEGORIE, NOM FROM _inde_CATEGORIES WHERE ID_CAT_SUP = '$idCategorie' AND VISIBLE = '$visible' ORDER BY NOM");
+		$result = requete("SELECT ID_CATEGORIE, NOM FROM _inde_CATEGORIES WHERE ID_CAT_SUP = '$idCategorie' AND VISIBLE = '$visible' ORDER BY NOM");
 		while ( $row = $result->fetch())
 		{		
 			$ligne['ID_CATEGORIE'] = $row[0];

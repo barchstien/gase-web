@@ -3,6 +3,7 @@ require("fonctions_bd_gase.php");
 
 	/*
 	 * AC 15-04-2016 nouvelle connexion mysql
+	 * AC 02-05-2016 fonction globale requete()
 	 */
 
 /* 
@@ -12,7 +13,6 @@ require("fonctions_bd_gase.php");
  */
 function SelectionListeSTK($all = false)
 {
-	global $mysql;
 	$compteur = 0;
 	
 	$sql = "SELECT s1.STOCK, r.DESIGNATION, f.NOM, c.NOM, r.ID_REFERENCE, r.VISIBLE 
@@ -26,7 +26,7 @@ function SelectionListeSTK($all = false)
 	
 	$sql .= "	ORDER BY c.NOM, r.DESIGNATION";
 	
-	$result = $mysql->query($sql);
+	$result = requete($sql);
 	while ( $row = $result->fetch())
 	{		
 		$donnees['STOCK'] = $row[0];
@@ -45,8 +45,7 @@ function SelectionListeSTK($all = false)
 
 function SelectionStocks($idFournisseur)
 {
-	global $mysql;
-	$result = $mysql->query("SELECT r.CODE_FOURNISSEUR, r.ID_REFERENCE, r.DESIGNATION, c.NOM FROM _inde_REFERENCES r, _inde_FOURNISSEURS f, _inde_CATEGORIES c WHERE f.ID_FOURNISSEUR = '$idFournisseur' AND f.ID_FOURNISSEUR = r.ID_FOURNISSEUR AND c.ID_CATEGORIE = r.ID_CATEGORIE ORDER BY c.NOM, r.DESIGNATION");
+	$result = requete("SELECT r.CODE_FOURNISSEUR, r.ID_REFERENCE, r.DESIGNATION, c.NOM FROM _inde_REFERENCES r, _inde_FOURNISSEURS f, _inde_CATEGORIES c WHERE f.ID_FOURNISSEUR = '$idFournisseur' AND f.ID_FOURNISSEUR = r.ID_FOURNISSEUR AND c.ID_CATEGORIE = r.ID_CATEGORIE ORDER BY c.NOM, r.DESIGNATION");
 	
 	$compteur = 0;
 	$listeStocks = array();
@@ -68,8 +67,7 @@ function SelectionStocks($idFournisseur)
 	
 function SelectionStockRefSTK($idReference)
 {
-	global $mysql;
-	$result = $mysql->query("SELECT STOCK FROM _inde_STOCKS WHERE ID_REFERENCE='$idReference' AND DATE = (SELECT MAX(DATE) FROM _inde_STOCKS WHERE ID_REFERENCE='$idReference')");
+	$result = requete("SELECT STOCK FROM _inde_STOCKS WHERE ID_REFERENCE='$idReference' AND DATE = (SELECT MAX(DATE) FROM _inde_STOCKS WHERE ID_REFERENCE='$idReference')");
 	$row = $result->fetch();
 	$stock = $row["STOCK"];
 	
@@ -82,9 +80,8 @@ function modifierSTK_generic($idReference, $nouveauStock, $quantite, $type, $idA
 	$nouveauStock = str_replace(",", ".", $nouveauStock);
 	$quantite = str_replace(",", ".", $quantite);
 	
-	global $mysql;
 	$requete = "INSERT INTO _inde_STOCKS (ID_REFERENCE, STOCK, OPERATION, DATE, QUANTITE, ID_ACHAT) values('$idReference','$nouveauStock', '$type', NOW(), '$quantite', $idAchat)";
-	$mysql->query($requete);
+	requete($requete);
 	
 	//remove an entry form raised alert, for $idReference, if stock is above alert limit
 	remove_raised_alerts_if_any($idReference);
@@ -116,7 +113,6 @@ THIS IS NOT the rows of _inde_ALERTS_STOCK_RAISED */
  *  - retourne également la colonne VISIBLE
  */
 function getReferencesWithStockAlert($all = false){
-    global $mysql;
     
 	//rows with ALERT_STOCK == NULL are ignored by r.ALERT_STOCK != -1 ...
 	//... rows with field NULL, can be selected with r.ALERT_STOCK IS NULL (or IS NOT NULL)
@@ -132,7 +128,7 @@ function getReferencesWithStockAlert($all = false){
 	    AND r.ALERT_STOCK >= s1.STOCK";
 	if (!$all) $sql .= "	AND r.VISIBLE = 1";
 	$sql .= "	ORDER BY c.NOM, r.DESIGNATION";
-    $result = $mysql->query($sql);
+    $result = requete($sql);
 	$listeStocks = null;
 	while ( $row = $result->fetch())
 	{
@@ -157,8 +153,7 @@ It is called at every purchase */
 function check_for_new_stock_alert(){
     $alert_array = getReferencesWithStockAlert();
     //get raised alert
-    global $mysql;
-	$result = $mysql->query("SELECT * FROM _inde_ALERTS_STOCK_RAISED");
+	$result = requete("SELECT * FROM _inde_ALERTS_STOCK_RAISED");
 	
 	$alert_raised_array = array();
 	while ( $row = $result->fetch()){
@@ -169,10 +164,9 @@ function check_for_new_stock_alert(){
 	for ($i=0; $i < count($alert_array); $i++){
 	    if (! in_array($alert_array[$i]['ID_REFERENCE'], $alert_raised_array)){
 	        //echo $alert_array[$i]['DESIGNATION']." not raised";
-	        global $mysql;
 	        send_stock_alert_email($alert_array[$i]);
 	        $req = "INSERT INTO _inde_ALERTS_STOCK_RAISED (ID_REFERENCE) values('".$alert_array[$i]['ID_REFERENCE']."')";
-		    $mysql->query($req);
+		    requete($req);
 		    
 	    }else{
 	        //echo $alert_array[$i]['DESIGNATION']." ALREADY raised";
@@ -209,8 +203,7 @@ function send_stock_alert_email($reference){
         $subject .= " -debug- ";
     }else{
         //populate array with email from all adherents that subscribed to alert notification
-        global $mysql;
-	    $result = $mysql->query("SELECT MAIL FROM _inde_ADHERENTS 
+	    $result = requete("SELECT MAIL FROM _inde_ADHERENTS 
 	        WHERE RECEIVE_ALERT_STOCK IS NOT NULL
 	        AND RECEIVE_ALERT_STOCK = 1 ");
 	    
@@ -228,16 +221,14 @@ function send_stock_alert_email($reference){
 
 /** remove raised alert, if related stock has been updated */
 function remove_raised_alerts_if_any($idReference){
-    global $mysql;
-	$result = $mysql->query("DELETE FROM _inde_ALERTS_STOCK_RAISED WHERE ID_REFERENCE = '$idReference'");
+	$result = requete("DELETE FROM _inde_ALERTS_STOCK_RAISED WHERE ID_REFERENCE = '$idReference'");
 	
 }
 
 /** @return a list of year within which a purchase occured for $ref
 for example array(2013, 2014) */
 function getYearWithPurchase_forReferenceId($ref){
-    global $mysql;
-    $result = $mysql->query("SELECT DISTINCT YEAR(DATE) FROM _inde_STOCKS WHERE ID_REFERENCE = '$ref'");
+    $result = requete("SELECT DISTINCT YEAR(DATE) FROM _inde_STOCKS WHERE ID_REFERENCE = '$ref'");
     $ret = array();
     while ( $row = $result->fetch()){
         if (0 != $row[0]){
@@ -250,8 +241,7 @@ function getYearWithPurchase_forReferenceId($ref){
 
 ////////// Inventaire : Ecarts ////////
 function get_inventaires_dates(){
-    global $mysql;
-    $result = $mysql->query("SELECT distinct DATE_FORMAT(DATE,'%Y-%m-%e')
+    $result = requete("SELECT distinct DATE_FORMAT(DATE,'%Y-%m-%e')
                             FROM _inde_STOCKS
                             WHERE OPERATION = 'INVENTAIRE'
                             group by DATE_FORMAT(DATE,'%Y-%m-%e')
@@ -267,8 +257,7 @@ function get_inventaires_dates(){
 }
 
 function get_ecarts_list_for_date($date){
-    global $mysql;
-    $result = $mysql->query("SELECT s.QUANTITE, c.NOM, r.DESIGNATION, f.NOM, r.PRIX_TTC, s.DATE
+    $result = requete("SELECT s.QUANTITE, c.NOM, r.DESIGNATION, f.NOM, r.PRIX_TTC, s.DATE
                             FROM _inde_STOCKS s, _inde_REFERENCES r, _inde_CATEGORIES c, _inde_FOURNISSEURS f
                             WHERE s.OPERATION = 'INVENTAIRE'
                             AND DATE_FORMAT(s.DATE,'%Y-%m-%e') = '$date'

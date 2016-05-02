@@ -3,13 +3,13 @@
 
 	/*
 	 * AC 15-04-2016 nouvelle connexion mysql
+	 * AC 02-05-2016 fonction globale requete()
 	 */
 	
 /*** DOCUMENTS ***/	
 	function SelectionListeTypesDoc()
 	{
-		global $mysql;
-		$result = $mysql->query("SELECT ID_TYPE, NOM FROM _inde_TYPE_DOC ORDER BY NOM");
+		$result = requete("SELECT ID_TYPE, NOM FROM _inde_TYPE_DOC ORDER BY NOM");
 		while ( $row = $result->fetch())
 		{
 			$listeTypesDoc[$row[ID_TYPE]] = $row[NOM];
@@ -20,8 +20,7 @@
 
 	function SelectionNomTypeDoc($idType)
 	{
-		global $mysql;
-		$result = $mysql->query("SELECT NOM FROM _inde_TYPE_DOC WHERE ID_TYPE = '$idType'");
+		$result = requete("SELECT NOM FROM _inde_TYPE_DOC WHERE ID_TYPE = '$idType'");
 		while ( $row = $result->fetch())
 		{		
 			$nomType = $row[0];
@@ -32,8 +31,7 @@
 
 	function SelectionIdDocument()
 	{
-		global $mysql;
-		$result = $mysql->query("SELECT MAX(ID_DOCUMENT) FROM _inde_DOCUMENTS");
+		$result = requete("SELECT MAX(ID_DOCUMENT) FROM _inde_DOCUMENTS");
 		while ( $row = $result->fetch())
 		{		
 			$idDocument = $row[0];
@@ -44,39 +42,35 @@
 	
 	function EnregistrerNouvelleFacture($idType, $nom, $idFournisseur, $date, $net)
 	{
-		global $mysql;
 
 		$requete = "INSERT INTO _inde_DOCUMENTS (NOM, ID_TYPE, ID_FOURNISSEUR, DATE, NET_A_PAYER) values('$nom','$idType','$idFournisseur','$date','$net')";
-		$mysql->query($requete);
+		requete($requete);
 		
 		
 	}
 	
 	function EnregistrerNouveauBonCde($idType, $nom, $idFournisseur, $date, $net)
 	{
-		global $mysql;
 
 		$requete = "INSERT INTO _inde_DOCUMENTS (NOM, ID_TYPE, ID_FOURNISSEUR, DATE, NET_A_PAYER) values('$nom','$idType','$idFournisseur','$date','$net')";
-		$mysql->query($requete);
+		requete($requete);
 		
 		
 	}
 	
 	function EnregistrerNouveauDocInterne($idType, $nom, $date)
 	{
-		global $mysql;
 		$requete = "INSERT INTO _inde_DOCUMENTS (NOM, ID_TYPE, ID_FOURNISSEUR, DATE, NET_A_PAYER) values('$nom','$idType',NULL,'$date', NULL)";
-		$mysql->query($requete);
+		requete($requete);
 		
 	}
 	
 
 	function SelectionListeDocuments($idType)
 	{
-		global $mysql;
 		$compteur = 0;
 		$listeDoc = array();
-		$result = $mysql->query("SELECT ID_DOCUMENT, NOM, DATE, ID_FOURNISSEUR, NET_A_PAYER FROM _inde_DOCUMENTS WHERE ID_TYPE = '$idType' ORDER BY ID_DOCUMENT");
+		$result = requete("SELECT ID_DOCUMENT, NOM, DATE, ID_FOURNISSEUR, NET_A_PAYER FROM _inde_DOCUMENTS WHERE ID_TYPE = '$idType' ORDER BY ID_DOCUMENT");
 		while ( $row = $result->fetch())
 		{		
 			$donnees['ID_DOCUMENT'] = $row[0];
