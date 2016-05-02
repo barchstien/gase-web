@@ -3,7 +3,7 @@ require("fonctions_bd_gase.php");
 
 	/*
 	 * AC 15-04-2016 nouvelle connexion mysql
-	 * AC 02-05-2016 fonction globale requete()
+	 * AC 02-05-2016 fonction globale requete() + DB_PREFIX
 	 */
 
 /* 
@@ -16,8 +16,8 @@ function SelectionListeSTK($all = false)
 	$compteur = 0;
 	
 	$sql = "SELECT s1.STOCK, r.DESIGNATION, f.NOM, c.NOM, r.ID_REFERENCE, r.VISIBLE 
-	    FROM _inde_STOCKS s1, _inde_REFERENCES r, _inde_FOURNISSEURS f, _inde_CATEGORIES c 
-	    WHERE s1.DATE = (SELECT MAX(s2.DATE) FROM _inde_STOCKS s2 WHERE s2.ID_REFERENCE=s1.ID_REFERENCE) 
+	    FROM ".DB_PREFIX."STOCKS s1, ".DB_PREFIX."REFERENCES r, ".DB_PREFIX."FOURNISSEURS f, ".DB_PREFIX."CATEGORIES c 
+	    WHERE s1.DATE = (SELECT MAX(s2.DATE) FROM ".DB_PREFIX."STOCKS s2 WHERE s2.ID_REFERENCE=s1.ID_REFERENCE) 
 	    AND r.ID_REFERENCE = s1.ID_REFERENCE 
 	    AND f.ID_FOURNISSEUR = r.ID_FOURNISSEUR 
 	    AND c.ID_CATEGORIE = r.ID_CATEGORIE";
@@ -45,7 +45,7 @@ function SelectionListeSTK($all = false)
 
 function SelectionStocks($idFournisseur)
 {
-	$result = requete("SELECT r.CODE_FOURNISSEUR, r.ID_REFERENCE, r.DESIGNATION, c.NOM FROM _inde_REFERENCES r, _inde_FOURNISSEURS f, _inde_CATEGORIES c WHERE f.ID_FOURNISSEUR = '$idFournisseur' AND f.ID_FOURNISSEUR = r.ID_FOURNISSEUR AND c.ID_CATEGORIE = r.ID_CATEGORIE ORDER BY c.NOM, r.DESIGNATION");
+	$result = requete("SELECT r.CODE_FOURNISSEUR, r.ID_REFERENCE, r.DESIGNATION, c.NOM FROM ".DB_PREFIX."REFERENCES r, ".DB_PREFIX."FOURNISSEURS f, ".DB_PREFIX."CATEGORIES c WHERE f.ID_FOURNISSEUR = '$idFournisseur' AND f.ID_FOURNISSEUR = r.ID_FOURNISSEUR AND c.ID_CATEGORIE = r.ID_CATEGORIE ORDER BY c.NOM, r.DESIGNATION");
 	
 	$compteur = 0;
 	$listeStocks = array();
@@ -67,7 +67,7 @@ function SelectionStocks($idFournisseur)
 	
 function SelectionStockRefSTK($idReference)
 {
-	$result = requete("SELECT STOCK FROM _inde_STOCKS WHERE ID_REFERENCE='$idReference' AND DATE = (SELECT MAX(DATE) FROM _inde_STOCKS WHERE ID_REFERENCE='$idReference')");
+	$result = requete("SELECT STOCK FROM ".DB_PREFIX."STOCKS WHERE ID_REFERENCE='$idReference' AND DATE = (SELECT MAX(DATE) FROM ".DB_PREFIX."STOCKS WHERE ID_REFERENCE='$idReference')");
 	$row = $result->fetch();
 	$stock = $row["STOCK"];
 	
@@ -80,7 +80,7 @@ function modifierSTK_generic($idReference, $nouveauStock, $quantite, $type, $idA
 	$nouveauStock = str_replace(",", ".", $nouveauStock);
 	$quantite = str_replace(",", ".", $quantite);
 	
-	$requete = "INSERT INTO _inde_STOCKS (ID_REFERENCE, STOCK, OPERATION, DATE, QUANTITE, ID_ACHAT) values('$idReference','$nouveauStock', '$type', NOW(), '$quantite', $idAchat)";
+	$requete = "INSERT INTO ".DB_PREFIX."STOCKS (ID_REFERENCE, STOCK, OPERATION, DATE, QUANTITE, ID_ACHAT) values('$idReference','$nouveauStock', '$type', NOW(), '$quantite', $idAchat)";
 	requete($requete);
 	
 	//remove an entry form raised alert, for $idReference, if stock is above alert limit
@@ -106,7 +106,7 @@ function ModifierInventaireSTK($idReference, $quantite)
 }
 
 /** get list of references with stocks below the alert limit
-THIS IS NOT the rows of _inde_ALERTS_STOCK_RAISED */
+THIS IS NOT the rows of ".DB_PREFIX."ALERTS_STOCK_RAISED */
 /*
  * AC 29-01-2016
  *  - ajout d'un paramètre $all pour filtrer les non-visibles
@@ -118,9 +118,9 @@ function getReferencesWithStockAlert($all = false){
 	//... rows with field NULL, can be selected with r.ALERT_STOCK IS NULL (or IS NOT NULL)
 	//... != -1 important, in case stock error get stock to below -1
 	$sql = "SELECT s1.STOCK, r.DESIGNATION, f.NOM, c.NOM, r.ID_REFERENCE, r.ALERT_STOCK, r.VISIBLE 
-	    FROM _inde_STOCKS s1, _inde_REFERENCES r, _inde_FOURNISSEURS f, _inde_CATEGORIES c 
+	    FROM ".DB_PREFIX."STOCKS s1, ".DB_PREFIX."REFERENCES r, ".DB_PREFIX."FOURNISSEURS f, ".DB_PREFIX."CATEGORIES c 
 	    WHERE s1.DATE = 
-	        (SELECT MAX(s2.DATE) FROM _inde_STOCKS s2 WHERE s2.ID_REFERENCE=s1.ID_REFERENCE) 
+	        (SELECT MAX(s2.DATE) FROM ".DB_PREFIX."STOCKS s2 WHERE s2.ID_REFERENCE=s1.ID_REFERENCE) 
 	    AND r.ID_REFERENCE = s1.ID_REFERENCE 
 	    AND f.ID_FOURNISSEUR = r.ID_FOURNISSEUR 
 	    AND c.ID_CATEGORIE = r.ID_CATEGORIE 
@@ -153,7 +153,7 @@ It is called at every purchase */
 function check_for_new_stock_alert(){
     $alert_array = getReferencesWithStockAlert();
     //get raised alert
-	$result = requete("SELECT * FROM _inde_ALERTS_STOCK_RAISED");
+	$result = requete("SELECT * FROM ".DB_PREFIX."ALERTS_STOCK_RAISED");
 	
 	$alert_raised_array = array();
 	while ( $row = $result->fetch()){
@@ -165,7 +165,7 @@ function check_for_new_stock_alert(){
 	    if (! in_array($alert_array[$i]['ID_REFERENCE'], $alert_raised_array)){
 	        //echo $alert_array[$i]['DESIGNATION']." not raised";
 	        send_stock_alert_email($alert_array[$i]);
-	        $req = "INSERT INTO _inde_ALERTS_STOCK_RAISED (ID_REFERENCE) values('".$alert_array[$i]['ID_REFERENCE']."')";
+	        $req = "INSERT INTO ".DB_PREFIX."ALERTS_STOCK_RAISED (ID_REFERENCE) values('".$alert_array[$i]['ID_REFERENCE']."')";
 		    requete($req);
 		    
 	    }else{
@@ -203,7 +203,7 @@ function send_stock_alert_email($reference){
         $subject .= " -debug- ";
     }else{
         //populate array with email from all adherents that subscribed to alert notification
-	    $result = requete("SELECT MAIL FROM _inde_ADHERENTS 
+	    $result = requete("SELECT MAIL FROM ".DB_PREFIX."ADHERENTS 
 	        WHERE RECEIVE_ALERT_STOCK IS NOT NULL
 	        AND RECEIVE_ALERT_STOCK = 1 ");
 	    
@@ -221,14 +221,14 @@ function send_stock_alert_email($reference){
 
 /** remove raised alert, if related stock has been updated */
 function remove_raised_alerts_if_any($idReference){
-	$result = requete("DELETE FROM _inde_ALERTS_STOCK_RAISED WHERE ID_REFERENCE = '$idReference'");
+	$result = requete("DELETE FROM ".DB_PREFIX."ALERTS_STOCK_RAISED WHERE ID_REFERENCE = '$idReference'");
 	
 }
 
 /** @return a list of year within which a purchase occured for $ref
 for example array(2013, 2014) */
 function getYearWithPurchase_forReferenceId($ref){
-    $result = requete("SELECT DISTINCT YEAR(DATE) FROM _inde_STOCKS WHERE ID_REFERENCE = '$ref'");
+    $result = requete("SELECT DISTINCT YEAR(DATE) FROM ".DB_PREFIX."STOCKS WHERE ID_REFERENCE = '$ref'");
     $ret = array();
     while ( $row = $result->fetch()){
         if (0 != $row[0]){
@@ -242,7 +242,7 @@ function getYearWithPurchase_forReferenceId($ref){
 ////////// Inventaire : Ecarts ////////
 function get_inventaires_dates(){
     $result = requete("SELECT distinct DATE_FORMAT(DATE,'%Y-%m-%e')
-                            FROM _inde_STOCKS
+                            FROM ".DB_PREFIX."STOCKS
                             WHERE OPERATION = 'INVENTAIRE'
                             group by DATE_FORMAT(DATE,'%Y-%m-%e')
                             ORDER BY DATE DESC;");
@@ -258,7 +258,7 @@ function get_inventaires_dates(){
 
 function get_ecarts_list_for_date($date){
     $result = requete("SELECT s.QUANTITE, c.NOM, r.DESIGNATION, f.NOM, r.PRIX_TTC, s.DATE
-                            FROM _inde_STOCKS s, _inde_REFERENCES r, _inde_CATEGORIES c, _inde_FOURNISSEURS f
+                            FROM ".DB_PREFIX."STOCKS s, ".DB_PREFIX."REFERENCES r, ".DB_PREFIX."CATEGORIES c, ".DB_PREFIX."FOURNISSEURS f
                             WHERE s.OPERATION = 'INVENTAIRE'
                             AND DATE_FORMAT(s.DATE,'%Y-%m-%e') = '$date'
                             AND s.ID_REFERENCE = r.ID_REFERENCE

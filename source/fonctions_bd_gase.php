@@ -17,6 +17,7 @@ define ("GASE_CONFIG_FILE_PATH", "../config.ini");
  * Suite aux problèmes de connexion BDD rencontrés chez Free:
  *  - création d'une seule fonction qui appelle la connexion MySQL globale
  *  - retrait du paramètre PDO::ATTR_PERSISTENT dans la connexion PDO
+ *  - ajout d'un préfixe de table dans le fichier config.ini
  * TODO: la prochaine étape sera d'encapsuler tout ça dans une classe pour
  * ne pas avoir à utiliser de variable globale
  */
@@ -26,10 +27,14 @@ $address = $config["DB"]["address"];
 $user = $config["DB"]["user"];
 $pass = $config["DB"]["password"];
 $name =  $config["DB"]["name"];
+$prefix =  $config["DB"]["prefix"];
+if ($prefix == '') $prefix = '_inde_';
 // construction chaîne de connexion
 $dsn = "mysql:host=$address;dbname=$name";
 // variable globale 
 $mysql = new PDO($dsn, $user, $pass);
+// prefix de table global
+define("DB_PREFIX", $prefix);
 
 // AC 02-05-2016 une seule fonction utilisant la connexion globale pour les requêtes avec gestion d'erreur
 function requete($sql) {
@@ -39,7 +44,7 @@ function requete($sql) {
 		$result = $mysql->query($sql);
 	}
 	catch (Exception $e) {
-		echo '<p class="erreur-mysql">' . $e->getMessage() . '</p>';
+		echo '<p class="erreur-mysql">' . $e->getMessage() . '<br />'.$sql.'</p>';
 	}
 	return $result;
 }
@@ -59,7 +64,7 @@ function lastInsertId() {
 //this is imported from inde_fonctionsACH.php
 function EnregistrerAchatAdherent($idAdherent, $montantTTC, $nbArticles){
 
-	requete("INSERT INTO _inde_ACHATS (DATE_ACHAT,ID_ADHERENT,TOTAL_TTC,NB_REFERENCES) values(NOW(),'$idAdherent','$montantTTC','$nbArticles')");
+	requete("INSERT INTO ".DB_PREFIX."ACHATS (DATE_ACHAT,ID_ADHERENT,TOTAL_TTC,NB_REFERENCES) values(NOW(),'$idAdherent','$montantTTC','$nbArticles')");
 	$idCommande = lastInsertId();
 	
 	return $idCommande;
@@ -69,7 +74,7 @@ function EnregistrerAchatAdherent($idAdherent, $montantTTC, $nbArticles){
 //this is imported from inde_fonctionsACH.php
 function SelectionInfosAchats($idAchats){
 
-	$result = requete("SELECT DATE_ACHAT, TOTAL_TTC, NB_REFERENCES FROM _inde_ACHATS WHERE ID_ACHAT = '$idAchats'");
+	$result = requete("SELECT DATE_ACHAT, TOTAL_TTC, NB_REFERENCES FROM ".DB_PREFIX."ACHATS WHERE ID_ACHAT = '$idAchats'");
 	$infosAchats = 0;
 	while ( $row = $result->fetch()){
 		$infosAchats = 'Detail des achats numero '. $idAchats . ' du ' . $row["DATE_ACHAT"] . ', d un montant de  ' . $row["TOTAL_TTC"] . ' euros ('.$row["NB_REFERENCES"].' references).';
@@ -81,7 +86,7 @@ function SelectionInfosAchats($idAchats){
 //this is imported from inde_fonctionsACH.php
 function SelectionDetailsAchats($idAchats){
 	$compteur = 0;
-	$result = requete("SELECT r.DESIGNATION, r.PRIX_TTC, c.QUANTITE, r.PRIX_TTC*c.QUANTITE, c.ID_REFERENCE FROM _inde_STOCKS c, _inde_REFERENCES r WHERE c.ID_ACHAT = '$idAchats' AND r.ID_REFERENCE = c.ID_REFERENCE");
+	$result = requete("SELECT r.DESIGNATION, r.PRIX_TTC, c.QUANTITE, r.PRIX_TTC*c.QUANTITE, c.ID_REFERENCE FROM ".DB_PREFIX."STOCKS c, ".DB_PREFIX."REFERENCES r WHERE c.ID_ACHAT = '$idAchats' AND r.ID_REFERENCE = c.ID_REFERENCE");
 	while ( $row = $result->fetch())
 	{		
 		$ligne['DESIGNATION'] = $row[0];
@@ -100,13 +105,13 @@ function SelectionDetailsAchats($idAchats){
 
 ////////////*** JOURNAL DE BORD OUTIL ***////////////////
 function EnregistrerInfoOutil($message){
-	$requete = "INSERT INTO _inde_VIE_OUTIL (DATE, MESSAGE) values(NOW(),'$message')";
+	$requete = "INSERT INTO ".DB_PREFIX."VIE_OUTIL (DATE, MESSAGE) values(NOW(),'$message')";
 	requete($requete);
 }
 
 function SelectionListeMessages(){
 	$compteur = 0;
-	$result = requete("SELECT DATE, MESSAGE FROM _inde_VIE_OUTIL ORDER BY DATE DESC");
+	$result = requete("SELECT DATE, MESSAGE FROM ".DB_PREFIX."VIE_OUTIL ORDER BY DATE DESC");
 	while ( $row = $result->fetch()){
 		$donnees['DATE'] = $row[0];
 		$donnees['MESSAGE'] = $row[1];
@@ -118,7 +123,7 @@ function SelectionListeMessages(){
 }
 
 function RemoveMessage($date){
-	requete("DELETE FROM _inde_VIE_OUTIL WHERE DATE='$date'");
+	requete("DELETE FROM ".DB_PREFIX."VIE_OUTIL WHERE DATE='$date'");
 }
 
 //////////////// EMAIL ////////////////
