@@ -18,8 +18,7 @@ if (isset ($_POST['payer']))
 	$totalTTC = $_SESSION['inde_montantPanier'];
 	if($totalTTC > 0)
 	{
-	    //la maison fait crédit de 20Euro max !!
-		if($totalTTC <= $soldeAdherent+20)
+		if($totalTTC <= $soldeAdherent - $seuil_credit)
 		{
 			$nbRef = $_SESSION['inde_nbRefPanier'];
 			$idAdherent = $_SESSION['inde_adherent'];
@@ -48,7 +47,7 @@ if (isset ($_POST['payer']))
 		}
 		else
 		{
-			echo "<div style=\"text-align:center; color: #FF0000\">Attention, le total de vos achats et superieur au solde de votre compte MoneyCoop.<br />Veuillez approvisionner votre MoneyCoop avant de re-enregistrer vos achats.</div>";  
+			echo "<div style=\"text-align:center; color: #FF0000\">Attention, le total de vos achats et superieur au solde minimum du compte MoneyCoop ($seuil_credit euros).<br />Veuillez approvisionner votre MoneyCoop avant de re-enregistrer vos achats.</div>";  
 			echo "
 			    <br>
 			    <li>Pour modifier votre panier  <a href=\"javascript:window.history.back()\">cliquez ici</a></li>
