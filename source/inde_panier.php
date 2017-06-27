@@ -8,10 +8,13 @@ if ( $nbRefPanier == 0){
 ?>
 	<form id="formulaire" method="post" action="inde_payer.php">
 		<div 
-		<?php if($prixTotal > $soldeAdherent){ ?>
-			style="color: #FF0000" >**ATTENTION** Total TTC panier: <?php echo round($prixTotal,2) ?> euros
+		<?php if($prixTotal > $soldeAdherent - $seuil_credit){ ?>
+			style="color: #FF0000" >**ATTENTION** Crédit dépassé. 
+			Total panier: <?php echo round($prixTotal,2) ?> euros. 
+			Seuil minimum: <?php echo $seuil_credit ?> euros. 
+			Crédit: <?php echo $soldeAdherent ?> euros
 		<?php }else{ ?>
-			>Total TTC panier: <?php echo round($prixTotal,2) ?> euros
+			>Total panier: <?php echo round($prixTotal,2) ?> euros
 		<?php } ?>
 		    <input type="submit" value="Payer" name="payer" id="payer">
 		</div>

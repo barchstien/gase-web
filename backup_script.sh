@@ -1,13 +1,14 @@
 #!/bin/bash
 
-##crontab : sudo crontab -e
-#every friday at 5:01am. crontab -l to list existing entries
-#01 5 * * 5 /var/www/html/gase-web/backup_script.sh
-#anacron
-#sudo apt-get install anacron
-#in /etc/anacrontab : 
-#6 5 backup.gase.db /var/www/html/gase-web/backup_script.sh
-#replace path to command with relevant path
+## crontab : sudo crontab -e
+#  every friday at 5:01am. crontab -l to list existing entries
+#  01 5 * * 5 /var/www/html/gase-web/backup_script.sh
+## anacron
+#  sudo apt-get install anacron
+#  in /etc/anacrontab : 
+#  period (days)   delay (min)   job-identifier   command
+#  3               2             backup.gase.db   /var/www/html/gase-web/backup_script.sh
+#  replace path to command with relevant path
 
 #extract db details from config.ini file
 #!!! path to config.ini file should be ABSOLUTE
@@ -15,6 +16,8 @@ config_file_path="/home/gase/Web/gase/config.ini"
 
 
 ################
+# TODO check if file exist
+
 db_user=$(awk -F " = " '/^user/ {print $2}' $config_file_path)
 db_pass=$(awk -F " = " '/^password/ {print $2}' $config_file_path)
 db_name=$(awk -F " = " '/^name/ {print $2}' $config_file_path)
@@ -40,10 +43,6 @@ echo "delete old backup : " $db_backup_directory/$oldest_file_name
 rm -f $db_backup_directory/$oldest_file_name
 num_of_backup=$(ls $db_backup_directory | grep -c gase_db_backup)
 done
-
-#trigger grive sync
-cd $db_backup_directory_root
-grive
 
 #to restore restore
 # mysql -u $db_user -p$db_pass $db_name < dumpfilename.sql
