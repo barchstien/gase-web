@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
 		<link rel="stylesheet" href="style_default.css" /> 
-		<title>Bienvenue au Gase - v0.8</title>
+		<title>Bienvenue au Gase - v0.9</title>
     </head>
 
     <body>
