@@ -6,13 +6,6 @@ td{
     border: 1px solid black;
 }
 
-/* not in every page normally but better to put it in common */
-#formulaire input[type="submit"]:hover
-{
-	background-color: #AF3C7D;
-	cursor: pointer;
-}
-
 .notification_alert_stock{
     color: red;
     position: fixed;

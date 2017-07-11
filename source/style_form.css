@@ -28,6 +28,7 @@
 	top: -10px;
 	left: -25px;
 	z-index: 0;
+	color: black;
 }
 /* button "payer" */
 #payer
@@ -37,6 +38,7 @@
 	top: -10px;
 	left: -25px;
 	z-index: 0;
+	color: black;
 }
 
 /* list de references disponibles dans catalogue, moitiée gauche de l'écran */
