@@ -12,15 +12,9 @@ if (isset ($_POST['enregistrerAppro']))
 	
 	if(is_numeric($versement))
 	{
-		if($versement > 0)
-		{
-			ApprovisionnementMC($idAdherent, $versement);
-			include ('inde_infoApproMC.php');	
-		}
-		else
-		{
-			echo 'la somme indiquee n est pas une valeur positive.';
-		}
+		// bastien 31/10/2017 : allow négative versement, useful to close accounts and fix mistakes
+		ApprovisionnementMC($idAdherent, $versement);
+		include ('inde_infoApproMC.php');
 	}
 	else
 	{
