@@ -20,11 +20,16 @@ $user = $config["DB"]["user"];
 $pass = $config["DB"]["password"];
 $name =  $config["DB"]["name"];
 $prefix = $config["DB"]["prefix"];
-$connection = new mysqli($address, $user, $pass, $name);
-if ($connection->connect_errno) {
+
+if ($prefix == '') $prefix = '_inde_';
+//$connection = new mysqli($address, $user, $pass, $name);
+$dsn = "mysql:host=$address;dbname=$name";
+$mysql = new PDO($dsn, $user, $pass);
+
+/*if ($connection->connect_errno) {
     error_log("Failed to connect to MySQL: " . $connection->connect_error);
     exit("Failed to connect to MySQL: " . $connection->connect_error);
-}
+}*/
 define("DB_PREFIX", $prefix);
 
 /* pChart library inclusions */
@@ -42,7 +47,7 @@ $MyData = new pData();
 //get sum of quantity bought for each week
 foreach($weeks as $w){
     ////Sum purchase
-    $result = $connection->query(
+    $result = $mysql->query(
         "SELECT SUM(QUANTITE), MIN(DATE_FORMAT(DATE, '%M %D'))
         FROM ".DB_PREFIX."STOCKS
         WHERE ID_REFERENCE = $id_reference
@@ -51,7 +56,7 @@ foreach($weeks as $w){
             AND WEEK(DATE,1) = $w
         ORDER BY DATE"
     );
-    $row = $result->fetch_array();
+    $row = $result->fetch();
     if ($row != NULL){
         //compute day corresponding to the start of the week
         $week_start = new DateTime();
@@ -68,7 +73,7 @@ foreach($weeks as $w){
     }
     
     ////Stocks Minimum & Maximum
-    $result = $connection->query(
+    $result = $mysql->query(
         "SELECT MIN(STOCK), MAX(STOCK), MIN(DATE_FORMAT(DATE, '%M %D'))
         FROM ".DB_PREFIX."STOCKS
         WHERE ID_REFERENCE = $id_reference
@@ -76,7 +81,7 @@ foreach($weeks as $w){
             AND WEEK(DATE,1) = $w
         ORDER BY DATE"
     );
-    $row = $result->fetch_array();
+    $row = $result->fetch();
     if (1 == $d->invert){
         $MyData->addPoints($row[1],"Stock");
         $MyData->addPoints($row[0],"Floating 0");
@@ -86,7 +91,6 @@ foreach($weeks as $w){
     }
 }
 
-$connection->close();
 
 //////////// MAKE the CHART /////////////
 $width = 1200;
